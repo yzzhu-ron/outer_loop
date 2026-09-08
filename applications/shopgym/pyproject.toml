@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "outer-loop-shopgym"
+version = "0.1.0"
+description = "ShopGym application of outer-loop harness search"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "anthropic>=0.28.0",
+  "matplotlib>=3.9.0",
+  "numpy>=1.26.0",
+  "outer-loop",
+  "pandas>=2.2.0",
+  "playwright>=1.44.0",
+  "scipy>=1.13.0",
+]
+
+[project.scripts]
+shopgym-experiments = "shopgym.experiments.run_all:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv.sources]
+outer-loop = { workspace = true }

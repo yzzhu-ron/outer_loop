@@ -1,30 +1,88 @@
 # outer_loop
 
-Learning beyond gradients: theory, literature review, and experiments on the one loop
-every "self-improving AI" system runs — a frozen LLM proposes edits to a text/code
-artifact, a noisy evaluator scores them, a selection rule keeps something.
+`outer_loop` studies learning in artifact space: a frozen model proposes edits
+to a prompt, program, harness, memory, or evaluation set; an application runs
+the artifact; a noisy evaluator returns evidence; and a selection rule decides
+what survives. The model weights need not change for the surrounding system to
+improve.
 
-## Contents
+This repository contains the reusable control-plane code, one web-agent
+application, the theory manuscripts, prospective empirical paper work, and the
+literature synthesis that connects them.
 
-| Folder | What it is |
-|---|---|
-| `harness-optimization-review/` | Literature review of the four core works (HL, GEPA, autoresearch, Meta-Harness). Start at `index.html`, then `lit-review.html` ("The Outer Loop"). |
-| `beyond-gradients-theory/` | The theory project. `paper-iclr2027/` — **v2** "Learning Beyond Gradients: Resources, Certificates, and Limits of LLM-Guided Artifact Search" (ICLR 2027 format, addresses both referee reports; see its `response-to-reviewers.html` and README). `paper-icml2026/` — v1 (ICML format) plus the two referee reports. `one-loop-many-names.html` — the essay that seeded it. |
-| `beyond-gradients-blog/` | Companion blog post "The 53% Speedup That Wasn't". Single source `post.md` → self-contained `index.html` via `build.py`; figures regenerate from `make_figures.py` (seeded). |
-| `shopgym-neurips/` | ShopGym (NeurIPS, under review) — paper analysis through the harness lens, rebuttal-prep notes, and the proposed CUA harness-search experiment (`notes/harness-track-proposal.md`). |
+## Repository map
 
-## Reference repos (not tracked)
-
-Third-party clones studied in `harness-optimization-review/` are gitignored. To restore:
-
-```bash
-git clone https://github.com/trinkle23897/learning-beyond-gradients harness-optimization-review/1-heuristic-learning/learning-beyond-gradients
-git clone https://github.com/gepa-ai/gepa                            harness-optimization-review/2-gepa/gepa
-git clone https://github.com/karpathy/autoresearch                   harness-optimization-review/3-karpathy-auto-research/autoresearch
-git clone https://github.com/stanford-iris-lab/meta-harness          harness-optimization-review/4-meta-harness/meta-harness
+```text
+packages/outer_loop/       application-neutral Python package
+applications/shopgym/      ShopGym harness-search case study and all of its papers
+experiments/               future cross-application studies
+papers/
+  learning-beyond-gradients/
+                            general theory paper, reviews, simulations, companions
+  benchmark-compression-for-retriever-evaluation/
+                            prospective retriever-evaluation paper
+literature/                 systems review and theory reading notes
 ```
 
-## Milestones
+The organizing rule is ownership. General search machinery belongs in the
+package. Domain assumptions, data, experiment drivers, results, and manuscripts
+belong to the application that makes those assumptions. A paper about the
+general method belongs under `papers/`. Literature is evidence, not runtime
+code.
 
-- **m1-blog** (June 12, 2026): lit review → theory paper (ICML format, review-ready, 6/10 simulated review) → companion blog post, all built and verified.
-- **m2-paper-v2** (June 12, 2026): major revision addressing both referee reports (every W/E/N/R/Q item), retargeted to ICLR 2027 in `beyond-gradients-theory/paper-iclr2027/`. New: composed certified-improvement Theorem 6.1, γ-estimability Prop 3.5 + pre-registered protocol (App I), archival evidence base, honest audit trail; body exactly 9 pp. Next: run the App I γ measurement, then the ShopGym harness-search pilot.
+## Current research tracks
+
+| Track | Question | Status | Start here |
+|---|---|---|---|
+| Core package | What minimal interfaces and selection primitives recur across artifact-search systems? | Working prototype | [`packages/outer_loop/`](packages/outer_loop/) |
+| Learning Beyond Gradients | What can be guaranteed about proposal priors, feedback, noisy selection, archives, and description length? | ICLR 2027 manuscript generation | [`papers/learning-beyond-gradients/iclr-2027/`](papers/learning-beyond-gradients/iclr-2027/) |
+| ShopGym | Can a frozen browser agent improve through statistically gated search over its harness? | Application prototype; live evidence pending | [`applications/shopgym/`](applications/shopgym/) |
+| Benchmark Compression | Can a compact, nested query set preserve retriever conclusions across unseen system families? | Recommended prospective empirical direction; experiments not yet run here | [`papers/benchmark-compression-for-retriever-evaluation/`](papers/benchmark-compression-for-retriever-evaluation/) |
+| Literature | How do GEPA, autoresearch, Heuristic Learning, and Meta-Harness instantiate the same loop? | Research synthesis | [`literature/outer-loop-systems-review/`](literature/outer-loop-systems-review/) |
+
+## Why `applications/shopgym`, not `adapters/shopgym`
+
+The ShopGym work defines a mutable harness space, a trace model, evaluation
+protocols, experiments, results, and manuscript claims. Those are application
+semantics. An adapter would only translate interfaces. The confidence gate,
+archive behavior, selection policy, and proposal/evaluation contracts form the
+shared infrastructure.
+
+ShopGym is therefore one application of the outer-loop program. The next
+submission direction remains an explicit research decision.
+
+## Install and run
+
+The repository is a small `uv` workspace. To run the framework and ShopGym unit
+tests without installing unrelated research dependencies:
+
+```bash
+PYTHONPATH=packages/outer_loop/src:applications/shopgym/src \
+  python -m unittest discover packages/outer_loop/tests
+PYTHONPATH=packages/outer_loop/src:applications/shopgym/src \
+  python -m unittest discover applications/shopgym/tests
+```
+
+To reproduce the seeded ShopGym simulations:
+
+```bash
+uv sync --package outer-loop-shopgym
+uv run --package outer-loop-shopgym shopgym-experiments
+```
+
+The committed ShopGym tables are simulation outputs, not live-shop results.
+See the [application README](applications/shopgym/) for the exact evidence
+boundary and the work required before making empirical claims.
+
+## Reference repositories
+
+The literature review studies third-party projects without vendoring their Git
+histories. Clone them into the ignored paths only when source-level inspection
+is needed:
+
+```bash
+git clone https://github.com/trinkle23897/learning-beyond-gradients literature/outer-loop-systems-review/1-heuristic-learning/learning-beyond-gradients
+git clone https://github.com/gepa-ai/gepa literature/outer-loop-systems-review/2-gepa/gepa
+git clone https://github.com/karpathy/autoresearch literature/outer-loop-systems-review/3-karpathy-auto-research/autoresearch
+git clone https://github.com/stanford-iris-lab/meta-harness literature/outer-loop-systems-review/4-meta-harness/meta-harness
+```

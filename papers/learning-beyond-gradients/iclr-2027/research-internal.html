@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[INTERNAL] Research Notebook — The Outer Loop (ICLR 2027)</title>
+<style>
+  :root {
+    --bg: #0f1117; --bg2: #181c27; --bg3: #1e2338; --border: #2d3350;
+    --text: #e8eaf6; --muted: #8892b0; --accent: #7c9ef8;
+    --accent3: #f7c94b; --red: #f07070; --blue: #5b9cf6;
+    --green: #56d49b; --orange: #f0a050; --purple: #a78bfa;
+    --card-r: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Georgia', serif;
+    font-size: 15px; line-height: 1.7; }
+
+  /* ── Banner ── */
+  .internal-banner {
+    background: #3b1a0a; border-bottom: 1px solid #f0a05066;
+    padding: 10px 32px; font-family: system-ui, sans-serif; font-size: 12px;
+    color: var(--orange); display: flex; align-items: center; gap: 8px;
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  /* ── Tab bar ── */
+  .tab-bar {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 0 24px;
+    overflow-x: auto;
+    position: sticky; top: 37px; z-index: 99;
+  }
+  .tab-btn {
+    padding: 12px 20px; cursor: pointer;
+    font-family: system-ui, sans-serif; font-size: 12px;
+    letter-spacing: 0.05em; color: var(--muted);
+    border: none; background: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── Tab content ── */
+  .tab-pane { display: none; max-width: 820px; margin: 0 auto; padding: 40px 28px 80px; }
+  .tab-pane.active { display: block; }
+
+  /* ── Typography ── */
+  h1 { font-size: 22px; font-weight: normal; color: #fff; margin-bottom: 6px; }
+  .meta { font-family: system-ui, sans-serif; font-size: 12px; color: var(--muted); margin-bottom: 32px; }
+  h2 { font-size: 15px; font-weight: 600; color: var(--accent); margin: 32px 0 12px;
+    font-family: system-ui, sans-serif; letter-spacing: 0.04em; }
+  h3 { font-size: 13px; font-weight: 600; color: #c8cfe8; margin-bottom: 6px; font-family: system-ui, sans-serif; }
+  p { color: var(--muted); margin-bottom: 10px; font-size: 14px; }
+  p strong { color: var(--text); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  code { background: var(--bg3); padding: 2px 6px; border-radius: 4px;
+    font-size: 12px; color: var(--accent); font-family: monospace; }
+  a { color: var(--accent); }
+
+  /* ── Decision box ── */
+  .decision-box {
+    background: linear-gradient(135deg, #1e3a8a22, #56d49b11);
+    border: 1px solid #3b82f644; border-radius: var(--card-r); padding: 18px 22px; margin: 16px 0;
+  }
+  .decision-box .chosen { font-size: 17px; color: #fff; margin-bottom: 6px; }
+
+  /* ── Title cards ── */
+  .tc { background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 13px 17px; margin-bottom: 9px; }
+  .tc .title { font-size: 14px; color: #fff; margin-bottom: 3px; }
+  .tc .note { font-size: 12px; color: var(--muted); font-family: system-ui, sans-serif; }
+  .pill { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 99px;
+    border: 1px solid; font-family: system-ui, sans-serif; letter-spacing: 0.05em; margin-bottom: 5px; }
+  .p-chosen { color: var(--green); border-color: var(--green); background: #56d49b11; }
+  .p-alt    { color: var(--accent3); border-color: var(--accent3); background: #f7c94b11; }
+  .p-drop   { color: var(--muted); border-color: var(--muted); background: transparent; }
+
+  /* ── Paper idea cards ── */
+  .idea {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-left: 4px solid; border-radius: 0 var(--card-r) var(--card-r) 0;
+    padding: 16px 20px; margin-bottom: 12px;
+  }
+  .idea.blue   { border-left-color: var(--blue); }
+  .idea.green  { border-left-color: var(--green); }
+  .idea.amber  { border-left-color: var(--accent3); }
+  .idea.red    { border-left-color: var(--red); }
+  .idea.purple { border-left-color: var(--purple); }
+  .idea.orange { border-left-color: var(--orange); }
+  .idea .ititle { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; font-family: system-ui, sans-serif; }
+  .idea .imeta  { font-family: system-ui, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 7px; }
+  .idea.blue .imeta   { color: var(--blue); }
+  .idea.green .imeta  { color: var(--green); }
+  .idea.amber .imeta  { color: var(--accent3); }
+  .idea.red .imeta    { color: var(--red); }
+  .idea.purple .imeta { color: var(--purple); }
+  .idea.orange .imeta { color: var(--orange); }
+  .idea p { font-size: 13px; margin-bottom: 6px; }
+  .idea .ilink { font-family: system-ui, sans-serif; font-size: 11px; color: var(--muted); }
+  .idea .ilink strong { color: var(--accent3); }
+
+  /* ── Status chips ── */
+  .status { display: inline-block; font-family: system-ui, sans-serif; font-size: 10px;
+    padding: 2px 8px; border-radius: 99px; margin-left: 8px; vertical-align: middle; }
+  .s-hot  { background: #f0707022; color: var(--red); border: 1px solid #f0707044; }
+  .s-warm { background: #f7c94b11; color: var(--accent3); border: 1px solid #f7c94b33; }
+  .s-cool { background: #5b9cf611; color: var(--blue); border: 1px solid #5b9cf633; }
+  .s-seed { background: #a78bfa11; color: var(--purple); border: 1px solid #a78bfa33; }
+
+  /* ── Blog cards ── */
+  .blog {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 16px 20px; margin-bottom: 10px;
+    display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start;
+  }
+  .blog .bnum { font-family: system-ui, sans-serif; font-size: 22px; font-weight: 700;
+    color: var(--border); line-height: 1; }
+  .blog .btitle { font-size: 14px; color: #fff; font-family: system-ui, sans-serif; margin-bottom: 4px; }
+  .blog .bhook { font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+  .blog .btags { font-family: system-ui, sans-serif; font-size: 10px; color: var(--muted); }
+  .blog .btags strong { color: var(--accent3); }
+
+  /* ── Timeline ── */
+  .timeline { border-left: 2px solid var(--border); padding-left: 18px; margin: 14px 0; }
+  .timeline-item { margin-bottom: 14px; }
+  .timeline-item .date { font-family: system-ui, sans-serif; font-size: 11px;
+    letter-spacing: 0.06em; color: var(--accent); margin-bottom: 2px; }
+  .timeline-item .event { font-size: 13px; color: var(--muted); }
+  .timeline-item .event strong { color: var(--text); }
+
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  .mini-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--card-r); padding: 14px 16px; }
+  .mini-card h3 { color: var(--accent); margin-bottom: 6px; }
+  .mini-card p { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="internal-banner">
+  ⚠ INTERNAL — not for reviewers or public distribution &nbsp;·&nbsp; <code>titles-internal.html</code> &nbsp;·&nbsp; The Outer Loop (ICLR 2027)
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('titles')">📋 Title Decision</button>
+  <button class="tab-btn" onclick="switchTab('papers')">📄 Paper Ideas</button>
+  <button class="tab-btn" onclick="switchTab('blogs')">✍️ Blog Ideas</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  TAB 1: TITLE DECISION
+═══════════════════════════════════════════ -->
+<div class="tab-pane active" id="tab-titles">
+  <h1>Title Decision Log</h1>
+  <div class="meta">Last updated: 2026-06-13 &nbsp;·&nbsp; Update when title changes</div>
+
+  <div class="decision-box">
+    <div style="font-family:system-ui; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;">Chosen title (tentative)</div>
+    <div class="chosen">The Outer Loop: A Unified Theory of Gradient-Free LLM Improvement Loops</div>
+    <p style="margin-top:10px; font-size:13px;">Documented alternate: <strong>"The Ratchet Illusion: Resources, Certificates, and Limits of LLM-Guided Artifact Search"</strong> — held in reserve as the provocative/citation-shorthand variant.</p>
+  </div>
+
+  <h2>Rationale</h2>
+  <p>"The Outer Loop" coins the category name — the pattern every frozen-weight self-improvement system runs. Short, memorable, natural citation handle. Does not duplicate the Weng (2026) blog title. The competitor was "The Ratchet Illusion" as lead phrase — stronger hook, but risks narrowing the paper's perceived scope to just §5. Decision: keep "ratchet illusion" as a concept name within the paper; use "The Outer Loop" as submission title.</p>
+
+  <h2>Decision timeline</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="date">v1 (ICML 2026)</div>
+      <div class="event"><strong>"Learning Beyond Gradients: Resources, Certificates, and Limits of LLM-Guided Artifact Search"</strong> — rejected: duplicated Weng (2026) blog title.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">v2 (ICLR 2027 revision)</div>
+      <div class="event">Prefix dropped per reviewer R11 → <strong>"Resources, Certificates, and Limits of LLM-Guided Artifact Search"</strong>. Accurate but no handle.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">v2.5 · 2026-06-12</div>
+      <div class="event">Companion site added. Brainstormed 12 alternatives.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2026-06-13 — current</div>
+      <div class="event">Tentative: <strong>"The Outer Loop: A Unified Theory of Gradient-Free LLM Improvement Loops"</strong>. Documented alternate: "The Ratchet Illusion: …"</div>
+    </div>
+  </div>
+
+  <hr>
+  <h2>All alternatives on record</h2>
+
+  <h2 style="color:var(--red); margin-top:8px;">Provocative / Memorable</h2>
+  <div class="tc"><span class="pill p-alt">Documented alt</span>
+    <div class="title">The Ratchet Illusion: Resources, Certificates, and Limits of LLM-Guided Artifact Search</div>
+    <div class="note">Centers the 3.4σ result. Becomes citation shorthand. Risks narrowing scope.</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Learning Without Learning: A Theory of Frozen-Weight Improvement Loops</div>
+    <div class="note">Paradox framing. Could be misread as epistemology.</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">3.4σ for Free: The Measurement Failure at the Heart of LLM Self-Improvement</div>
+    <div class="note">Too narrow — reads like a measurement paper.</div></div>
+
+  <h2 style="color:var(--orange);">Dual / Subtitle format</h2>
+  <div class="tc"><span class="pill p-chosen">✓ Chosen</span>
+    <div class="title">The Outer Loop: A Unified Theory of Gradient-Free LLM Improvement Loops</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Artifact Search Theory: Prior Mass, Feedback Information, and Certified Improvement for Frozen LLMs</div>
+    <div class="note">Good if community adopts "artifact search" vocabulary.</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">When Does the Optimizer Know Best? Certificates and Limits of LLM-Guided Artifact Search</div>
+    <div class="note">Question-form, slightly informal for ICLR main track.</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Beyond Prompt Tuning: A Unified Theory of Gradient-Free LLM Improvement Loops</div></div>
+
+  <h2 style="color:var(--blue);">Precise / Tighter</h2>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Prior Mass, Noise Gates, and Deception: A Theory of LLM-Guided Artifact Search</div>
+    <div class="note">Good fallback if area chairs flag length.</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Certifying LLM-Guided Improvement: Resources, Limits, and the Ratchet Illusion</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">A Formal Theory of Frozen-Weight Self-Improvement: From Hitting Times to Certified Loops</div></div>
+
+  <h2 style="color:var(--green);">Short / Catchy</h2>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">The Ratchet Illusion</div>
+    <div class="note">Too bare for ICLR main track without subtitle.</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Outer Loop Theory</div></div>
+  <div class="tc"><span class="pill p-drop">Dropped</span>
+    <div class="title">Learning at the Frozen Edge: Theory of LLM-Guided Artifact Search</div></div>
+
+  <hr>
+  <p style="font-size:12px; color:var(--muted);">Do not link from <code>index.html</code>, <code>slides.html</code>, or any reviewer-facing material.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  TAB 2: PAPER IDEAS
+═══════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-papers">
+  <h1>Paper Ideas</h1>
+  <div class="meta">Speculative threads. Organized by what's being optimized, how, and what theory angle.</div>
+
+  <p>The current paper analyzes the outer loop in the abstract. These ideas explore it concretely — specific instantiations, new theory directions, and empirical programs.</p>
+
+  <!-- ── SECTION A: What to optimize ── -->
+  <h2>A · What to optimize — the artifact space</h2>
+  <p>The paper treats 𝒜 as an abstract countable space. A follow-on empirical program could systematically vary what kind of artifact is being searched.</p>
+
+  <div class="idea blue">
+    <div class="imeta">Empirical · Web agents</div>
+    <div class="ititle">Harness Search for Web Agents <span class="status s-hot">hot</span></div>
+    <p>The ShopGym / CUA setting: freeze the agent model, run the outer loop over the <em>harness</em> — memory policy, retry logic, observation preprocessing, tool-call ordering, context truncation strategy. What is the artifact space? How does γ vary across harness components?</p>
+    <p>Connects directly to: Meta-Harness (Lee et al. 2026), Appendix I of the theory paper, and the <a href="../../../applications/shopgym/papers/shopgym-submission/notes/harness-track-proposal.md">ShopGym harness-track proposal</a>.</p>
+    <div class="ilink">Key question: <strong>which harness components have the highest γ?</strong> Which are deceptive (wide valley between local and global opt)?</div>
+  </div>
+
+  <div class="idea green">
+    <div class="imeta">Empirical · Code / ML research</div>
+    <div class="ititle">Artifact Hierarchy: Prompt → Skill → Harness → Training Config <span class="status s-warm">warm</span></div>
+    <p>A <em>hierarchy</em> of artifact types with increasing description length ℓ(a) and decreasing proposer prior mass q₀. The Occam U-shape (§7) predicts an optimal level. Can we measure the γ and q₀ at each level empirically?</p>
+    <p>Level 1: system prompt. Level 2: skill document (few-shot + CoT template). Level 3: harness code. Level 4: training config (like Karpathy's autoresearch). Each level is a separate paper; together they form a systematic empirical program.</p>
+    <div class="ilink">Key question: <strong>does γ increase or decrease as you go up the hierarchy?</strong></div>
+  </div>
+
+  <div class="idea amber">
+    <div class="imeta">Theory + Empirical</div>
+    <div class="ititle">Compositional Artifact Search <span class="status s-cool">speculative</span></div>
+    <p>Instead of treating the artifact as monolithic, decompose it: <em>a = (a₁, a₂, …, aₖ)</em> where each component is searched semi-independently. E.g., a prompt = system + few-shot + CoT template. Does compositionality help? The Levin bound on q₀ for the joint space vs. the product of marginals.</p>
+    <div class="ilink">Key question: <strong>is the joint prior mass larger or smaller than the product of marginals?</strong> (Depends on correlation structure.)</div>
+  </div>
+
+  <!-- ── SECTION B: How to optimize — the selector ── -->
+  <h2>B · How to optimize — the selector and loop architecture</h2>
+
+  <div class="idea purple">
+    <div class="imeta">Theory</div>
+    <div class="ititle">Multi-Objective Outer Loops: Pareto Archives and the Archive Rate <span class="status s-warm">warm</span></div>
+    <p>The current paper treats the selector as single-objective. But deployed systems (Meta-Harness, ShopGym) have multiple objectives: speed vs. accuracy vs. cost vs. robustness. Extend the archive analysis (Thm 5.4) to Pareto fronts. What is the analogue of the hitting-time bound when the target is a Pareto-optimal region rather than a point?</p>
+    <div class="ilink">Key question: <strong>does the exponential advantage of archives over greedy persist in the multi-objective case?</strong></div>
+  </div>
+
+  <div class="idea blue">
+    <div class="imeta">Empirical</div>
+    <div class="ititle">Selector Ablation Study: Ratchet vs. Archive vs. Beam vs. Pareto <span class="status s-hot">hot</span></div>
+    <p>The theory predicts archive > greedy on deceptive landscapes and greedy ≈ archive on non-deceptive ones. Can we verify this experimentally by varying the selector on a fixed task and proposer? The deception width k could be operationalized as: how many "worse" intermediate steps must you accept to reach the global optimum.</p>
+    <div class="ilink">Pre-registered: fix proposer = GPT-4o, task = HumanEval-Hard, vary sel ∈ {single-eval ratchet, gated ratchet (N=85), archive, Pareto archive}.</div>
+  </div>
+
+  <div class="idea orange">
+    <div class="imeta">Theory + Systems</div>
+    <div class="ititle">Asynchronous Outer Loops: Multiple Proposers in Parallel <span class="status s-cool">speculative</span></div>
+    <p>Current theory assumes a single sequential proposer. Real systems (GEPA population, AlphaEvolve island model) run multiple proposers in parallel. Does parallelism help beyond the trivial γ-scaling? Are there interference effects (proposers stepping on each other's accepted artifacts)?</p>
+    <div class="ilink">Key question: <strong>does the gated ratchet budget scale linearly with the number of parallel proposers?</strong></div>
+  </div>
+
+  <!-- ── SECTION C: Frozen weights + harness design ── -->
+  <h2>C · Around the frozen weights — harness design space</h2>
+  <p>The outer loop keeps weights frozen but varies what wraps them. This is a rich design space that no paper has fully mapped.</p>
+
+  <div class="idea red">
+    <div class="imeta">Systems + Empirical</div>
+    <div class="ititle">A Taxonomy of Harness Components and Their Searchability <span class="status s-hot">hot</span></div>
+    <p>Map out the full design space of what a harness can vary:</p>
+    <p><strong>Memory:</strong> sliding window / summary / episodic / external retrieval<br>
+       <strong>Observation:</strong> raw HTML / accessibility tree / screenshot / diff / structured extraction<br>
+       <strong>Action space:</strong> click+type / high-level API / code execution / hybrid<br>
+       <strong>Retry logic:</strong> immediate / backoff / reflective / rollback<br>
+       <strong>Context:</strong> compression ratio / what gets included / ordering</p>
+    <p>For each dimension: measure γ (how much traces help proposer improvement), q₀ (baseline proposer mass), and landscape topology (deceptive or not). This is the empirical program that makes the theory actionable for practitioners.</p>
+    <div class="ilink">Key output: <strong>a "searchability score" per harness component</strong> — how much can the outer loop improve it?</div>
+  </div>
+
+  <div class="idea green">
+    <div class="imeta">Theory</div>
+    <div class="ititle">The γ Measurement Paper — Pre-Registered Empirical Protocol <span class="status s-hot">hot</span></div>
+    <p>Appendix I of the theory paper has the pre-registered protocol (120 buggy programs, 70 patches/condition, Wilson intervals). Execute this. The output is a <em>measurement</em> of γ for a specific proposer (Claude 3.5 Sonnet or GPT-4o) on a specific task class. Then vary: model size, task type, feedback modality (scalar/trace/distance). This is a focused 6-page empirical paper with strong theoretical grounding.</p>
+    <div class="ilink">Pre-registered protocol already written: <code>iclr-2027/main.tex Appendix I</code>. Just needs execution (~1 GPU-day).</div>
+  </div>
+
+  <div class="idea purple">
+    <div class="imeta">Theory + Empirical · Web agents</div>
+    <div class="ititle">Harness-Search for ShopGym: Outer Loop Applied to E-Commerce CUA <span class="status s-hot">hot</span></div>
+    <p>The most direct application of the theory to the ShopGym paper. Use the outer loop to search for the optimal CUA harness on e-commerce web tasks. Key contributions: (1) apply gated ratchet to avoid ratchet illusion in harness selection; (2) measure γ for harness proposals from traces; (3) show archive search beats greedy on deceptive harness landscapes (tasks with local-optima shortcuts that fail at checkout).</p>
+    <div class="ilink">Connects: <a href="../../../applications/shopgym/papers/shopgym-submission/notes/harness-track-proposal.md">ShopGym harness-track proposal</a> + theory Thm 6.1.</div>
+  </div>
+
+  <!-- ── SECTION D: New theory directions ── -->
+  <h2>D · New theory directions</h2>
+
+  <div class="idea amber">
+    <div class="imeta">Theory</div>
+    <div class="ititle">Self-Referential Outer Loops: When the Artifact Includes the Loop <span class="status s-seed">seed</span></div>
+    <p>Appendix J of the current paper states the open problem: what happens when the artifact being optimized includes the optimization algorithm itself (Darwin Gödel Machine, ADAS)? The theory breaks because the proposer distribution changes as the artifact changes. Is there a fixed-point characterization? When does self-reference help vs. destabilize?</p>
+    <div class="ilink">Related: Gödel machines (Schmidhuber), ADAS (Hu et al. 2025). The theory has no tools for this yet.</div>
+  </div>
+
+  <div class="idea blue">
+    <div class="imeta">Theory</div>
+    <div class="ititle">Information-Theoretic Lower Bounds: Are the Thm 6.1 Rates Tight? <span class="status s-cool">speculative</span></div>
+    <p>Theorem 6.1 gives an upper bound of O((σ²/Δ²) ln(B/δ) ln(1/δ) / (γ q₀)). Is this tight? A matching lower bound would show the gated ratchet is information-theoretically optimal among all artifact-search strategies with the same γ and q₀. The ratchet lower bound (Thm 5.1) is already tight; does it compose?</p>
+  </div>
+
+  <div class="idea red">
+    <div class="imeta">Theory + Empirical</div>
+    <div class="ititle">Feedback Engineering: Designing the Evaluator to Maximize γ <span class="status s-warm">warm</span></div>
+    <p>The feedback-information result (§4) shows traces beat scalar rewards exponentially. But what is the optimal feedback format for a given task? Can you design the evaluator output to maximize the proposer's conditioning boost γ? This inverts the usual direction: instead of analyzing given feedback, <em>design</em> feedback for maximum γ. Relevant for practitioners who control the evaluator.</p>
+    <div class="ilink">Key question: <strong>given task T and proposer LLM, what feedback format maximizes γ?</strong></div>
+  </div>
+
+  <div class="idea orange">
+    <div class="imeta">Theory</div>
+    <div class="ititle">Transfer and Warm-Starting: γ Across Task Distributions <span class="status s-seed">seed</span></div>
+    <p>γ measures how much traces from task T help the proposer on task T. But what about traces from a related task T′? If you run the outer loop on T′ first and collect traces, does γ on T improve? This is the theory of transfer learning for the outer loop — connecting to in-context learning generalization.</p>
+  </div>
+
+  <hr>
+  <div class="grid-2">
+    <div class="mini-card">
+      <h3>Prioritization guide</h3>
+      <p><span class="status s-hot">hot</span> = directly actionable, pre-conditions met, ~1 GPU-day<br>
+         <span class="status s-warm">warm</span> = needs scoping, 1-2 months<br>
+         <span class="status s-cool">cool</span> = interesting but 6+ months<br>
+         <span class="status s-seed">seed</span> = open problem, no clear method yet</p>
+    </div>
+    <div class="mini-card">
+      <h3>Recommended next</h3>
+      <p><strong>1.</strong> γ measurement (Appendix I execution)<br>
+         <strong>2.</strong> Harness-Search for ShopGym pilot<br>
+         <strong>3.</strong> Selector ablation study<br>
+         <strong>4.</strong> Harness taxonomy + searchability scores</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  TAB 3: BLOG IDEAS
+═══════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-blogs">
+  <h1>Blog Ideas</h1>
+  <div class="meta">Companion posts, explainers, and accessible takes. Not all need to be published — some are just good for crystallizing thinking.</div>
+
+  <p>The <a href="../companion/blog/">companion blog</a> covered the lit-review angle. These ideas go further — extracting the most striking results into standalone readable pieces, or taking provocative angles that the paper can't.</p>
+
+  <h2>High-priority — core results deserve their own posts</h2>
+
+  <div class="blog">
+    <div class="bnum">01</div>
+    <div>
+      <div class="btitle">The 3.4σ Illusion: How Every LLM Optimizer Is Fooling You Right Now <span class="status s-hot">hot</span></div>
+      <div class="bhook">Lead with the demo: drag the slider, watch pure noise produce 3.4σ of "improvement." Then explain why every prompt optimizer, harness tuner, and self-improvement loop you've heard of is doing exactly this — and how to fix it with N=85 repeats.</div>
+      <div class="btags">Audience: ML practitioners · Format: interactive (embed the demo from index.html) · <strong>Tie-in: links to paper §5 + interactive demo</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">02</div>
+    <div>
+      <div class="btitle">Why Your Traces Are Worth 2<sup>L</sup> Times More Than Your Scores <span class="status s-hot">hot</span></div>
+      <div class="bhook">The feedback-channel result in one story: if you're only giving your optimizer pass/fail, you're leaving exponential speedup on the table. Walk through the L-bit identification game with a concrete coding analogy. Explain why GEPA's 35× speedup isn't a surprise — it's the theory.</div>
+      <div class="btags">Audience: MLEs building eval pipelines · <strong>Tie-in: §4, Thm 4.2, feedback demo</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">03</div>
+    <div>
+      <div class="btitle">The Outer Loop: One Pattern to Rule Them All <span class="status s-hot">hot</span></div>
+      <div class="bhook">The accessibility piece. Show that GEPA, Meta-Harness, Karpathy's autoresearch, Heuristic Learning, FunSearch, AlphaEvolve, and SkillOpt are all running the same loop — different vocabulary, same tuple (𝒜, F, q, sel, M). Draw the unifying diagram. Non-technical version of the paper's §1–2.</div>
+      <div class="btags">Audience: broad ML, researchers new to this area · Format: explanatory, heavily diagrammed · <strong>Companion to the paper</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">04</div>
+    <div>
+      <div class="btitle">Archives Beat Greedy — A Visual Proof <span class="status s-warm">warm</span></div>
+      <div class="bhook">Interactive valley animation: show the greedy optimizer getting stuck, the archive escaping. Explain why every successfully deployed evolutionary system independently invented archives (GEPA populations, AlphaEvolve island models, Meta-Harness version pools). The math is Thm 5.4 but told visually.</div>
+      <div class="btags">Audience: ML practitioners · Format: interactive, animated · <strong>Tie-in: deception demo, §5</strong></div>
+    </div>
+  </div>
+
+  <h2>Medium-priority — good for positioning and community-building</h2>
+
+  <div class="blog">
+    <div class="bnum">05</div>
+    <div>
+      <div class="btitle">What GEPA, Karpathy, and Heuristic Learning Have in Common (And What None of Them Knew)</div>
+      <div class="bhook">A "did you know these papers were all doing the same thing?" narrative. Three independent systems, three different vocabularies, one formal model. Likely to be shared by the communities around each paper — good for cross-pollination.</div>
+      <div class="btags">Audience: researchers · Format: essay · <strong>Good for arXiv announcement</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">06</div>
+    <div>
+      <div class="btitle">How to Actually Know If Your LLM Improved: A Field Guide</div>
+      <div class="bhook">Practical guide derived from the theory. How many evaluation repeats do you need (N formula)? When is a scalar reward enough vs. when do you need traces? When should you use an archive? Reads like an engineering checklist — no math required.</div>
+      <div class="btags">Audience: ML engineers · Format: actionable checklist with formulas · <strong>Downloadable PDF version</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">07</div>
+    <div>
+      <div class="btitle">Goodhart Meets Frozen Weights: Why LLM Judges Can't Be Fully Trusted</div>
+      <div class="bhook">Prop 8.1 made accessible: any bounded LLM evaluator can be gamed — there's always a prompt that maxes it out without doing the real task. Concrete examples: jailbreaks, prompt hacking, reward hacking in RL. Explains why you always need a held-out human evaluation at the end.</div>
+      <div class="btags">Audience: ML safety, practitioners · <strong>Tie-in: §8</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">08</div>
+    <div>
+      <div class="btitle">The γ Factor: The Number That Predicts Whether Your Self-Improvement Loop Will Work</div>
+      <div class="bhook">Explains γ (trace-conditioning boost) to a non-technical audience. What it means, how to estimate it from data, and what typical values look like. Positioned as "the one number your team should measure before running any outer-loop experiment." Could be the launch piece for the γ measurement paper.</div>
+      <div class="btags">Audience: ML teams building self-improving systems · <strong>Tie-in: Prop 3.5, Appendix I, γ measurement paper</strong></div>
+    </div>
+  </div>
+
+  <h2>Longer-form / exploratory</h2>
+
+  <div class="blog">
+    <div class="bnum">09</div>
+    <div>
+      <div class="btitle">From Prompts to Harnesses: A Map of What You Can Optimize Around a Frozen LLM</div>
+      <div class="bhook">The hierarchy of artifacts — prompt → skill document → harness code → training config — with estimated γ and q₀ at each level. Synthesizes the theory with the ShopGym / Meta-Harness empirical work. Could serve as the intro section of the harness taxonomy paper.</div>
+      <div class="btags">Format: long explainer, 2000–3000 words · <strong>Potential basis for harness taxonomy paper §1</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">10</div>
+    <div>
+      <div class="btitle">The Evaluation Crisis in Self-Improving AI: A Decade in Review</div>
+      <div class="bhook">Connects our ratchet illusion result to the long history of evaluation failures in ML: Henderson et al. 2018 (RL reproducibility), Dodge et al. 2019 (NLP variance), Agarwal et al. 2021 (deep RL), and now LLM self-improvement loops. The same problem keeps recurring. Our gated ratchet is the first certified fix.</div>
+      <div class="btags">Audience: ML researchers, broader AI community · Format: historical essay · <strong>Citation-heavy, good for reaching evaluation-statistics community</strong></div>
+    </div>
+  </div>
+
+  <div class="blog">
+    <div class="bnum">11</div>
+    <div>
+      <div class="btitle">Can an AI Improve Itself? A Precise Answer</div>
+      <div class="bhook">The public-facing version of the whole paper. Answers the question precisely: yes, under conditions given by Thm 6.1; no, when Goodhart's Law (§8) applies; and "it looks like yes but it's an illusion" (§5). Avoids hype in both directions. Could be a magazine-style piece.</div>
+      <div class="btags">Audience: general tech-literate · Format: 1500-word essay, no equations · <strong>arXiv + social media launch piece</strong></div>
+    </div>
+  </div>
+
+  <hr>
+  <div class="grid-2">
+    <div class="mini-card">
+      <h3>Sequencing suggestion</h3>
+      <p>On arXiv submission: publish blogs 03 + 05 simultaneously (cross-community reach). After acceptance: 01 (with demo link) as the flagship post. After γ measurement paper: 08.</p>
+    </div>
+    <div class="mini-card">
+      <h3>Format decisions pending</h3>
+      <p>Blog 01: needs interactive embed from index.html<br>
+         Blog 04: needs animated valley SVG or JS demo<br>
+         Blog 06: needs PDF checklist design<br>
+         Blog 09: depends on harness taxonomy paper scope</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

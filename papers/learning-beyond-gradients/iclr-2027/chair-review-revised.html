@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ICLR 2027 Review — Resources, Certificates, and Limits of LLM-Guided Artifact Search (revised)</title>
+<style>
+  :root {
+    --ivory:#FAF9F5; --slate:#141413; --clay:#D97757; --oat:#E3DACC;
+    --olive:#788C5D; --sky:#6A8CAF; --bad:#B04A3F; --amber:#C2884E;
+    --gray-150:#F0EEE6; --gray-300:#D1CFC5; --gray-500:#87867F; --gray-700:#3D3D3A;
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--ivory); color:var(--gray-700); font-family:var(--sans);
+         font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased;
+         padding:56px 24px 120px; }
+  .page { max-width:1100px; margin:0 auto; }
+  .eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+             text-transform:uppercase; color:var(--gray-500); margin-bottom:10px; }
+  h1 { font-family:var(--serif); font-weight:500; font-size:30px; color:var(--slate);
+       letter-spacing:-.01em; margin-bottom:12px; }
+  h2 { font-family:var(--serif); font-weight:500; font-size:22px; color:var(--slate); margin:36px 0 12px; }
+  h3 { font-family:var(--serif); font-weight:500; font-size:17px; color:var(--slate); margin:22px 0 8px; }
+  p  { margin-bottom:12px; max-width:720px; }
+  .lead { max-width:680px; margin-bottom:24px; font-size:16px; }
+  a { color:var(--sky); }
+  code { font-family:var(--mono); font-size:13px; background:var(--gray-150);
+         padding:1px 5px; border-radius:4px; }
+  nav.tabs { display:flex; flex-wrap:wrap; gap:2px; border-bottom:1.5px solid var(--gray-300); margin:28px 0 32px; }
+  nav.tabs button { appearance:none; border:none; background:none; cursor:pointer;
+    font-family:var(--mono); font-size:12px; padding:9px 14px; color:var(--gray-500);
+    border-bottom:2px solid transparent; margin-bottom:-1.5px; }
+  nav.tabs button.active { color:var(--slate); border-bottom-color:var(--clay); }
+  section.tab { display:none; } section.tab.active { display:block; }
+  .card { background:#fff; border:1.5px solid var(--gray-300); border-radius:13px;
+          padding:20px 22px; margin:12px 0; }
+  .card p:last-child { margin-bottom:0; }
+  .chips { display:flex; flex-wrap:wrap; gap:12px; margin:16px 0; }
+  .stat  { background:#fff; border:1.5px solid var(--gray-300); border-radius:13px;
+           padding:14px 20px; min-width:130px; }
+  .stat .n { font-family:var(--mono); font-size:26px; color:var(--slate); }
+  .stat .l { font-family:var(--mono); font-size:10px; text-transform:uppercase;
+             letter-spacing:.08em; color:var(--gray-500); }
+  .badge { font-family:var(--mono); font-size:11px; padding:3px 9px; border-radius:999px;
+           background:var(--gray-150); color:var(--gray-700); }
+  .badge.ok  { background:rgba(120,140,93,.14); color:var(--olive); }
+  .badge.warn { background:rgba(194,136,78,.14); color:var(--amber); }
+  .badge.bad { background:rgba(176,74,63,.12);  color:var(--bad); }
+  table { border-collapse:collapse; width:100%; font-size:13.5px; margin:12px 0; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--gray-300); vertical-align:top; }
+  th { font-family:var(--mono); font-size:11px; text-transform:uppercase;
+       letter-spacing:.06em; color:var(--gray-500); font-weight:500; }
+  .quote { border-left:3px solid var(--clay); padding:4px 0 4px 16px; margin:14px 0; max-width:720px; }
+  .quote .q { font-family:var(--serif); font-size:16px; color:var(--slate); }
+  .quote .s { font-family:var(--mono); font-size:11px; color:var(--gray-500); margin-top:4px; }
+  footer { margin-top:64px; padding-top:16px; border-top:1px solid var(--gray-300);
+           font-size:12.5px; color:var(--gray-500); }
+  @media (max-width:760px){ .chips{gap:8px} .stat{min-width:46%} }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">ICLR 2027 · Independent review of revised submission (main.pdf, this version only)</div>
+  <h1>Resources, Certificates, and Limits of LLM-Guided Artifact Search</h1>
+  <p class="lead">Read fresh, with no reference to earlier rounds. A theory paper unifying GEPA, ADAS/DGM, FunSearch, SkillOpt, Meta-Harness, autoresearch and kin as one formal loop, with per-resource theorems, one composed certificate (Theorem 6.1), and an unusual amount of falsifiability scaffolding.</p>
+
+  <div class="chips">
+    <div class="stat"><div class="n">8 / 10</div><div class="l">Rating — accept</div></div>
+    <div class="stat"><div class="n">4 / 4</div><div class="l">Soundness</div></div>
+    <div class="stat"><div class="n">3 / 4</div><div class="l">Presentation</div></div>
+    <div class="stat"><div class="n">3 / 4</div><div class="l">Contribution</div></div>
+    <div class="stat"><div class="n">4 / 5</div><div class="l">Confidence</div></div>
+  </div>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="summary" class="active">Summary &amp; scores</button>
+    <button data-tab="strengths">Strengths</button>
+    <button data-tab="weaknesses">Weaknesses</button>
+    <button data-tab="questions">Questions</button>
+    <button data-tab="extra">Extra feedback</button>
+    <button data-tab="chair">Chair note</button>
+  </nav>
+
+  <section class="tab active" id="tab-summary">
+    <h2>Summary</h2>
+    <p>The paper defines an artifact-search system (Def. 2.1): a frozen LLM as proposal kernel over a countable artifact space, a noisy evaluator, a feedback channel, a selection rule, and memory. It then proves that behavior is governed by five measurable resources, and — the central new result — that they compose: a gated loop soundly certifies an ε-good artifact in <code>O((σ²/Δ²)·ln(B/δ)·ln(1/δ)/(γ·q₀(G_ε)))</code> evaluator calls (Thm. 6.1), with the false-reject cost an explicit factor. Supporting results: hitting time = inverse prior mass with the trace boost γ certifiably estimable (Thm. 3.2, Prop. 3.5); an exponential scalar-vs-trace feedback separation (Thms. 4.1–4.2); a closed-form ratchet illusion with matching certification cost and a testing lower bound (Thm. 5.1, Prop. 5.2); a greedy/archive deception separation on a unique-optimum landscape (Thm. 5.4); an Occam bound giving a U-shaped risk in artifact length (Thm. 7.1); and Goodhart-transfer limits including an in-model editable-evaluator impossibility (Prop. 8.1). Simulations execute every arm; Appendix I pre-registers a γ-measurement protocol; Appendix M states five falsifiable scaling predictions.</p>
+
+    <h3>Score justification</h3>
+    <table>
+      <tr><th>Axis</th><th>Score</th><th>Why</th></tr>
+      <tr><td>Soundness</td><td><span class="badge ok">4 — excellent</span></td><td>I checked the proofs of Thm. 3.2, Prop. 3.5, Thm. 4.1–4.2, Thm. 5.1, Prop. 5.2, Thm. 5.4, Thm. 6.1, Thm. 7.1, Prop. 8.1; all correct with explicit constants. Matching lower bounds where they matter (Prop. 3.3, Thm. 4.1, Prop. 5.2(ii) via Bretagnolle–Huber). Conventions pinned (empty- vs. measured-incumbent; confirming query in Thm. 4.2(ii)). Prose numbers match the committed seeded code (3.39σ vs. 3.90σ bound; 8.30 vs. H₂₀₀₀=8.18; 2 false accepts vs. Poisson 1.61).</td></tr>
+      <tr><td>Presentation</td><td><span class="badge warn">3 — good</span></td><td>Exceptionally careful writing, but very dense: seven theorem families in nine pages. Figures 2b (inset) and 3 (legend) are hard to read at print size. The notation table and audit trail help substantially.</td></tr>
+      <tr><td>Contribution</td><td><span class="badge warn">3 — good</span></td><td>The unification, the composition theorem, and the estimability of γ are real contributions; the per-resource ingredients are translations of classical results, and no dial is measured on a live system in this version.</td></tr>
+      <tr><td>Rating</td><td><span class="badge ok">8 — accept, good paper</span></td><td>Timely, correct, unusually honest, and falsifiable. What separates it from a 9–10 is entirely empirical: the paper specifies its own decisive experiment (Appendix I, ~1 GPU-day by its own estimate) and does not run it.</td></tr>
+    </table>
+  </section>
+
+  <section class="tab" id="tab-strengths">
+    <h2>Strengths</h2>
+    <div class="card">
+      <h3>S1 — The model earns its generality</h3>
+      <p>Definition 2.1 is minimal yet the Table 1 / Appendix K mapping is genuinely informative: GEPA's Pareto sets, ADAS archives, and DGM lineages all land on Thm. 5.4(iii); SkillOpt's bounded edits land on Cor. 7.2; autoresearch's single-evaluation ratchet lands on Thm. 5.1. The field currently lacks shared vocabulary for these systems; this paper supplies one with content, not just nomenclature.</p>
+    </div>
+    <div class="card">
+      <h3>S2 — Falsifiability is built in, not claimed</h3>
+      <p>Proposition 3.5 converts the load-bearing Assumption 3.1 into an estimation problem with an a-priori sample-size certificate, and Appendix I specifies the experiment to the level of prompts, K=70, Wilson intervals, and the falsifying outcome (interval containing 1). Predictions P1–P5 each name the experiment that would kill them. This is rare and should be rewarded.</p>
+    </div>
+    <div class="card">
+      <h3>S3 — Theorem 6.1 requires the assembled object</h3>
+      <p>The composition is the right kind of novelty: delete the gate and soundness fails at rate ln t; delete the prior and liveness blows up. The false-reject factor (1−δ/B) is honest accounting rather than hidden in a constant, and the proof correctly handles the conditioning the gate introduces into the history (Remark E.1).</p>
+    </div>
+    <div class="card">
+      <h3>S4 — Two-sided rigor</h3>
+      <p>Upper bounds come with matching lower bounds: Prop. 3.3 against the hitting-time bound, Thm. 4.1 pricing the feedback alphabet, Prop. 5.2(ii) showing the gate cost is within a constant of optimal, the Gaussian lower bound in Thm. 5.1(i). The paper even prints a correction of its own earlier constant (ln(1/(4δ)) vs. a previously claimed ln(1/(2δ))).</p>
+    </div>
+    <div class="card">
+      <h3>S5 — Scholarly hygiene</h3>
+      <p>Informal sources (blog posts, repos) are marked † and used only as illustration; the selection results are grounded in the archival evaluation-statistics literature (Henderson 2018, Dodge 2019, Agarwal 2021) rather than on anecdote. The Appendix H audit note — the authors' own earlier draft fell for a one-seed illusion in a paper about one-evaluation illusions — is disarming and exactly the right way to handle it.</p>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-weaknesses">
+    <h2>Weaknesses</h2>
+    <div class="card">
+      <h3>W1 — The decisive experiment is specified but not run <span class="badge bad">main</span></h3>
+      <p>Everything adaptive in the paper routes through Assumption 3.1, and the paper's best feature is that it made the assumption measurable — yet this version measures nothing on a live proposer. By Appendix I's own costing the protocol is ~1.7×10⁴ generations, about one GPU-day. A theory paper does not need experiments to be accepted, but when a paper prices its own falsification test this cheaply, not running it is the gap between a good paper and a landmark one.</p>
+    </div>
+    <div class="card">
+      <h3>W2 — Ingredient-level novelty is thin by design</h3>
+      <p>Each section is a careful translation: Levin search (§3), Fano-type counting (§4), extreme-value theory plus record statistics (§5.1), birth–death chains and novelty search (§5.2), Occam/PAC-Bayes (§7), the optimizer's curse (§8). The paper is upfront about this and the assembly is the point, but reviewers who weight per-theorem novelty will score Contribution lower; the defense rests on Thm. 6.1, Prop. 3.5, and Prop. 8.1(iii) being new in substance, which I judge they are.</p>
+    </div>
+    <div class="card">
+      <h3>W3 — Theorem 6.1 leans on two strong hypotheses</h3>
+      <p>(∆,ε)-separation excludes near-ties at the good-set boundary (acknowledged as "honest", and Prop. 5.2(ii) shows some margin is necessary — but a margin-free variant certifying an (ε+∆)-good artifact seems available and would widen applicability). More seriously, Assumption 3.1 must hold almost surely over <em>all</em> histories including gate outcomes, with a single constant γ: late in a run, with a strong incumbent in context, a uniform γ is the assumption most likely to fail in practice, and the paper's P1 curvature diagnostic concedes as much.</p>
+    </div>
+    <div class="card">
+      <h3>W4 — Worst-case constructions carry interpretive weight by analogy</h3>
+      <p>The needle identification game (Thm. 4.2) and the chain landscape (Thm. 5.4) are stylized; the leap from "first-error feedback on bit-strings" to "stack traces" and from "the chain" to "GEPA's Pareto frontier" is plausible but qualitative. The abstract states "archives are exponentially faster than tolerant greedy search" without the "on an explicit landscape" qualifier the body correctly carries — this over-claims and should be hedged.</p>
+    </div>
+    <div class="card">
+      <h3>W5 — The system mapping is unvalidated</h3>
+      <p>Table 1's column assignments (which sel, which Y) come from reading the systems' papers, not from instrumenting them. The paper admits the mapping "remains qualitative"; fine, but then claims like "the most theory-compliant instance of the loop" (Appendix K, web-agent harness search) are predictions and should be more clearly flagged as such.</p>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-questions">
+    <h2>Questions for the authors</h2>
+    <table>
+      <tr><th>#</th><th>Question</th></tr>
+      <tr><td>Q1</td><td>Why was the Appendix I protocol not executed for this submission? Even a partial run (M=30 tasks) yields a Wilson interval for γ̂ and would transform W1. Is there an obstacle the costing omits (e.g., verifier flakiness inflating effective σ)?</td></tr>
+      <tr><td>Q2</td><td>In Thm. 6.1, is there a weakened version under γₜ decaying with incumbent quality (say γₜ ≥ γ·g(F(aₜ))), with a correspondingly degraded rate? Uniform γ over all gated histories is the hypothesis I find least plausible for real proposers.</td></tr>
+      <tr><td>Q3</td><td>Can separation be dropped at the price of the conclusion: without (∆,ε)-separation, does the same gate certify acceptance of an (ε+∆)-good artifact (margin folded into the tolerance)? If yes, state it; it materially widens the theorem's reach.</td></tr>
+      <tr><td>Q4</td><td>§3 says §4 "bounds the multiplier [γₜ] by the information in y", but Thm. 4.1 bounds identification rounds, not the boost. Is there a precise statement connecting log₂|Y| to an upper bound on achievable γ, or should this sentence be softened?</td></tr>
+      <tr><td>Q5</td><td>Thm. 7.1 requires a prefix-free code chosen before seeing data. P4 proposes "compressed length in bits" for deployed prompts — compressed by what (gzip, an LLM prior)? If the code adapts to the run, the Kraft union bound breaks. Please specify the intended code and its fixedness.</td></tr>
+      <tr><td>Q6</td><td>Fig. 2b reports 2 false accepts against a Poisson prediction of 1.61 — consistent, but from one seed family. Was the 400-run experiment repeated across seeds to check the gated rate distribution, or is the per-candidate rate p_N ≈ 2×10⁻⁶ verified only analytically?</td></tr>
+    </table>
+  </section>
+
+  <section class="tab" id="tab-extra">
+    <h2>Extra feedback (no score impact)</h2>
+    <table>
+      <tr><th>Where</th><th>Comment</th></tr>
+      <tr><td>Abstract</td><td>Hedge the archive claim ("on an explicit deceptive landscape, archives are exponentially faster…"). Also "3.4σ after 2,000 null edits" — consider stating it is a realized median from the paper's own simulation, as §5.1 does.</td></tr>
+      <tr><td>Fig. 2b</td><td>The log-scale inset is doing important work (it is the fix for the audited "zero" error) but is barely legible; consider making it a third panel.</td></tr>
+      <tr><td>Fig. 3</td><td>Three exact laws plus three marker sets in one small panel; the first-error average-case convention (L/2+1) vs. worst case (L+1) distinction deserves one sentence in the caption, not just §4 prose.</td></tr>
+      <tr><td>Thm. 5.4</td><td>The ε collision with the good-set tolerance is flagged in Table 2 — better to just rename the acceptance probability (ρ or β) and delete the footnote-style apology.</td></tr>
+      <tr><td>§6</td><td>"The proof is short because the parts were built to fit" — a nice sentence, but consider also stating plainly what fails if noise is correlated across evaluations (e.g., shared eval-set reuse), since that is the common deployed violation of the independence hypothesis.</td></tr>
+      <tr><td>App. I</td><td>Pre-commit the exact prompts and model identifier in the supplement now, not at camera-ready; "pre-registered" should mean artifacts exist.</td></tr>
+      <tr><td>App. K</td><td>Voyager's sel is listed as "additive library" in Table 1 — an additive-only archive never prunes, which interacts with Cor. 7.2's bloat branch; one sentence noting this tension would sharpen the mapping.</td></tr>
+      <tr><td>Refs</td><td>Zhou et al. 2024 (WebArena) is cited in App. I/K but not in the main text where web-agent evaluation is implied; fine, but double-check all † markings survived into Table 1 (autoresearch and Heuristic Learning carry them; Weng 2026 is also cited in §3/§7 prose without the marker).</td></tr>
+    </table>
+  </section>
+
+  <section class="tab" id="tab-chair">
+    <h2>Chair note (meta-perspective)</h2>
+    <div class="card">
+      <p><strong>Likely reviewer spread: 6–8.</strong> The axis of disagreement will be W1/W2: reviewers who value unification, exactness, and falsifiability infrastructure will land at 8; reviewers who require either per-theorem novelty or live measurements will land at 6. Soundness objections are unlikely to stick — the proofs are clean and the paper self-audits.</p>
+      <p><strong>Recommendation: Accept (poster), with a concrete path to spotlight.</strong> If the authors execute even a reduced Appendix I run during the discussion period and report a γ̂ interval — in either direction — the paper becomes self-validating in a way almost nothing in this literature is, and I would champion it for a spotlight. The falsifying outcome (interval containing 1) would itself be a publishable finding under the paper's own framing.</p>
+      <p><strong>One caution for the discussion:</strong> the authors should resist the temptation to add more theorem families in rebuttal. The paper's risk is density, not thinness; the marginal page is better spent on one measured number than on an eighth result.</p>
+    </div>
+    <div class="quote">
+      <div class="q">Not to introduce a new algorithm, but to make precise what a fast-moving empirical literature is doing, so that its successes and failures become predictions rather than surprises.</div>
+      <div class="s">§1 — the paper's own standard; this version meets the "precise" half and defers the "predictions tested" half.</div>
+    </div>
+  </section>
+
+  <footer>Independent review generated 2026-06-12 · Source: iclr-2027/main.pdf (22 pp., compiled 2026-06-12) · Scores use the ICLR scale (rating 1–10; soundness/presentation/contribution 1–4; confidence 1–5).</footer>
+</div>
+<script>
+  const tabs=document.querySelectorAll('nav.tabs button');
+  function show(id){
+    tabs.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+    document.querySelectorAll('section.tab').forEach(s=>s.classList.toggle('active',s.id==='tab-'+id));
+    history.replaceState(null,'','#'+id);
+  }
+  tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+  if(location.hash) show(location.hash.slice(1));
+</script>
+</body>
+</html>

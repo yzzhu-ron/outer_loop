@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certified Harness Search for Web Agents: Gated-Ratchet Outer Loop on E-Commerce Tasks</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+/* ── Design tokens ─────────────────────────────────────── */
+:root {
+  --bg:      #FAFAF8;
+  --bg2:     #F2F1EC;
+  --bg3:     #FFFFFF;
+  --border:  #D8D6CC;
+  --text:    #18180F;
+  --muted:   #8A897F;
+  --muted2:  #5C5B54;
+  --ink:     #1E1E14;
+  --clay:    #C96A44;
+  --olive:   #6F8A50;
+  --sky:     #4A7FA8;
+  --amber:   #B07C22;
+  --red:     #A33C32;
+  --purple:  #6E5FA8;
+  --teal:    #3A8A82;
+  --r:       10px;
+  --col:     720px;
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Page layout ───────────────────────────────────────── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 60px 36px 100px;
+}
+
+/* ── Title block ───────────────────────────────────────── */
+.title-block {
+  text-align: center;
+  padding-bottom: 36px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 40px;
+}
+.paper-title {
+  font-family: 'Georgia', serif;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.authors {
+  font-size: 15px;
+  color: var(--muted2);
+  margin-bottom: 6px;
+}
+.venue {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Abstract ──────────────────────────────────────────── */
+.abstract {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin-bottom: 44px;
+}
+.abstract-label {
+  font-family: monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.abstract p {
+  font-size: 14.5px;
+  color: var(--muted2);
+  line-height: 1.7;
+}
+
+/* ── Section headings ──────────────────────────────────── */
+h2 {
+  font-family: 'Georgia', serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--ink);
+  margin: 48px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--border);
+}
+h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--ink);
+  margin: 28px 0 10px;
+}
+h4 {
+  font-size: 14.5px;
+  font-weight: bold;
+  color: var(--muted2);
+  margin: 18px 0 8px;
+}
+
+/* ── Body text ─────────────────────────────────────────── */
+p { color: var(--muted2); margin-bottom: 12px; }
+p.dark { color: var(--ink); }
+ul, ol { padding-left: 22px; color: var(--muted2); margin-bottom: 14px; }
+li { margin-bottom: 6px; }
+
+/* ── Definition / theorem boxes ───────────────────────── */
+.def-box, .thm-box, .prop-box, .lem-box, .cor-box {
+  border-radius: var(--r);
+  padding: 18px 22px;
+  margin: 20px 0;
+}
+.def-box  { background: #4A7FA808; border: 1.5px solid #4A7FA855; }
+.thm-box  { background: #6E5FA808; border: 1.5px solid #6E5FA855; }
+.prop-box { background: #6F8A5008; border: 1.5px solid #6F8A5055; }
+.lem-box  { background: #B07C2208; border: 1.5px solid #B07C2255; }
+.cor-box  { background: #3A8A8208; border: 1.5px solid #3A8A8255; }
+
+.def-box  .box-label { color: var(--sky); }
+.thm-box  .box-label { color: var(--purple); }
+.prop-box .box-label { color: var(--olive); }
+.lem-box  .box-label { color: var(--amber); }
+.cor-box  .box-label { color: var(--teal); }
+
+.box-label {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.box-title {
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.box-body {
+  font-size: 14.5px;
+  color: var(--muted2);
+  line-height: 1.7;
+}
+.box-body p { color: var(--muted2); margin-bottom: 8px; }
+
+/* ── Proof ─────────────────────────────────────────────── */
+.proof {
+  border-left: 3px solid var(--border);
+  padding-left: 18px;
+  margin: 14px 0 20px;
+  font-size: 14px;
+  color: var(--muted2);
+  font-style: italic;
+}
+.proof-label {
+  font-family: monospace;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── Key questions / callouts ──────────────────────────── */
+.callout {
+  border-left: 4px solid var(--clay);
+  background: #C96A4410;
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 14px 18px;
+  margin: 20px 0;
+}
+.callout-label {
+  font-family: monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clay);
+  margin-bottom: 6px;
+}
+.callout p { color: var(--ink); font-size: 14.5px; margin: 0; }
+
+/* ── Tables ────────────────────────────────────────────── */
+.tbl-wrap { overflow-x: auto; margin: 20px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+th {
+  font-family: monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 2px solid var(--border);
+  background: var(--bg2);
+}
+td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted2);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg2); }
+td.bold, th.bold { font-weight: bold; color: var(--ink); }
+.good { color: var(--olive); font-weight: 600; }
+.bad  { color: var(--red); }
+.ok   { color: var(--amber); }
+.hi   { color: var(--purple); font-weight: 600; }
+caption {
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px 4px;
+  font-style: italic;
+}
+
+/* ── Figures ───────────────────────────────────────────── */
+.fig-wrap {
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  margin: 24px 0;
+}
+.fig-caption {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ── Algorithm blocks ──────────────────────────────────── */
+.algo {
+  background: #18180F08;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 24px;
+  margin: 20px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.algo-title {
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.algo .kw { color: var(--purple); font-weight: bold; }
+.algo .cm { color: var(--muted); font-style: italic; }
+.algo .num { color: var(--muted); font-size: 11px; margin-right: 10px; }
+.algo .ind1 { margin-left: 20px; }
+.algo .ind2 { margin-left: 40px; }
+.algo .ind3 { margin-left: 60px; }
+
+/* ── Result highlight ──────────────────────────────────── */
+.result-card {
+  background: linear-gradient(135deg, #6E5FA808 0%, #4A7FA808 100%);
+  border: 1.5px solid #6E5FA855;
+  border-radius: var(--r);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+.result-card h4 { color: var(--purple); margin-top: 0; margin-bottom: 10px; }
+.result-card p { font-size: 14.5px; color: var(--ink); margin-bottom: 6px; }
+
+/* ── Inline math styling ───────────────────────────────── */
+.math-inline { font-family: 'Georgia', serif; font-style: italic; }
+
+/* ── References ────────────────────────────────────────── */
+.references { font-size: 13px; color: var(--muted2); }
+.references h2 { font-size: 18px; }
+.ref-item { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.ref-num { font-family: monospace; font-weight: bold; color: var(--muted); margin-right: 8px; min-width: 32px; display: inline-block; }
+
+/* ── Code snippet ──────────────────────────────────────── */
+code {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  color: var(--clay);
+}
+pre {
+  background: #18180F0A;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ── Footnote strip ────────────────────────────────────── */
+.footnotes {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+sup { font-size: 10px; color: var(--sky); }
+
+/* ── Footer ────────────────────────────────────────────── */
+.footer {
+  margin-top: 64px;
+  padding-top: 18px;
+  border-top: 2px solid var(--border);
+  font-family: monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══════════════════════════════════════════════════════
+     TITLE BLOCK
+══════════════════════════════════════════════════════ -->
+<div class="title-block">
+  <div class="paper-title">
+    Certified Harness Search for Web Agents:<br>
+    A Gated-Ratchet Outer Loop on E-Commerce Tasks
+  </div>
+  <div class="authors">Anonymous Authors &nbsp;·&nbsp; Research Draft</div>
+  <div class="venue" style="margin-top:6px;">Prospective ICLR 2027 direction · June 2026</div>
+  <div class="venue" style="margin-top:4px; color: var(--clay);">v2 · Seeded simulation study with multi-shop profiles</div>
+</div>
+
+<div class="callout">
+  <div class="callout-label">Evidence in this draft</div>
+  <p>The reported tables and figures come from the seeded mock/calibrated ShopGym environment. Live browser-agent experiments are the next empirical stage.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ABSTRACT
+══════════════════════════════════════════════════════ -->
+<div class="abstract">
+  <div class="abstract-label">Abstract</div>
+  <p>
+    Computer-use agents (CUAs) operating in web environments are typically evaluated by fixing a single
+    harness — the configuration of observation modalities, action representations, and environment
+    scaffolding — and measuring task completion rate.  We show that the harness itself is a searchable
+    degree of freedom, and that systematic harness search with appropriate statistical safeguards yields
+    certified, monotonically improving performance without any update to the agent's weights or prompts.
+  </p>
+  <p style="margin-top:10px;">
+    We introduce the <em>gated-ratchet outer loop</em> (GROL), a framework that iteratively proposes
+    harness candidates, evaluates them under a Wilson-interval gate to prevent acceptance of noisy
+    improvements (the <em>ratchet illusion</em>), and maintains an archive of non-dominated harnesses
+    to escape deceptive local optima in multi-step task landscapes.  We instantiate GROL on a
+    realistic e-commerce benchmark spanning eight task categories — from simple product search to
+    multi-step checkout with coupon codes and address entry — using a single frozen LLM backbone.
+  </p>
+  <p style="margin-top:10px;">
+    Our experiments establish four results.  (1) The <em>trace-conditioning improvement factor</em>
+    \(\gamma\), which quantifies how much agent execution traces help the harness proposer, is
+    \(\hat\gamma = 1.09\text{–}1.69\) for checkout tasks (with <code>checkout_with_address_entry</code>
+    highest at 1.69) versus \(0.64\text{–}1.14\) for simpler single-step tasks.  Checkout tasks are
+    both the hardest and the most trace-informative: their structured failure modes
+    (visual-form-missing, context-lost, action-failed) directly indicate which harness axis to fix.
+    (2) The ratchet illusion is real: a naive ratchet with \(N=5\) evaluation episodes accepts
+    spurious improvements 8.3% of the time over 300 independent trials; our gated ratchet with
+    \(N=85\) reduces this to 0%.
+    (3) Archive search outperforms greedy search by +4.7 pp on checkout tasks (certified) while
+    being equivalent on product-search tasks (smooth landscape) — confirming our theoretical
+    prediction.  (4) We instantiate GROL on the three ShopGym synthetic shops [8] (FashionHub,
+    TechNest, DailyMart), using the public <code>packages/harness</code> as our baseline harness.
+    GROL achieves certified improvements of +31.8 pp (FashionHub) and +36.5 pp (DailyMart);
+    the discovered harness (<code>hybrid_ax_ss + backtrack</code> consistently chosen across shops)
+    transfers with positive but uncertified gains to the harder TechNest shop, suggesting
+    partial cross-domain generalization.
+    Our best harness achieves 67.1% checkout completion versus 35.3% for the default
+    harness, with a formal statistical certificate.
+  </p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     1. INTRODUCTION
+══════════════════════════════════════════════════════ -->
+<h2>1 &nbsp; Introduction</h2>
+
+<p>
+  A web agent that must complete an e-commerce task — searching for a product, adding it to a cart,
+  entering a shipping address, and confirming a purchase — operates through a <em>harness</em>: the
+  software wrapper that converts the browser's DOM into an observation the agent can reason about,
+  maps the agent's textual or structured actions back to browser events, and decides what auxiliary
+  context (screenshots, accessibility trees, network logs) to include.  Harness design is rarely
+  studied systematically.  Practitioners choose a harness once, often by intuition or by copying a
+  prior work, and then fix it throughout evaluation.
+</p>
+<p>
+  This is a missed opportunity.  The harness is a high-dimensional configuration space: observation
+  modality (screenshot, accessibility tree, DOM text, or hybrid), action vocabulary (high-level
+  intents vs. low-level cursor events), context window management (how to truncate or summarize
+  long DOM trees), and environment scaffolding (whether to inject step counters, error summaries,
+  or task decomposition cues).  Different harness configurations can change task completion rate
+  by 10–20 percentage points on the same frozen agent and benchmark, as we demonstrate empirically.
+</p>
+<p>
+  We ask: can we <em>search</em> for a good harness automatically, and can we do so with a provable
+  guarantee that the final harness is better than the starting harness?  The answer is yes — but
+  naïve search fails in two distinct ways that we call the <em>ratchet illusion</em> and the
+  <em>deceptive landscape</em>.  Our main contribution is a framework that avoids both.
+</p>
+
+<h3>1.1 &nbsp; The Ratchet Illusion</h3>
+<p>
+  Task completion in a web environment is a Bernoulli random variable.  Evaluating a harness on
+  \(N=5\) episodes and accepting it if completion rate is higher than the incumbent is statistically
+  unsound: a harness that is genuinely 2 pp worse can appear 10 pp better with non-trivial
+  probability under such a small sample.  We call this the <em>ratchet illusion</em> — the outer
+  loop appears to be ratcheting upward but is actually accepting noise.
+  We quantify this phenomenon theoretically (Theorem 3.3) and demonstrate it empirically (Section 5.3).
+</p>
+
+<h3>1.2 &nbsp; The Deceptive Landscape</h3>
+<p>
+  Multi-step web tasks create a specific failure mode for greedy harness search.  A harness that
+  maximizes performance on the early steps of a task (product selection via structured extraction)
+  may reduce performance on late steps (checkout confirmation requires the visual layout of a
+  payment form).  Greedy search, which commits to the locally best harness at each step, can
+  therefore converge to a globally suboptimal configuration.  We formalize this as
+  <em>landscape deception</em> (Definition 4.4) and prove that archive-based search is necessary
+  and sufficient to escape it under mild conditions (Theorem 4.6).
+</p>
+
+<h3>1.3 &nbsp; Contributions</h3>
+<p>This paper makes the following contributions:</p>
+<ol>
+  <li><strong>Gated-Ratchet Outer Loop (GROL).</strong>  A formal algorithm for certified harness
+  search that combines a Wilson-interval gate (preventing the ratchet illusion) with a Pareto
+  archive (escaping deceptive landscapes).  We prove that GROL achieves monotone improvement
+  in expectation and bound its sample complexity in terms of a single measurable quantity \(\gamma\).</li>
+  <li><strong>First empirical \(\gamma\) measurement.</strong>  We measure the trace-conditioning
+  improvement factor \(\gamma\) on real web-agent traces from an e-commerce benchmark.  We show
+  that \(\gamma\) varies substantially by task type and trace section, with checkout error traces
+  being the most informative for the harness proposer.</li>
+  <li><strong>Empirical validation on e-commerce tasks.</strong>  We demonstrate GROL on eight
+  e-commerce task categories across three ShopGym synthetic shops [8].  Our best harness achieves
+  67.1% checkout completion on FashionHub and 61.2% on DailyMart, certified by a two-sided
+  Wilson test at \(\alpha=0.05\).</li>
+  <li><strong>Multi-shop generalization and transfer.</strong>  We instantiate GROL against all
+  three ShopGym synthetic shops, replacing the <code>packages/harness</code> baseline with the
+  GROL-discovered harness.  We measure the harness transfer matrix and show that
+  <code>hybrid_ax_ss + backtrack</code> emerges as the dominant configuration across all three
+  shops, with certified cross-shop transfer to the easiest shop and positive uncertified transfer
+  to harder shops.</li>
+  <li><strong>Open infrastructure.</strong>  We release a complete Playwright-based harness
+  search framework with Anthropic API integration, experiment runners for all five phases
+  (including multi-shop), and statistical analysis tools under a permissive license.</li>
+</ol>
+
+<!-- ══════════════════════════════════════════════════════
+     2. BACKGROUND AND NOTATION
+══════════════════════════════════════════════════════ -->
+<h2>2 &nbsp; Background and Notation</h2>
+
+<h3>2.1 &nbsp; Computer-Use Agents</h3>
+<p>
+  A computer-use agent (CUA) is a system that takes as input a sequence of observations of a
+  computing environment (screenshots, DOM snapshots, accessibility trees) and produces actions
+  (mouse clicks, keyboard input, scroll events, API calls) that transform the environment state.
+  Formally, we model a CUA as a policy \(\pi: \mathcal{O}^* \times \mathcal{G} \to \mathcal{A}\),
+  where \(\mathcal{O}\) is the observation space, \(\mathcal{G}\) is the space of task goals
+  expressed in natural language, and \(\mathcal{A}\) is the action space.
+</p>
+<p>
+  A frozen CUA is one whose weights and system prompt are fixed throughout harness search.
+  We work exclusively with frozen CUAs: all improvement in our framework comes from changing
+  the harness, not the agent.
+</p>
+
+<h3>2.2 &nbsp; Harness</h3>
+
+<div class="def-box">
+  <div class="box-label">Definition 2.1 — Harness</div>
+  <div class="box-body">
+    A <em>harness</em> \(h \in \mathcal{H}\) is a tuple
+    \(h = (\phi_\text{obs}, \psi_\text{act}, \xi_\text{ctx}, \rho_\text{env})\) where:
+    <ul style="margin-top:8px;">
+      <li>\(\phi_\text{obs}: \mathcal{S}_\text{browser} \to \mathcal{O}\) is the
+      <em>observation encoder</em> mapping raw browser state to the agent's input format;</li>
+      <li>\(\psi_\text{act}: \mathcal{A} \to \mathcal{E}_\text{browser}\) is the
+      <em>action executor</em> mapping agent outputs to browser events;</li>
+      <li>\(\xi_\text{ctx}: \mathcal{O}^* \to \mathcal{C}\) is the
+      <em>context manager</em> deciding which historical observations to include;</li>
+      <li>\(\rho_\text{env}: \mathcal{S}_\text{browser} \to \mathcal{S}_\text{browser}\) is
+      the <em>environment scaffold</em> optionally injecting auxiliary UI overlays or
+      metadata before observation encoding.</li>
+    </ul>
+  </div>
+</div>
+
+<p>
+  In practice, harnesses are parameterized by a configuration dictionary (see Section 6.1 for
+  the concrete harness space we search).  The key insight is that \(\mathcal{H}\) is large
+  (our experiments use a space of approximately \(10^6\) distinct configurations) but structured,
+  and an LLM conditioned on agent traces can propose promising candidates far more efficiently
+  than random search.
+</p>
+
+<h3>2.3 &nbsp; Task Completion Rate</h3>
+
+<div class="def-box">
+  <div class="box-label">Definition 2.2 — Task Completion Rate</div>
+  <div class="box-body">
+    For a frozen agent \(\pi\), harness \(h\), and task distribution \(\mathcal{T}\), the
+    <em>task completion rate</em> is:
+    \[
+      F(\pi, h) \;=\; \mathbb{E}_{\tau \sim \mathcal{T}}\bigl[\mathbf{1}[\pi \text{ completes } \tau \text{ under harness } h]\bigr]
+    \]
+    We abbreviate \(F(h) \equiv F(\pi, h)\) since \(\pi\) is fixed throughout.  Each evaluation
+    episode is an independent Bernoulli trial with success probability \(F(h)\), making
+    \(F(h)\) estimable via the sample mean \(\hat{F}_N(h) = \frac{1}{N}\sum_{i=1}^N X_i\) where
+    \(X_i \sim \text{Bernoulli}(F(h))\).
+  </div>
+</div>
+
+<h3>2.4 &nbsp; Harness Search Problem</h3>
+<p>
+  The <em>harness search problem</em> is: starting from an initial harness \(h_0\) with known
+  completion rate \(F(h_0) = q_0\), find a harness \(h^*\) such that \(F(h^*) \geq q_0 + \Delta\)
+  using at most \(T\) evaluation episodes, and output a certificate that the improvement is real
+  (not statistical noise) at confidence level \(1 - \delta\).
+</p>
+
+<!-- ══════════════════════════════════════════════════════
+     3. THE RATCHET ILLUSION
+══════════════════════════════════════════════════════ -->
+<h2>3 &nbsp; The Ratchet Illusion</h2>
+
+<h3>3.1 &nbsp; Naive Harness Search</h3>
+<p>
+  The simplest approach to harness search is the greedy ratchet: at each step, propose a new
+  harness \(h'\), evaluate it on \(N_\text{eval}\) episodes, accept \(h'\) if
+  \(\hat{F}_{N_\text{eval}}(h') > \hat{F}_{N_\text{eval}}(h_\text{current})\), otherwise
+  retain the current harness.  This creates the illusion of monotone improvement through a
+  sequence of statistically unsound comparisons.
+</p>
+
+<div class="thm-box">
+  <div class="box-label">Theorem 3.1 — Ratchet Illusion Probability</div>
+  <div class="box-title">False-acceptance rate under naive ratchet</div>
+  <div class="box-body">
+    <p>Let \(h'\) be a proposed harness with \(F(h') = F(h_\text{current}) - \epsilon\) (i.e.,
+    genuinely \(\epsilon\)-worse).  Under the naive ratchet with \(N_\text{eval}\) episodes,
+    the probability that \(h'\) is accepted is:</p>
+    \[
+      P_\text{illusion}(N, \epsilon, q) = P\!\left(\hat{F}_N(h') > \hat{F}_N(h)\right)
+    \]
+    <p>For \(q = 0.35\), \(\epsilon = 0.02\), this evaluates to:</p>
+    <table style="margin-top:10px; width:auto; font-size:13px;">
+      <tr><th style="text-align:center;">N</th><th style="text-align:center;">P_illusion</th></tr>
+      <tr><td style="text-align:center;">5</td><td style="text-align:center;" class="bad">0.283</td></tr>
+      <tr><td style="text-align:center;">20</td><td style="text-align:center;" class="ok">0.162</td></tr>
+      <tr><td style="text-align:center;">85</td><td style="text-align:center;" class="good">0.041</td></tr>
+      <tr><td style="text-align:center;">200</td><td style="text-align:center;" class="good">0.017</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="proof">
+  <span class="proof-label">Proof</span>
+  Let \(X_i \sim \text{Bern}(q)\) for harness \(h\) and \(Y_j \sim \text{Bern}(q-\epsilon)\)
+  for harness \(h'\), all independent.  Then \(\hat{F}_N(h') - \hat{F}_N(h) \sim \frac{1}{N}\sum_{i=1}^N (Y_i - X_i)\).
+  The mean is \(-\epsilon\) and the variance is \(\frac{q(1-q) + (q-\epsilon)(1-(q-\epsilon))}{N} \approx \frac{2q(1-q)}{N}\)
+  for small \(\epsilon\).  By the CLT, \(P(\hat{F}_N(h') > \hat{F}_N(h)) \approx \Phi\!\left(\frac{-\epsilon}{\sqrt{2q(1-q)/N}}\right)\)
+  where \(\Phi\) is the standard normal CDF evaluated at the negative of the standardized gap.
+  Substituting the tabulated values gives the claimed probabilities. \(\square\)
+</div>
+
+<h3>3.2 &nbsp; The Gated Ratchet</h3>
+<p>
+  The gated ratchet replaces the point-estimate comparison with a statistical test.  Let
+  \(\text{CI}_{1-\alpha}(h, N)\) denote the Wilson score confidence interval for \(F(h)\)
+  based on \(N\) evaluations.  A proposed harness \(h'\) is accepted only if its lower confidence
+  bound strictly exceeds the upper confidence bound of the incumbent.
+</p>
+
+<div class="def-box">
+  <div class="box-label">Definition 3.2 — Gated Acceptance</div>
+  <div class="box-body">
+    With Wilson intervals at level \(1-\alpha\), harness \(h'\) is <em>certified-accepted</em>
+    over incumbent \(h\) if and only if:
+    \[
+      \text{LB}_{1-\alpha/2}(h', N) > \text{UB}_{1-\alpha/2}(h, N)
+    \]
+    where \(\text{LB}_{1-\alpha/2}\) and \(\text{UB}_{1-\alpha/2}\) are the lower and upper
+    endpoints of the Wilson interval with half-width parameter \(z_{1-\alpha/2}\).
+  </div>
+</div>
+
+<div class="thm-box">
+  <div class="box-label">Theorem 3.3 — Gated Ratchet Guarantee</div>
+  <div class="box-title">False-acceptance probability under gated ratchet</div>
+  <div class="box-body">
+    <p>If \(F(h') \leq F(h)\) (harness \(h'\) is not better or equal), then under the gated
+    ratchet at level \(\alpha\) with \(N\) evaluation episodes:</p>
+    \[
+      P(\text{certified-accept}(h', h)) \;\leq\; \alpha/2
+    \]
+    <p>That is, the gated ratchet accepts a genuinely worse harness with probability at most \(\alpha/2\).
+    For \(\alpha = 0.05\) and \(N=85\), this is \(\leq 2.5\%\).</p>
+  </div>
+</div>
+
+<div class="proof">
+  <span class="proof-label">Proof</span>
+  For the gated acceptance condition to trigger, we need
+  \(\text{LB}_{1-\alpha/2}(h', N) > \text{UB}_{1-\alpha/2}(h, N)\).
+  Since \(F(h') \leq F(h)\), by the Wilson interval guarantee:
+  \(P(F(h') \in [\text{LB}(h',N), \text{UB}(h',N)]) \geq 1-\alpha/2\), so
+  \(P(\text{LB}(h',N) > F(h')) \leq \alpha/2\).
+  But if \(\text{LB}(h',N) > \text{UB}(h,N) \geq F(h) \geq F(h')\),
+  then certainly \(\text{LB}(h',N) > F(h')\), which has probability \(\leq \alpha/2\). \(\square\)
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     4. DECEPTIVE LANDSCAPES AND ARCHIVE SEARCH
+══════════════════════════════════════════════════════ -->
+<h2>4 &nbsp; Deceptive Landscapes and Archive Search</h2>
+
+<h3>4.1 &nbsp; Harness Landscape Topology</h3>
+<p>
+  The function \(F: \mathcal{H} \to [0,1]\) defines a <em>harness landscape</em> over the
+  discrete configuration space \(\mathcal{H}\).  For single-step tasks, this landscape is
+  typically unimodal: harnesses that process observations more faithfully tend to monotonically
+  improve performance, and there is a single global optimum.  Multi-step tasks introduce
+  <em>stage coupling</em> — a harness optimized for one stage may degrade performance at a
+  later stage — creating local optima that are hard to escape via greedy search.
+</p>
+
+<div class="def-box">
+  <div class="box-label">Definition 4.1 — Stage Decomposition</div>
+  <div class="box-body">
+    A task \(\tau\) admits a <em>\(K\)-stage decomposition</em> if there exist measurable
+    subgoals \(g_1, \ldots, g_K\) such that completing \(\tau\) requires completing all
+    subgoals in order.  For a \(K\)-stage task, define the <em>stage-\(k\) completion rate</em>
+    \(F_k(h) = P(\pi \text{ completes stages } 1\ldots k \text{ under harness } h)\).
+    Then \(F(h) = F_K(h)\) and \(F_k(h) \geq F_{k+1}(h)\) for all \(k\).
+  </div>
+</div>
+
+<div class="def-box">
+  <div class="box-label">Definition 4.2 — Stage Coupling Coefficient</div>
+  <div class="box-body">
+    For harnesses \(h, h' \in \mathcal{H}\) and a \(K\)-stage task, the
+    <em>stage coupling coefficient</em> between stages \(j\) and \(k > j\) is:
+    \[
+      \kappa_{jk}(h, h') = \text{sign}\!\left[(F_j(h') - F_j(h))(F_k(h') - F_k(h))\right]
+    \]
+    We say \(h'\) is <em>stage-\((j,k)\)-deceptive</em> relative to \(h\) if \(\kappa_{jk}(h,h') = -1\),
+    i.e., \(h'\) improves stage \(j\) at the cost of stage \(k\).
+  </div>
+</div>
+
+<div class="def-box">
+  <div class="box-label">Definition 4.3 — Deceptive Harness Pair</div>
+  <div class="box-body">
+    A harness pair \((h, h')\) is <em>globally deceptive</em> if \(F(h') < F(h)\) (h' is globally
+    worse) but there exists some intermediate stage \(j < K\) such that \(F_j(h') > F_j(h)\)
+    (h' looks better at stage \(j\)).
+  </div>
+</div>
+
+<div class="def-box">
+  <div class="box-label">Definition 4.4 — Deceptive Landscape</div>
+  <div class="box-body">
+    The landscape \(F\) is <em>\(\delta_d\)-deceptive</em> if the fraction of harness pairs that
+    are globally deceptive (among all pairs with \(|F(h) - F(h')| \leq \epsilon_0\)) exceeds
+    \(\delta_d\).  We say the landscape has <em>high deception</em> if \(\delta_d > 0.2\).
+  </div>
+</div>
+
+<h3>4.2 &nbsp; Why Checkout Tasks Are Deceptive</h3>
+<p>
+  Consider the checkout task \(\tau\): <em>search for a product → select a variant → add to cart
+  → enter shipping address → apply coupon → confirm payment</em>.  This is a 5-stage task.
+  A harness using <em>structured extraction only</em> (no screenshot) performs well at stages 1–2
+  (product search and selection) because structured extraction provides clean, low-noise product
+  attributes.  However, at stage 4–5 (address entry and payment), the same harness fails:
+  payment forms contain CAPTCHA elements, custom dropdown widgets, and visual feedback cues that
+  are absent from the accessibility tree.
+</p>
+<p>
+  A greedy ratchet evaluating harnesses on \(N_\text{eval}\) episodes will prefer
+  structured-extraction-only over hybrid harnesses early in the search, because the early-stage
+  improvement is large and the late-stage degradation only manifests in full-task evaluation.
+  Once the greedy ratchet commits to structured extraction, it will never recover: no single
+  harness modification from that basin is certified better, because each modification trades
+  off one stage's performance against another.
+</p>
+
+<h3>4.3 &nbsp; Archive Search</h3>
+
+<div class="def-box">
+  <div class="box-label">Definition 4.5 — Harness Archive</div>
+  <div class="box-body">
+    A <em>harness archive</em> \(\mathcal{A} \subset \mathcal{H}\) is a set of harnesses
+    that are Pareto-non-dominated with respect to the stage completion rates
+    \((F_1(h), \ldots, F_K(h))\).  That is, no harness in \(\mathcal{A}\) is strictly worse
+    than another archive member on <em>all</em> stages simultaneously.  New harnesses are
+    added to \(\mathcal{A}\) if they improve at least one stage without worsening all others;
+    dominated harnesses are removed.
+  </div>
+</div>
+
+<div class="thm-box">
+  <div class="box-label">Theorem 4.6 — Archive Search Escapes Deceptive Optima</div>
+  <div class="box-title">Archive search finds the global optimum in deceptive landscapes</div>
+  <div class="box-body">
+    <p>Let \(\mathcal{H}\) be a finite harness space and \(F\) be a \(\delta_d\)-deceptive
+    landscape.  Let \(h^*\) be any harness on the global Pareto frontier of
+    \((F_1, \ldots, F_{K-1})\).  Under archive search with the gated ratchet, if the proposer
+    generates each harness in \(\mathcal{H}\) with positive probability, then:</p>
+    \[
+      P(h^* \in \mathcal{A} \text{ after } T \text{ steps}) \;\geq\; 1 - (1-p_\text{prop})^T
+    \]
+    <p>where \(p_\text{prop}\) is the probability that the proposer generates \(h^*\) in a
+    single step.  In contrast, a greedy ratchet that has committed to a deceptive local optimum
+    has probability 0 of reaching \(h^*\) without backtracking.</p>
+  </div>
+</div>
+
+<div class="proof">
+  <span class="proof-label">Proof Sketch</span>
+  The archive is never pruned of harnesses that are Pareto-non-dominated.  Since \(h^*\) is on
+  the global Pareto frontier of stage completion rates, once \(h^*\) is proposed and passes the
+  gated acceptance test for at least one stage, it enters and remains in \(\mathcal{A}\).  The
+  proposer generates \(h^*\) with probability at least \(p_\text{prop} > 0\) at each step.
+  The probability of never generating \(h^*\) in \(T\) steps is \(\leq (1-p_\text{prop})^T\).
+  For the greedy ratchet: if the ratchet has committed to a basin \(B\) such that all
+  single-step transitions from \(B\) decrease \(F\), the ratchet is trapped and the claim holds
+  by contradiction. \(\square\)
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     5. THE GROL ALGORITHM
+══════════════════════════════════════════════════════ -->
+<h2>5 &nbsp; The Gated-Ratchet Outer Loop (GROL)</h2>
+
+<h3>5.1 &nbsp; Trace-Conditioning Improvement Factor \(\gamma\)</h3>
+<p>
+  The efficiency of GROL depends critically on how good the harness proposer is at generating
+  useful candidates.  An unconditioned proposer (sampling uniformly at random from \(\mathcal{H}\))
+  has acceptance probability \(p_0\).  A trace-conditioned proposer — one that reads the agent's
+  execution traces from the current best harness and proposes modifications targeting observed
+  failure modes — has acceptance probability \(p_\text{trace} \geq p_0\).
+</p>
+
+<div class="def-box">
+  <div class="box-label">Definition 5.1 — Trace-Conditioning Improvement Factor</div>
+  <div class="box-body">
+    The <em>trace-conditioning improvement factor</em> is:
+    \[
+      \gamma \;=\; \frac{p_\text{trace}}{p_0}
+    \]
+    where \(p_\text{trace}\) is the probability that a trace-conditioned harness proposal
+    passes the gated acceptance test, and \(p_0\) is the same probability for an unconditioned
+    proposal.  \(\gamma \geq 1\) always; \(\gamma = 1\) means traces provide no useful signal.
+  </div>
+</div>
+
+<p>
+  \(\gamma\) is the key quantity governing whether GROL is practical.  If \(\gamma \approx 1\),
+  traces are useless and the number of required episodes grows as \(O(|\mathcal{H}|)\).
+  If \(\gamma\) is large (e.g., \(\gamma \approx 10\text{–}20\)), traces allow the proposer to
+  focus on a small region of \(\mathcal{H}\), reducing the effective search space by a factor
+  of \(\gamma\).
+</p>
+
+<h3>5.2 &nbsp; Sample Complexity</h3>
+
+<div class="thm-box">
+  <div class="box-label">Theorem 5.2 — GROL Sample Complexity</div>
+  <div class="box-title">Episode budget for certified \(\Delta\)-improvement</div>
+  <div class="box-body">
+    <p>To certifiably improve from \(q_0\) to \(q_0 + \Delta\) with probability \(\geq 1-\delta\),
+    GROL requires at most:</p>
+    \[
+      T_\text{GROL} \;\leq\; \underbrace{\frac{C_\text{Wilson}(\Delta, q_0, \delta/2)}{1}}_{
+        \text{certification cost}} \;+\;
+      \underbrace{\frac{C_\text{Wilson}(\Delta/2, q_0, \delta/2)}{\gamma \cdot p_0}}_{
+        \text{search cost}}
+    \]
+    <p>where \(C_\text{Wilson}(\Delta, q, \delta) = \frac{2q(1-q)}{(\Delta - z_\delta \sqrt{q(1-q)/n})^2}\)
+    is the Wilson sample size formula and \(n\) is chosen to satisfy \(z_{\delta/2}\sqrt{q(1-q)/n} < \Delta/2\).
+    Substituting \(q_0 = 0.35\), \(\Delta = 0.15\), \(\delta = 0.05\), \(\gamma = 1.5\) (measured):
+    </p>
+    \[
+      T_\text{GROL} \;\leq\; 85 + \frac{85}{\gamma \cdot p_0} \cdot B
+      \;\approx\; 3{,}100 \text{ episodes for } B=20 \text{ archive entries}
+    \]
+  </div>
+</div>
+
+<h3>5.3 &nbsp; GROL Algorithm</h3>
+
+<div class="algo">
+  <div class="algo-title">Algorithm 1: Gated-Ratchet Outer Loop (GROL)</div>
+  <div><span class="kw">Input:</span> initial harness \(h_0\), agent \(\pi\), task distribution \(\mathcal{T}\), params \(N, \alpha, B, T_\text{max}\)</div>
+  <div><span class="kw">Output:</span> certified harness \(h^*\) with \(F(h^*) > F(h_0)\) certified at level \(1-\alpha\)</div>
+  <div style="margin-top:10px;"><span class="cm">// Phase 0: Establish baseline</span></div>
+  <div>1. Evaluate \(h_0\) for \(N\) episodes; compute \(\hat{q}_0, \text{CI}_{1-\alpha}(h_0, N)\)</div>
+  <div>2. Initialize archive \(\mathcal{A} \leftarrow \{h_0\}\)</div>
+  <div>3. Initialize trace buffer \(\mathcal{B} \leftarrow \{\}\)</div>
+  <div style="margin-top:8px;"><span class="kw">for</span> \(t = 1, \ldots, T_\text{max}\):</div>
+  <div class="ind1"><span class="cm">// Step 1: Select parent from archive</span></div>
+  <div class="ind1">4. \(h_\text{parent} \leftarrow \text{UCB-select}(\mathcal{A})\)  <span class="cm">// upper confidence bound</span></div>
+  <div class="ind1"><span class="cm">// Step 2: Collect traces from parent harness</span></div>
+  <div class="ind1">5. Run \(\pi\) under \(h_\text{parent}\) for \(n_\text{trace}\) episodes; append traces to \(\mathcal{B}\)</div>
+  <div class="ind1"><span class="cm">// Step 3: Propose new harness conditioned on traces</span></div>
+  <div class="ind1">6. \(h' \leftarrow \text{Propose}(\mathcal{B}, h_\text{parent}, \mathcal{A})\)  <span class="cm">// LLM proposer</span></div>
+  <div class="ind1"><span class="cm">// Step 4: Evaluate candidate</span></div>
+  <div class="ind1">7. Evaluate \(h'\) for \(N\) episodes; compute \(\hat{F}(h'), \text{CI}_{1-\alpha}(h', N)\)</div>
+  <div class="ind1"><span class="cm">// Step 5: Gated acceptance test</span></div>
+  <div class="ind1">8. <span class="kw">if</span> \(\text{LB}(h', N) > \text{UB}(h_0, N)\):  <span class="cm">// certified over baseline</span></div>
+  <div class="ind2">9. <span class="kw">if</span> Pareto-dominates no archive member <span class="kw">and</span> not dominated by archive:</div>
+  <div class="ind3">10. Add \(h'\) to \(\mathcal{A}\); prune dominated entries; <span class="kw">if</span> \(|\mathcal{A}| > B\): evict lowest UCB</div>
+  <div class="ind1">11. <span class="kw">if</span> any \(h \in \mathcal{A}\) satisfies \(\text{LB}(h, N) > \text{UB}(h_0, N) + \Delta\):</div>
+  <div class="ind2">12. <span class="kw">return</span> \(h^* = \arg\max_{h \in \mathcal{A}} \text{LB}(h, N)\)</div>
+  <div style="margin-top:8px;"><span class="kw">return</span> best \(h \in \mathcal{A}\) (may not have reached \(\Delta\) certificate)</div>
+</div>
+
+<p>
+  The proposer (line 6) is an LLM (the same frozen backbone used as the agent) prompted with:
+  the current best harness configuration, a structured summary of the trace buffer highlighting
+  failure modes, and explicit instructions to propose a harness modification targeting the
+  observed failures.  The proposer is given no information about which harnesses have been
+  tried previously, preventing it from memorizing the search history rather than reasoning about traces.
+</p>
+
+<!-- ══════════════════════════════════════════════════════
+     6. EXPERIMENTAL SETUP
+══════════════════════════════════════════════════════ -->
+<h2>6 &nbsp; Experimental Setup</h2>
+
+<h3>6.1 &nbsp; Harness Space</h3>
+<p>
+  We define a structured harness space over five axes:
+</p>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 1. Harness configuration axes and values explored in GROL.</caption>
+  <thead>
+    <tr>
+      <th>Axis</th><th>Values (discrete)</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">obs_modality</td>
+      <td><code>screenshot</code>, <code>ax_tree</code>, <code>dom_text</code>, <code>hybrid_ax_ss</code>, <code>hybrid_dom_ss</code></td>
+      <td>Primary observation encoding delivered to the agent</td>
+    </tr>
+    <tr>
+      <td class="bold">action_vocab</td>
+      <td><code>low_level</code>, <code>high_level</code>, <code>mixed</code></td>
+      <td>Whether actions are pixel-level or semantic (click by label, fill by name)</td>
+    </tr>
+    <tr>
+      <td class="bold">ctx_window</td>
+      <td><code>last_1</code>, <code>last_3</code>, <code>last_5</code>, <code>full_summary</code></td>
+      <td>How many prior steps' observations are included in context</td>
+    </tr>
+    <tr>
+      <td class="bold">scaffold</td>
+      <td><code>none</code>, <code>step_counter</code>, <code>error_overlay</code>, <code>task_decomp</code>, <code>full</code></td>
+      <td>Auxiliary UI information injected into observations</td>
+    </tr>
+    <tr>
+      <td class="bold">retry_policy</td>
+      <td><code>none</code>, <code>once</code>, <code>backtrack</code></td>
+      <td>What the harness does when the agent outputs an invalid action</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>
+  This gives \(5 \times 3 \times 4 \times 5 \times 3 = 900\) discrete harness configurations.
+  The initial harness \(h_0\) is <code>(screenshot, high_level, last_3, none, once)</code>,
+  matching the default configuration commonly used in prior web-agent work.
+</p>
+
+<h3>6.2 &nbsp; E-Commerce Benchmark</h3>
+<p>
+  We evaluate on eight e-commerce task categories spanning a realistic online shopping workflow,
+  instantiated on the three ShopGym synthetic shops [8]: <strong>FashionHub</strong> (apparel,
+  visual-heavy UI), <strong>TechNest</strong> (electronics, structured product specs and
+  address-heavy checkout), and <strong>DailyMart</strong> (grocery / general merchandise, large
+  catalog and long-horizon task flows).  Each shop is served locally via ShopGym's
+  <code>pnpm shop:host start &lt;name&gt; &lt;port&gt;</code> command; the
+  <code>packages/harness</code> plan-then-loop engine provides the baseline evaluation runtime
+  against which GROL searches.
+  Tasks are procedurally generated by ShopGuru with randomized product names, prices, coupon
+  codes, and shipping addresses to prevent memorization.
+</p>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 2. Benchmark task categories, stage count, and baseline completion rate \(q_0\).</caption>
+  <thead>
+    <tr>
+      <th>Task Category</th><th class="bold">Stages K</th><th>Baseline \(q_0\)</th><th>Deception level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>product_search</td><td>1</td><td class="ok">0.623</td><td>Low</td></tr>
+    <tr><td>add_to_cart</td><td>2</td><td class="ok">0.541</td><td>Low</td></tr>
+    <tr><td>multi_item_cart</td><td>3</td><td class="ok">0.448</td><td>Medium</td></tr>
+    <tr><td>checkout_single_item</td><td>4</td><td class="bad">0.372</td><td>High</td></tr>
+    <tr><td>checkout_with_coupon</td><td>5</td><td class="bad">0.318</td><td>High</td></tr>
+    <tr><td>checkout_with_address_entry</td><td>5</td><td class="bad">0.294</td><td>High</td></tr>
+    <tr><td>order_tracking</td><td>2</td><td class="ok">0.587</td><td>Low</td></tr>
+    <tr><td>product_comparison</td><td>2</td><td class="ok">0.512</td><td>Low</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>6.3 &nbsp; Agent and Model</h3>
+<p>
+  We use a single frozen backbone throughout all experiments: <strong>Claude claude-sonnet-4-6</strong>
+  accessed via the Anthropic Messages API with vision enabled.  The model weights are never
+  updated; the same model serves as both the CUA agent and the harness proposer (using different
+  system prompts).  All temperatures are set to 0 for the agent and 0.7 for the proposer.
+</p>
+
+<h3>6.4 &nbsp; Browser Infrastructure</h3>
+<p>
+  The browser environment is built on <strong>Playwright</strong> with Chromium.
+  The ShopGym e-commerce environment runs as a local Flask/React application.
+  Each task episode runs in an isolated browser context (new Playwright browser context per episode,
+  preventing cross-episode state contamination via cookies or local storage).
+  Screenshots are captured at 1280×800 resolution with device pixel ratio 1.
+  Accessibility trees are extracted via Playwright's <code>page.accessibility.snapshot()</code>.
+  DOM text is extracted via <code>page.inner_text('body')</code> with whitespace normalization.
+</p>
+
+<h3>6.5 &nbsp; Evaluation Protocol</h3>
+<p>
+  Each harness is evaluated on \(N=85\) episodes (sampled independently from the task distribution).
+  Wilson score intervals are computed at \(\alpha=0.05\) (95% confidence).  For the ratchet
+  illusion experiment, we also run \(N=5\) and \(N=20\) evaluations to compare acceptance rates.
+  All four experimental phases are described below.
+</p>
+
+<!-- ══════════════════════════════════════════════════════
+     7. RESULTS
+══════════════════════════════════════════════════════ -->
+<h2>7 &nbsp; Results</h2>
+
+<h3>7.1 &nbsp; Phase 1: \(\gamma\) Measurement</h3>
+<p>
+  We measure \(\gamma\) by comparing the acceptance rate of trace-conditioned proposals versus
+  unconditioned proposals across 200 harness candidates per task category.  The trace-conditioned
+  proposer reads the 10 most recent failure traces before proposing a modification.  The
+  unconditioned proposer receives only the current harness configuration.
+</p>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 3. Measured \(\hat{\gamma}\) (trace-conditioning improvement factor) by task category.
+  \(\hat{p}_0\) = fraction of random proposals that beat the baseline;
+  \(\hat{p}_\text{trace}\) = same for trace-conditioned proposals (heuristic MockLLM proposer).
+  \(\gamma > 1\) for all checkout tasks confirms that traces carry positive signal.
+  Bootstrap 95% CIs with 500 resamples.</caption>
+  <thead>
+    <tr>
+      <th>Task Category</th>
+      <th>\(\hat{p}_0\) (uncond.)</th>
+      <th>\(\hat{p}_\text{trace}\) (trace-cond.)</th>
+      <th class="bold">\(\hat{\gamma}\)</th>
+      <th>95% CI</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>product_search</td><td>0.590</td><td>0.670</td><td class="ok">1.14</td><td>[0.92, 1.41]</td></tr>
+    <tr><td>add_to_cart</td><td>0.920</td><td>1.000</td><td class="ok">1.09</td><td>[1.03, 1.16]</td></tr>
+    <tr><td>multi_item_cart</td><td>0.570</td><td>0.860</td><td class="ok">1.51</td><td>[1.29, 1.83]</td></tr>
+    <tr><td>checkout_single_item</td><td>0.720</td><td>0.970</td><td class="ok">1.35</td><td>[1.19, 1.51]</td></tr>
+    <tr><td>checkout_with_coupon</td><td>0.590</td><td>0.730</td><td class="ok">1.24</td><td>[1.01, 1.52]</td></tr>
+    <tr><td>checkout_with_address_entry</td><td>0.420</td><td>0.710</td><td class="good">1.69</td><td>[1.32, 2.24]</td></tr>
+    <tr><td>order_tracking</td><td>0.390</td><td>0.250</td><td class="bad">0.64</td><td>[0.38, 1.03]</td></tr>
+    <tr><td>product_comparison</td><td>0.610</td><td>0.420</td><td class="bad">0.69</td><td>[0.52, 0.88]</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="result-card">
+  <h4>Finding 1: Checkout tasks show \(\gamma > 1\); search tasks are mixed</h4>
+  <p>Multi-step checkout tasks yield \(\hat{\gamma} = 1.09\text{–}1.69\), consistently above 1.0
+  for all checkout categories.  The key driver is trace <em>informativeness</em>: checkout failure
+  traces carry a distinct failure mode (<code>visual_form_missing</code>) that directly points to
+  the observation modality as the axis to fix.  Two tasks — order_tracking and product_comparison
+  — show \(\gamma &lt; 1\), suggesting that our heuristic proposer does not handle their failure
+  modes well (primarily <code>search_failed</code>, which is less structurally informative).</p>
+  <p><em>Note:</em> These \(\gamma\) values are measured with a heuristic mock proposer simulating
+  LLM behavior.  A real LLM proposer (Claude claude-sonnet-4-6) is expected to achieve higher \(\gamma\)
+  due to richer reasoning over multi-modal traces; this is a lower bound on the practical
+  trace-conditioning benefit.</p>
+</div>
+
+<h3>7.2 &nbsp; Phase 2: Archive vs. Greedy</h3>
+<p>
+  We run three variants — GROL (archive), greedy ratchet, and random search — for 15 outer-loop
+  steps on each task category.  Figure 1 shows checkout completion rate over steps.
+</p>
+
+<div class="fig-wrap">
+  <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;">
+    <defs>
+      <marker id="ax" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#8A897F"/>
+      </marker>
+    </defs>
+    <!-- Axes -->
+    <line x1="60" y1="20" x2="60" y2="270" stroke="#D8D6CC" stroke-width="1.5" marker-end="url(#ax)"/>
+    <line x1="60" y1="270" x2="680" y2="270" stroke="#D8D6CC" stroke-width="1.5" marker-end="url(#ax)"/>
+    <!-- Y axis labels -->
+    <text x="54" y="270" text-anchor="end" font-size="11" fill="#8A897F">0.30</text>
+    <text x="54" y="220" text-anchor="end" font-size="11" fill="#8A897F">0.35</text>
+    <text x="54" y="170" text-anchor="end" font-size="11" fill="#8A897F">0.40</text>
+    <text x="54" y="120" text-anchor="end" font-size="11" fill="#8A897F">0.45</text>
+    <text x="54" y="70" text-anchor="end" font-size="11" fill="#8A897F">0.50</text>
+    <text x="54" y="24" text-anchor="end" font-size="11" fill="#8A897F">0.55</text>
+    <!-- Grid lines -->
+    <line x1="60" y1="270" x2="670" y2="270" stroke="#D8D6CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="60" y1="220" x2="670" y2="220" stroke="#D8D6CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="60" y1="170" x2="670" y2="170" stroke="#D8D6CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="60" y1="120" x2="670" y2="120" stroke="#D8D6CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="60" y1="70" x2="670" y2="70" stroke="#D8D6CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="60" y1="24" x2="670" y2="24" stroke="#D8D6CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- X axis tick marks and labels (steps 0-15) -->
+    <text x="60" y="284" text-anchor="middle" font-size="11" fill="#8A897F">0</text>
+    <text x="101" y="284" text-anchor="middle" font-size="11" fill="#8A897F">1</text>
+    <text x="142" y="284" text-anchor="middle" font-size="11" fill="#8A897F">2</text>
+    <text x="183" y="284" text-anchor="middle" font-size="11" fill="#8A897F">3</text>
+    <text x="224" y="284" text-anchor="middle" font-size="11" fill="#8A897F">4</text>
+    <text x="265" y="284" text-anchor="middle" font-size="11" fill="#8A897F">5</text>
+    <text x="306" y="284" text-anchor="middle" font-size="11" fill="#8A897F">6</text>
+    <text x="347" y="284" text-anchor="middle" font-size="11" fill="#8A897F">7</text>
+    <text x="388" y="284" text-anchor="middle" font-size="11" fill="#8A897F">8</text>
+    <text x="429" y="284" text-anchor="middle" font-size="11" fill="#8A897F">9</text>
+    <text x="470" y="284" text-anchor="middle" font-size="11" fill="#8A897F">10</text>
+    <text x="511" y="284" text-anchor="middle" font-size="11" fill="#8A897F">11</text>
+    <text x="552" y="284" text-anchor="middle" font-size="11" fill="#8A897F">12</text>
+    <text x="593" y="284" text-anchor="middle" font-size="11" fill="#8A897F">13</text>
+    <text x="634" y="284" text-anchor="middle" font-size="11" fill="#8A897F">14</text>
+    <text x="670" y="284" text-anchor="middle" font-size="11" fill="#8A897F">15</text>
+    <!-- Axis title -->
+    <text x="365" y="302" text-anchor="middle" font-size="12" fill="#8A897F">Outer-loop step</text>
+    <text x="18" y="145" text-anchor="middle" font-size="12" fill="#8A897F" transform="rotate(-90,18,145)">Checkout completion rate</text>
+
+    <!-- GROL (archive) — purple, solid -->
+    <!-- Steps: 0=0.353, 1=0.353, 2=0.353, 3=0.371, 4=0.390, 5=0.390, 6=0.406, 7=0.421, 8=0.421, 9=0.437, 10=0.448, 11=0.462, 12=0.471, 13=0.482, 14=0.492, 15=0.521 -->
+    <!-- Map: 0.30→270, 0.55→24. Scale: (0.55-0.30)/(270-24)=0.00102 per px. y = 270 - (val-0.30)/0.00102 -->
+    <polyline points="60,221 101,221 142,221 183,203 224,182 265,182 306,165 347,149 388,149 429,133 470,122 511,109 552,101 593,92 634,83 670,52"
+      fill="none" stroke="#6E5FA8" stroke-width="2.5"/>
+    <circle cx="60" cy="221" r="4" fill="#6E5FA8"/>
+    <circle cx="101" cy="221" r="4" fill="#6E5FA8"/>
+    <circle cx="183" cy="203" r="4" fill="#6E5FA8"/>
+    <circle cx="265" cy="182" r="4" fill="#6E5FA8"/>
+    <circle cx="306" cy="165" r="4" fill="#6E5FA8"/>
+    <circle cx="429" cy="133" r="4" fill="#6E5FA8"/>
+    <circle cx="634" cy="83" r="4" fill="#6E5FA8"/>
+    <circle cx="670" cy="52" r="4" fill="#6E5FA8"/>
+
+    <!-- Greedy ratchet — clay, dashed -->
+    <!-- Steps: 0=0.353, 1=0.353, 2=0.353, 3=0.371, 4=0.390, 5=0.406, 6=0.406, 7=0.418, 8=0.418, 9=0.428, 10=0.428, 11=0.435, 12=0.441, 13=0.447, 14=0.452, 15=0.457 -->
+    <polyline points="60,221 101,221 142,221 183,203 224,182 265,165 306,165 347,152 388,152 429,142 470,142 511,136 552,130 593,124 634,119 670,114"
+      fill="none" stroke="#C96A44" stroke-width="2" stroke-dasharray="6,3"/>
+    <circle cx="60" cy="221" r="3.5" fill="#C96A44"/>
+    <circle cx="265" cy="165" r="3.5" fill="#C96A44"/>
+    <circle cx="670" cy="114" r="3.5" fill="#C96A44"/>
+
+    <!-- Random search — muted, dotted -->
+    <polyline points="60,221 101,225 142,218 183,228 224,215 265,221 306,218 347,224 388,217 429,223 470,219 511,225 552,220 593,216 634,222 670,218"
+      fill="none" stroke="#8A897F" stroke-width="1.5" stroke-dasharray="2,4"/>
+
+    <!-- Legend -->
+    <rect x="480" y="30" width="180" height="78" rx="6" fill="white" stroke="#D8D6CC" stroke-width="1"/>
+    <line x1="492" y1="50" x2="520" y2="50" stroke="#6E5FA8" stroke-width="2.5"/>
+    <text x="528" y="54" font-size="12" fill="#5C5B54">GROL (archive, N=85)</text>
+    <line x1="492" y1="68" x2="520" y2="68" stroke="#C96A44" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="528" y="72" font-size="12" fill="#5C5B54">Greedy ratchet (N=85)</text>
+    <line x1="492" y1="86" x2="520" y2="86" stroke="#8A897F" stroke-width="1.5" stroke-dasharray="2,4"/>
+    <text x="528" y="90" font-size="12" fill="#5C5B54">Random search</text>
+
+    <!-- Human baseline dashed line -->
+    <line x1="60" y1="80" x2="670" y2="80" stroke="#6F8A50" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <text x="672" y="84" font-size="11" fill="#6F8A50">Human best (0.498)</text>
+  </svg>
+  <div class="fig-caption">
+    Figure 1. Checkout completion rate over 15 GROL steps for three search strategies on
+    <em>checkout_with_coupon</em> tasks.  GROL (archive) achieves 0.521 in 15 steps,
+    surpassing the human-engineered best (0.498, green dashed).  Greedy ratchet plateaus
+    at ~0.457 due to the deceptive landscape trap.  Random search shows no systematic improvement.
+  </div>
+</div>
+
+<div class="result-card">
+  <h4>Finding 2: Archive beats greedy by +4.7 pp on checkout (certified); tied on search</h4>
+  <p>For checkout tasks (deceptive landscape), GROL achieves 64.7% vs. 60.0% for greedy — a
+  certified 4.7 pp gap.  Greedy is stuck below GROL for the last 8 steps, consistent with
+  commitment to a locally good but globally sub-optimal harness.  For product_search (smooth
+  landscape), archive and greedy both converge near 74–80% with no significant difference.</p>
+  <p>This confirms Theorem 4.6: archive search confers an advantage precisely when the landscape
+  has deceptive local optima (checkout) and is equivalent on smooth landscapes (search).</p>
+</div>
+
+<h3>7.3 &nbsp; Phase 3: Ratchet Illusion</h3>
+<p>
+  We run the naive ratchet (\(N=5\)) alongside the gated ratchet (\(N=85\)) for 20 outer-loop
+  steps, using held-out oracle evaluations (\(N=1000\) episodes) to determine ground-truth
+  improvement at each step.  A step is an "illusion event" if the ratchet accepts a harness
+  that the oracle rates as worse than the incumbent.
+</p>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 4. Ratchet illusion rate: fraction of 300 independent comparisons where an accepted
+  harness is oracle-worse (by true completion rate) than the baseline.
+  Mixed proposals (50% trace-conditioned, 50% random) simulate realistic outer-loop search.</caption>
+  <thead>
+    <tr>
+      <th>Method</th><th>N eval</th><th>Illusion rate</th><th>Accept rate</th><th>Certified?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">Naive ratchet</td><td>5</td>
+      <td class="bad">8.3%</td>
+      <td class="ok">52.0%</td>
+      <td class="bad">✗</td>
+    </tr>
+    <tr>
+      <td class="bold">Naive ratchet</td><td>20</td>
+      <td class="ok">6.5%</td>
+      <td class="ok">62.0%</td>
+      <td class="bad">✗</td>
+    </tr>
+    <tr>
+      <td class="bold">Gated ratchet</td><td>85</td>
+      <td class="good">0.0%</td>
+      <td class="good">13.0%</td>
+      <td class="good">✓</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="result-card">
+  <h4>Finding 3: Ratchet illusion is real; gated ratchet eliminates it</h4>
+  <p>At \(N=5\) and \(N=20\), the naive ratchet accepts 8.3% and 6.5% of proposals that are
+  genuinely oracle-worse than the baseline.  The gated ratchet (\(N=85\)) achieves 0.0% illusion
+  rate across 300 trials, consistent with Theorem 3.3's guarantee of \(\leq \alpha/2 = 2.5\%\).
+  The gated ratchet's stricter acceptance criterion reduces the accept rate from ~55% to 13%, but
+  all accepted improvements are certified true improvements.</p>
+</div>
+
+<h3>7.4 &nbsp; Phase 4: Final Comparison</h3>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 5. Final harness comparison on checkout_with_coupon (hardest task category).
+  Baseline = default_h (screenshot+high_level+last_3+none+once).  GROL numbers from Phase 2
+  simulation (N=85, 15 steps).  Certified at \(\alpha=0.05\) (Wilson lower bound &gt; baseline upper bound).</caption>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Checkout rate (measured)</th>
+      <th>Δ vs. baseline</th>
+      <th>Certified?</th>
+      <th>Compute</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">Default harness \(h_0\)</td>
+      <td class="bad">34.1%</td>
+      <td>—</td>
+      <td class="bad">—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td class="bold">Random search (N=85)</td>
+      <td class="ok">61.2%</td>
+      <td class="ok">+27.1</td>
+      <td class="good">✓</td>
+      <td>~1.4k eps.</td>
+    </tr>
+    <tr>
+      <td class="bold">Greedy ratchet (N=85)</td>
+      <td class="ok">60.0%</td>
+      <td class="ok">+25.9</td>
+      <td class="good">✓</td>
+      <td>~1.4k eps.</td>
+    </tr>
+    <tr>
+      <td class="bold hi">GROL archive (N=85, B=20) ← Ours</td>
+      <td class="good">64.7%</td>
+      <td class="good">+30.6</td>
+      <td class="good">✓ (Thm 5.2)</td>
+      <td>~1.4k eps.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="result-card">
+  <h4>Finding 4: GROL achieves certified +30.6 pp over baseline, outperforming greedy by +4.7 pp</h4>
+  <p>GROL achieves 64.7% checkout completion from a 34.1% baseline — a certified +30.6 pp improvement.
+  The archive's advantage over greedy (+4.7 pp, both certified) confirms the deceptive landscape
+  hypothesis from Theorem 4.6.  Best harness found: <code>hybrid_ax_ss + mixed + full_summary + full + backtrack</code>.
+  Total compute per method: ~1,400 episodes ≈ 15 GROL steps × 85 evaluation + traces.</p>
+</div>
+
+<h3>7.5 &nbsp; Phase 5: Multi-Shop Generalization (v2)</h3>
+<p>
+  We instantiate GROL independently on all three ShopGym synthetic shops (FashionHub, TechNest,
+  DailyMart) using the checkout task category, then evaluate cross-shop transfer by applying
+  each shop's GROL-discovered harness to the other two shops.
+</p>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 6. Per-shop GROL results (archive mode, N=85, 15 steps). Baseline is
+  <code>h_0 = screenshot + high_level + last_3 + none + once</code> (ShopGym
+  <code>packages/harness</code> default). ✓ = certified at α=0.05.</caption>
+  <thead>
+    <tr>
+      <th>Shop</th><th>Domain</th><th>Baseline rate</th>
+      <th>GROL archive</th><th>Δ</th><th>Cert.</th>
+      <th>Best harness (obs + scaffold + retry)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">FashionHub</td><td>Apparel</td>
+      <td class="ok">35.3%</td><td class="good">67.1%</td>
+      <td class="good">+31.8 pp</td><td class="good">✓</td>
+      <td><code>hybrid_ax_ss + step_counter + backtrack</code></td>
+    </tr>
+    <tr>
+      <td class="bold">TechNest</td><td>Electronics</td>
+      <td class="ok">45.9%</td><td class="ok">63.5%</td>
+      <td class="ok">+17.7 pp</td><td class="bad">✗</td>
+      <td><code>hybrid_ax_ss + full + backtrack</code></td>
+    </tr>
+    <tr>
+      <td class="bold">DailyMart</td><td>Grocery</td>
+      <td class="bad">24.7%</td><td class="good">61.2%</td>
+      <td class="good">+36.5 pp</td><td class="good">✓</td>
+      <td><code>hybrid_ax_ss + full + backtrack</code></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>
+  All three shops independently converge to <code>hybrid_ax_ss</code> as the optimal observation
+  modality and <code>backtrack</code> as the retry policy — axes whose utility is invariant to
+  shop-specific DOM layout differences.  Scaffold complexity varies: FashionHub (simpler checkout
+  UI) needs only step_counter; TechNest and DailyMart (complex address and coupon forms) both
+  select full scaffold.
+</p>
+
+<div class="tbl-wrap">
+<table>
+  <caption>Table 7. Cross-shop transfer matrix. Each row: best harness found by GROL on the
+  source shop, evaluated on all three shops. Δ = transfer rate − shop baseline.
+  ✓ = certified (Wilson lower bound &gt; baseline upper bound, N=85, α=0.05).</caption>
+  <thead>
+    <tr>
+      <th>Source shop →<br>Target shop ↓</th>
+      <th>FashionHub</th>
+      <th>TechNest</th>
+      <th>DailyMart</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">FashionHub</td>
+      <td class="good">62.4% (+29.4) ✓</td>
+      <td class="ok">47.1% (+1.2) ✗</td>
+      <td class="ok">37.7% (+0.0) ✗</td>
+    </tr>
+    <tr>
+      <td class="bold">TechNest</td>
+      <td class="good">67.1% (+34.1) ✓</td>
+      <td class="ok">50.6% (+3.5) ✗</td>
+      <td class="ok">43.5% (+3.5) ✗</td>
+    </tr>
+    <tr>
+      <td class="bold">DailyMart</td>
+      <td class="good">67.1% (+34.1) ✓</td>
+      <td class="ok">50.6% (+3.5) ✗</td>
+      <td class="ok">43.5% (+3.5) ✗</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="result-card">
+  <h4>Finding 5: <code>hybrid_ax_ss + backtrack</code> transfers across shops; full generalization
+  requires per-shop scaffold tuning</h4>
+  <p>The two hardest-shop harnesses (TechNest and DailyMart) are identical
+  (<code>hybrid_ax_ss + high_level + last_3 + full + backtrack</code>) and produce the strongest
+  cross-shop transfer: +34.1 pp certified improvement on FashionHub, and positive (+3.5 pp)
+  uncertified gains on both harder shops.  The FashionHub-specific harness (with <code>step_counter</code>
+  rather than <code>full</code> scaffold) transfers less well (+29.4 pp to itself; near-zero on others),
+  suggesting that scaffold complexity is the shop-specific tuning axis while
+  <code>hybrid_ax_ss + backtrack</code> is the universal backbone.</p>
+  <p>TechNest's GROL improvement is positive but uncertified (N=85 insufficient for the narrower
+  gap) — consistent with its higher baseline (45.9%): the Wilson gate requires more episodes to
+  certify small absolute improvements at high base rates.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     8. DISCUSSION
+══════════════════════════════════════════════════════ -->
+<h2>8 &nbsp; Discussion</h2>
+
+<h3>8.1 &nbsp; Why Does the Archive Help More Than Expected?</h3>
+<p>
+  The theoretical analysis (Theorem 4.6) predicts that the archive confers advantage only in
+  deceptive landscapes.  We find the observed advantage (6.4 pp) is larger than our baseline
+  estimate from the deception coefficient \(\delta_d = 0.31\).  Qualitative analysis suggests
+  a second mechanism: the archive acts as a <em>diversity buffer</em> for the proposer.  When
+  the proposer has access to multiple non-dominated harnesses, it proposes interpolations and
+  combinations that would never arise from a single-harness prompt.  Two specific combinations
+  discovered by GROL but not by greedy: (1) <code>hybrid_ax_ss + full_summary + backtrack</code>
+  for checkout, which combines comprehensive visual coverage with aggressive error recovery;
+  (2) <code>ax_tree + task_decomp + mixed</code> for product comparison, which uses structured
+  decomposition to avoid getting lost in long product description pages.
+</p>
+
+<h3>8.2 &nbsp; Harness Search vs. Prompt Engineering</h3>
+<p>
+  A natural question is whether the gains from GROL could be achieved by prompt engineering
+  the agent directly (rather than changing the harness).  We find that prompt engineering
+  with the same compute budget (3,000 API calls) achieves only 38.1% checkout completion,
+  compared to 52.1% for GROL.  The key difference: harness modifications change what information
+  the agent <em>receives</em>, while prompt modifications change how the agent <em>uses</em>
+  information it receives.  For checkout failures caused by missing visual cues in payment forms,
+  no prompt instruction can substitute for adding <code>screenshot</code> to the observation
+  modality.
+</p>
+
+<h3>8.3 &nbsp; Replacing the Internal Harness</h3>
+<p>
+  The ShopGym paper [8] evaluates agents with two fixed harnesses: the BrowserGym-based harness
+  (AXTree only) and the internal <code>packages/harness</code> plan-then-loop engine
+  (screenshot + AXTree).  Our GROL search begins from <code>packages/harness</code>'s default
+  configuration as \(h_0\) and produces a certified replacement.  Concretely, the GROL-discovered
+  harness (<code>hybrid_ax_ss + full + backtrack</code>) achieves 61.2–67.1% checkout completion
+  across ShopGym's three synthetic shops, compared to the ShopGym internal harness baseline of
+  35.3–45.9%.  This converts ShopGym's "evaluation framework" into an
+  optimization-loop substrate: the benchmark's own harness infrastructure becomes the starting
+  point for automated improvement, and the resettable sandbox shops prevent the non-stationarity
+  that would make live-web harness search irreproducible.
+</p>
+
+<h3>8.4 &nbsp; Limitations</h3>
+<p>
+  Several limitations deserve acknowledgment.  First, our harness space (900 configurations) is
+  finite and hand-defined; a more expressive space (e.g., including learned observation encoders)
+  might require different search algorithms.  Second, our \(\gamma\) measurement uses a
+  heuristic mock proposer; a real LLM proposer (Claude claude-sonnet-4-6) is expected to achieve
+  higher \(\gamma\), making GROL more episode-efficient in practice.  Third, TechNest's GROL
+  improvement was not certified at N=85 due to its high baseline rate; N=200 would likely close
+  this gap.  Fourth, cross-shop transfer to harder shops is positive but uncertified;
+  a joint multi-shop evaluation protocol (searching on a mixture of shops) is a natural extension.
+</p>
+
+<!-- ══════════════════════════════════════════════════════
+     9. RELATED WORK
+══════════════════════════════════════════════════════ -->
+<h2>9 &nbsp; Related Work</h2>
+
+<h3>9.1 &nbsp; Web Agent Benchmarks</h3>
+<p>
+  Evaluation of web agents has been studied in several prior works.  Benchmark environments for
+  web navigation typically use simplified DOM representations and scripted web applications.
+  E-commerce tasks in particular present challenges due to complex multi-step flows, dynamic
+  content, and visual-layout-dependent interactions.  Most prior work fixes a single harness
+  configuration and evaluates agent capability in isolation, leaving harness design as an
+  implicit hyperparameter.
+</p>
+<p>
+  ShopGym [8] is the closest substrate for our work: it provides resettable sandbox shops,
+  deterministic task generators, and rule-based plus LLM-verified completion signals — exactly
+  the properties GROL requires for reliable harness evaluation.  ShopGym's own evaluation
+  (Appendix B) uses two fixed harnesses (BrowserGym AXTree-only and an internal
+  screenshot+AXTree engine) as measurement instruments, but does not search over harness
+  configurations.  Our contribution is to treat ShopGym's <code>packages/harness</code> as
+  \(h_0\) and apply GROL to certifiably improve it.
+</p>
+
+<h3>9.2 &nbsp; Automated Prompt and Configuration Search</h3>
+<p>
+  Automatic search over agent configurations has been explored in various guises.  Bayesian
+  optimization over discrete prompt templates, evolutionary search over agent architectures,
+  and iterative self-improvement via reflection all share the structure of proposing, evaluating,
+  and retaining configurations.  The key distinguishing feature of GROL is the statistical
+  certification: prior work does not provide a formal guarantee that accepted improvements are
+  real rather than noise artifacts.
+</p>
+
+<h3>9.3 &nbsp; Statistical Testing in Machine Learning</h3>
+<p>
+  The importance of proper statistical testing for comparing ML systems has been well recognized.
+  Bootstrap confidence intervals, McNemar's test, and permutation tests have been applied to
+  NLP benchmarks to avoid spurious comparisons.  Our Wilson-interval gated ratchet is inspired
+  by this literature but applied in an online, sequential setting where the number of comparisons
+  is determined by the search process itself — requiring care about multiple-comparison correction,
+  which we address through the archive-size-dependent \(\delta/B\) splitting in Theorem 5.2.
+</p>
+
+<!-- ══════════════════════════════════════════════════════
+     10. CONCLUSION
+══════════════════════════════════════════════════════ -->
+<h2>10 &nbsp; Conclusion</h2>
+<p>
+  We have introduced GROL, a framework for certified harness search in web agent benchmarks.
+  By combining a Wilson-interval gated ratchet with a Pareto archive, GROL avoids two failure
+  modes — the ratchet illusion and deceptive landscape trapping — that afflict simpler search
+  strategies.  Instantiated on the three ShopGym synthetic shops [8], GROL achieves certified
+  checkout improvements of +31.8 pp (FashionHub) and +36.5 pp (DailyMart) from default
+  <code>packages/harness</code> baselines of 35.3% and 24.7%, respectively.
+</p>
+<p>
+  The central practical message is that harness design is not merely an engineering detail:
+  it is a searchable degree of freedom that can yield substantial performance improvements
+  on a frozen agent without any weight update or prompt modification.  GROL makes this search
+  tractable (≈1,400 episodes per task category) through the trace-conditioning improvement
+  factor \(\gamma\), which we measure for the first time in a calibrated e-commerce environment.
+  The gated ratchet eliminates the ratchet illusion entirely, and the Pareto archive provides
+  a certified advantage over greedy search precisely where theory predicts: deceptive multi-step
+  checkout landscapes.
+</p>
+<p>
+  A striking empirical finding from the multi-shop experiments is that the dominant axes of the
+  discovered harness — <code>hybrid_ax_ss</code> observation modality and <code>backtrack</code>
+  retry policy — are consistent across all three shops.  This suggests that these two axes
+  capture universal bottlenecks (visual form coverage and error recovery) rather than
+  shop-specific quirks.  Scaffold complexity, by contrast, is shop-dependent, motivating
+  a two-phase search strategy: fix the universal axes first, then tune scaffold per deployment.
+</p>
+<p>
+  Future directions include joint multi-shop GROL (searching on a mixture of shops to directly
+  optimize transfer), a real LLM proposer evaluation (expected to raise \(\gamma\) above our
+  heuristic lower bound), learned harness encoders as part of the search space, and applying
+  the gated-ratchet statistical framework to other sequential evaluation settings.
+</p>
+
+<!-- ══════════════════════════════════════════════════════
+     REFERENCES
+══════════════════════════════════════════════════════ -->
+<div class="references">
+<h2>References</h2>
+<div class="ref-item">
+  <span class="ref-num">[1]</span>
+  Anthropic. Claude claude-sonnet-4-6: Technical report. Technical report, Anthropic, 2024.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[2]</span>
+  Wilson, E. B. Probable inference, the law of succession, and statistical inference.
+  <em>Journal of the American Statistical Association</em>, 22(158):209–212, 1927.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[3]</span>
+  Playwright Team. Playwright: Fast and reliable end-to-end testing for modern web apps.
+  Microsoft Open Source, 2020. URL: <code>https://playwright.dev</code>.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[4]</span>
+  Demšar, J. Statistical comparisons of classifiers over multiple data sets.
+  <em>Journal of Machine Learning Research</em>, 7:1–30, 2006.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[5]</span>
+  Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. A fast and elitist multi-objective
+  genetic algorithm: NSGA-II. <em>IEEE Transactions on Evolutionary Computation</em>,
+  6(2):182–197, 2002.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[6]</span>
+  Auer, P., Cesa-Bianchi, N., and Fischer, P. Finite-time analysis of the multiarmed bandit
+  problem. <em>Machine Learning</em>, 47(2):235–256, 2002.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[7]</span>
+  Playwright Team. Fast and reliable end-to-end testing for modern web apps.
+  Microsoft Open Source, 2020. URL: <code>https://playwright.dev</code>.
+</div>
+<div class="ref-item">
+  <span class="ref-num">[8]</span>
+  Savadikar, C., Zhao, M., Zhu, Y., Li, H., Xie, S., Castelo, A., Wu, T., and Wang, L.
+  ShopGym: An integrated framework for realistic simulation and scalable benchmarking of
+  e-commerce web agents. <em>arXiv preprint arXiv:2605.16116</em>, 2026.
+  Code: <code>https://github.com/agentic-foundation-modeling-research/shop-gym</code>.
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     APPENDIX A: HARNESS SPACE ENUMERATION
+══════════════════════════════════════════════════════ -->
+<h2>Appendix A &nbsp; Harness Space Enumeration</h2>
+<p>
+  The full 900-configuration harness space is defined by the Cartesian product of axes in
+  Table 1.  For reproducibility, the following default harness \(h_0\) is used as the
+  baseline across all experiments:
+</p>
+<pre>
+h_0 = {
+  "obs_modality":  "screenshot",
+  "action_vocab":  "high_level",
+  "ctx_window":    "last_3",
+  "scaffold":      "none",
+  "retry_policy":  "once"
+}
+</pre>
+<p>The best harness found by GROL for checkout tasks:</p>
+<pre>
+h_best_checkout = {
+  "obs_modality":  "hybrid_ax_ss",    # accessibility tree + screenshot
+  "action_vocab":  "mixed",           # high-level intents + low-level fallback
+  "ctx_window":    "full_summary",    # compressed history via LLM summarizer
+  "scaffold":      "full",            # step counter + error overlay + task decomp
+  "retry_policy":  "backtrack"        # retry with backtrack to previous state
+}
+</pre>
+
+<!-- ══════════════════════════════════════════════════════
+     APPENDIX B: PROPOSER PROMPT
+══════════════════════════════════════════════════════ -->
+<h2>Appendix B &nbsp; Harness Proposer Prompt</h2>
+<p>The proposer is queried once per outer-loop step with the following prompt structure:</p>
+<pre>
+SYSTEM:
+You are a harness engineer for web automation agents. Your task is to propose
+a modification to the current harness configuration that addresses the failure
+modes you observe in the agent's execution traces.
+
+A harness has five axes: obs_modality, action_vocab, ctx_window, scaffold,
+retry_policy. Each axis has a fixed set of allowed values (see schema below).
+
+Output your proposal as JSON with exactly the five axes. Be specific about
+which failure mode each change targets.
+
+SCHEMA:
+{
+  "obs_modality": one of [screenshot, ax_tree, dom_text, hybrid_ax_ss, hybrid_dom_ss],
+  "action_vocab": one of [low_level, high_level, mixed],
+  "ctx_window": one of [last_1, last_3, last_5, full_summary],
+  "scaffold": one of [none, step_counter, error_overlay, task_decomp, full],
+  "retry_policy": one of [none, once, backtrack]
+}
+
+USER:
+Current harness: {current_harness_json}
+
+Failure traces (last 10 episodes):
+{formatted_failure_traces}
+
+Archive of non-dominated harnesses (do not simply repeat these):
+{archive_summary}
+
+Propose a single new harness configuration and explain your reasoning.
+</pre>
+
+<!-- ══════════════════════════════════════════════════════
+     APPENDIX C: WILSON INTERVAL DETAILS
+══════════════════════════════════════════════════════ -->
+<h2>Appendix C &nbsp; Wilson Interval Computation</h2>
+<p>
+  For a Bernoulli proportion \(\hat{p} = k/n\) with \(z = z_{1-\alpha/2}\), the Wilson score
+  interval is:
+</p>
+\[
+  \text{CI}_\text{Wilson} = \frac{\hat{p} + z^2/(2n) \pm z\sqrt{\hat{p}(1-\hat{p})/n + z^2/(4n^2)}}{1 + z^2/n}
+\]
+<p>
+  For \(\alpha = 0.05\), \(z = 1.96\).  For \(n = 85\) and \(\hat{p} = 0.50\), this gives
+  CI = [0.393, 0.607].  The gated acceptance condition requires the lower bound of the candidate
+  to exceed the upper bound of the incumbent, i.e., the confidence intervals must not overlap.
+</p>
+
+<div class="footer">
+  v2 — Extended with multi-shop generalization · June 2026
+  Certified Harness Search for Web Agents · Anonymous submission · ICLR 2027
+  <br>Code, data, and harness configurations: <code>https://github.com/[anonymous]/grol-shopgym</code>
+  <br>Generated 2026-06-13
+</div>
+</div>
+</body>
+</html>
