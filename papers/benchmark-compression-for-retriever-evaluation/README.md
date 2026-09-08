@@ -282,6 +282,121 @@ The ratio of the two budgets should also be reported. This quantity measures
 how much more evaluation is needed to support broader claims about future
 retrievers.
 
+## Headline figure and minimum paper
+
+The paper should be designed around one image:
+
+> **A retrieval benchmark is highly compressible for familiar retrievers, less
+> compressible under retriever shift, and AutoCompress-IR recovers part of that
+> lost efficiency.**
+
+If a reviewer remembers only one figure, it should be **Figure 1:
+Compression–Reliability Frontiers under Retriever Shift**. Use two panels with
+the same axes and visual grammar.
+
+### Figure 1A — The phenomenon: shift changes the frontier
+
+- **Horizontal axis:** retained variable evaluation cost at 1%, 2%, 5%, 10%,
+  20%, 40%, and 100%. Add a secondary label for the corresponding fraction of
+  queries removed.
+- **Vertical axis:** held-out pairwise decision agreement under nDCG@10.
+- **Curves:** empirical upper envelopes for checkpoint, unseen-lineage, and
+  unseen-mechanism evaluation.
+- **Reference line:** a horizontal line at 95% reliability.
+- **Annotations:** mark the budget where each curve first reaches 95%; draw the
+  horizontal difference between those budgets as the price of retriever
+  coverage.
+
+The intended visual impression is a rightward shift: supporting less familiar
+retrievers requires more of the benchmark. All curves meet at 100% cost and
+100% fidelity by definition.
+
+### Figure 1B — The method: improve the shifted frontier
+
+Under the pre-declared mechanism-holdout protocol, plot only:
+
+1. uniform or stratified random sampling;
+2. the strongest prior legitimate compressor; and
+3. AutoCompress-IR.
+
+Mark each method's budget for 95% reliability. The intended visual impression
+is an up-and-left movement: at the same cost AutoCompress-IR is more reliable,
+or at the same reliability it needs fewer queries.
+
+### Plotting rules
+
+- Dots are the measured budgets; connecting lines are visual guides, not
+  evidence of a continuously observed curve.
+- A method-specific line is a **reliability curve**. Reserve **frontier** for
+  the upper envelope across eligible policies at a budget.
+- Show raw estimates and clustered 95% confidence bands. Do not show only an
+  isotonic-smoothed line.
+- Use an equal-dataset macro average over the core suite. Put per-dataset small
+  multiples and the worst-dataset result in the appendix.
+- Keep the same axis limits, colors, and 95% target across both panels.
+- Do not add every baseline, dataset, metric, or shift to Figure 1. If the
+  legend needs explaining, the plot is too busy.
+- Pre-declare mechanism shift for Panel B. Do not select whichever holdout
+  makes AutoCompress-IR look best after seeing results.
+
+Figure 1 succeeds only if a reader can say, without reading the caption:
+
+> “New retriever behavior makes safe compression harder, and the proposed
+> method reduces the extra budget.”
+
+If the data do not support both halves of that sentence, change the paper's
+claim rather than forcing the figure.
+
+### Priority 0: minimum credible ICLR paper
+
+Protect these experiments first:
+
+- **Datasets:** TREC-COVID, NFCorpus, FiQA, ArguAna, Quora, and SciFact. This
+  six-dataset core spans 50 to 10,000 queries and several domains while keeping
+  the retrieval sweep manageable.
+- **Systems:** 16 core systems plus 4 truly sealed systems, covering lexical,
+  learned sparse, older dense, modern dense, instruction-conditioned, late
+  interaction, hybrid, and reranking pipelines. Prefer behavioral diversity
+  over another checkpoint from an existing lineage.
+- **Shifts:** checkpoint as the optimistic control; lineage and mechanism as
+  the primary tests.
+- **Budgets:** 1%, 2%, 5%, 10%, 20%, 40%, and 100%.
+- **Methods:** random, the strongest prior method, a strong supervised greedy
+  baseline, and AutoCompress-IR. Other inexpensive baselines still belong in
+  the appendix.
+- **Outcome:** pairwise decision agreement under nDCG@10, with score error and
+  rank correlation used only as diagnostics.
+- **Theory:** finite-panel exact fit, no-free-lunch transfer, the random-sampling
+  guarantee, and the behavioral coverage bound. The distance-to-span
+  prediction is the one explanatory experiment to protect.
+- **Practical evidence:** one index-reuse workload, one reranking workload, and
+  the static run-file reproduction path.
+
+This scope must produce Figure 1, a compact table of per-dataset required
+budgets, and one plot connecting behavioral distance to held-out error.
+
+### Priority 1: strengthen if time and compute allow
+
+- add Touche-2020, CQADupStack, and SciDocs;
+- expand to 20–24 core and 4–6 sealed systems;
+- test pipeline shift and construction-panel size/diversity;
+- run independently optimized non-nested policies;
+- report secondary retrieval metrics; and
+- broaden the end-to-end cost audit.
+
+### Priority 2: cut first
+
+- Natural Questions as a large-corpus stress test;
+- prospective temporal systems beyond a retrospective release-date split;
+- progressive evaluation;
+- outer-loop/RSI optimization;
+- an NP-hardness result;
+- exhaustive energy accounting; and
+- large grids of query representations, optimizers, and tie thresholds.
+
+These ideas may be useful follow-up work. None should delay the headline
+frontier, the shift test, the AutoCompress comparison, or the sealed result.
+
 ## Research questions and falsifiable hypotheses
 
 ### RQ1: What do retrieval frontiers look like?
@@ -292,8 +407,8 @@ properties predict compressibility?
 
 ### RQ2: Does retriever shift invalidate fitted microbenchmarks?
 
-Compare random-system, checkpoint, lineage, mechanism, pipeline, and temporal
-holdouts. The key hypothesis is:
+Compare random-system, checkpoint, lineage, and mechanism holdouts. Add
+pipeline and temporal holdouts only as extensions. The key hypothesis is:
 
 > A subset's visible-panel fidelity systematically overestimates its
 > reliability under lineage and mechanism shift, especially at small budgets.
@@ -328,9 +443,8 @@ filled in only after the sealed evaluation:
 1. **Scientific object.** Define the compression–reliability frontier and the
    price of retriever coverage for retrieval evaluation.
 2. **Empirical diagnosis.** Provide a controlled map of benchmark compression
-   under checkpoint, lineage, mechanism, pipeline, and temporal retriever
-   shift, and establish the exact novelty claim only after the literature
-   audit.
+   under checkpoint, lineage, and mechanism shift, and establish the exact
+   novelty claim only after the literature audit.
 3. **Method.** Introduce AutoCompress-IR, which converts a benchmark, a
    reference run panel, retriever metadata, and a cost target into nested
    weighted query policies with held-out reliability estimates.
@@ -538,29 +652,30 @@ complete and checked.
 
 ### Public benchmark suite
 
-The main suite uses all English BEIR entries with at most 600,000 documents:
+The extended suite contains all English BEIR entries with at most 600,000
+documents. The six Priority-0 entries are marked as core:
 
 | BEIR entry | Documents | Test queries | Role |
 |---|---:|---:|---|
-| TREC-COVID | 171,332 | 50 | very small query set; biomedical |
-| NFCorpus | 3,633 | 323 | small corpus; biomedical |
-| FiQA-2018 | 57,638 | 648 | finance |
-| ArguAna | 8,674 | 1,406 | argument retrieval |
-| Touche-2020 | 382,545 | 49 | very small query set; argument retrieval |
-| CQADupStack | 457,199 | 13,145 | twelve heterogeneous CQA tasks |
-| Quora | 522,931 | 10,000 | duplicate-question retrieval |
-| SciDocs | 25,657 | 1,000 | scientific document links |
-| SciFact | 5,183 | 300 | scientific claim evidence |
+| TREC-COVID | 171,332 | 50 | core; very small query set; biomedical |
+| NFCorpus | 3,633 | 323 | core; small corpus; biomedical |
+| FiQA-2018 | 57,638 | 648 | core; finance |
+| ArguAna | 8,674 | 1,406 | core; argument retrieval |
+| Touche-2020 | 382,545 | 49 | Priority 1; argument retrieval |
+| CQADupStack | 457,199 | 13,145 | Priority 1; twelve heterogeneous CQA tasks |
+| Quora | 522,931 | 10,000 | core; duplicate-question retrieval |
+| SciDocs | 25,657 | 1,000 | Priority 1; scientific document links |
+| SciFact | 5,183 | 300 | core; scientific claim evidence |
 | **Total** | **1,634,792** | **26,921** | before deduplication across entries |
 
 Verify these counts against the pinned BEIR/ir_datasets revision and preserve
 the twelve CQADupStack task boundaries. Do not silently change the suite after
 seeing results.
 
-Add Natural Questions as a large-corpus stress test. It should not control
-method selection. Its purpose is to show how query reduction interacts with a
-roughly 2.7-million-document index and therefore with fixed versus variable
-cost.
+Natural Questions is a Priority-2 large-corpus stress test. It must not control
+method selection or delay the core suite. Its purpose is to show how query
+reduction interacts with a roughly 2.7-million-document index and therefore
+with fixed versus variable cost.
 
 The primary metric is nDCG@10. Recall@100 and MRR@10 are secondary where
 defined. Report each dataset separately and an equal-dataset macro average;
@@ -583,9 +698,10 @@ overlapping axes:
 All checkpoints from one lineage must stay in the same split. Family metadata
 must be frozen before outcome analysis.
 
-The target is 20–24 core systems plus 4–6 sealed systems. The following is a
-candidate registry, not permission to substitute whichever systems give the
-best story:
+The minimum headline panel is 16 core systems plus 4 sealed systems. Expand to
+20–24 core and 4–6 sealed systems only after the core figure is secure. The
+following is a candidate registry, not permission to substitute whichever
+systems give the best story:
 
 | Mechanism | Candidate systems |
 |---|---|
@@ -614,39 +730,43 @@ sealed run files and manifests are released after final evaluation.
 Generating this panel is the expensive part of the project, but it happens
 once. Cap the panel rather than chasing every leaderboard model. If compute is
 tight, preserve mechanism and lineage diversity before preserving raw model
-count; a minimum viable full study is 16 core plus 4 sealed systems.
+count.
 
 ### Shift regimes
 
 Use increasingly difficult split regimes:
 
-| Regime | What is held out | Purpose |
-|---|---|---|
-| Random-system | arbitrary systems | optimistic negative control |
-| Checkpoint | size, seed, or nearby checkpoint from a seen lineage | local interpolation |
-| Lineage | all checkpoints from one model lineage | unseen training ancestry |
-| Mechanism | an entire sparse, dense, late-interaction, hybrid, or reranking group | structural extrapolation |
-| Pipeline | a full fusion/reranking composition | system-level extrapolation |
-| Temporal | later model-release cohorts | realistic future-system test |
+| Regime | Priority | What is held out | Purpose |
+|---|---|---|---|
+| Random-system | P0 | arbitrary systems | optimistic negative control |
+| Checkpoint | P0 | size, seed, or nearby checkpoint from a seen lineage | local interpolation |
+| Lineage | P0 | all checkpoints from one model lineage | unseen training ancestry |
+| Mechanism | P0 | an entire sparse, dense, late-interaction, hybrid, or reranking group | structural extrapolation |
+| Pipeline | P1 | a full fusion/reranking composition | system-level extrapolation |
+| Temporal | P2 | later model-release cohorts | realistic future-system test |
 
 Lineage and mechanism shift are the primary tests. Run a retrospective temporal
 split by training on older public models and testing on newer public models.
 If suitable models appear after the protocol freeze, add them as a prospective
-sealed cohort. Temporal shift is confirmatory because it has fewer samples and
-can be confounded by calendar time.
+sealed cohort only after Priority 0 is complete. Temporal shift is confirmatory
+because it has fewer samples and can be confounded by calendar time.
 
-Use grouped cross-validation within the core panel. Keep 4–6 additional
-systems sealed until the method, hyperparameters, plots, and claim thresholds
-are committed. Unlock the sealed outcome matrix once. Archive the unlock
-record and then release the matrix publicly.
+Use grouped cross-validation within the core panel. Keep 4 systems sealed for
+Priority 0, increasing to at most 6 only if resources allow. Hold them until
+the method, hyperparameters, plots, and claim thresholds are committed. Unlock
+the sealed outcome matrix once, archive the unlock record, and then release the
+matrix publicly.
 
 ### Budgets
 
-Evaluate retained variable-cost budgets:
+The Priority-0 retained variable-cost budgets are:
 
 \[
-\{1,2,5,10,20,40,60,80,100\}\%.
+\{1,2,5,10,20,40,100\}\%.
 \]
+
+Add 60% and 80% points only if they are cheap to generate or needed to resolve
+the 95%-reliability crossing.
 
 For equal-cost analysis, use the exact integer count implied by each dataset
 and report rounding. Very small test sets will make the 1% and 2% points
@@ -657,25 +777,28 @@ Policies should be nested so work at a smaller budget is reused at a larger
 one. Also run independently optimized non-nested policies as an upper-bound
 ablation.
 
-### Required baselines
+### Baseline pool and reporting priority
 
-Every baseline receives the same development systems and no sealed outcomes:
+Every baseline receives the same development systems and no sealed outcomes.
+Priority 0 is:
 
-1. uniform random sampling, with at least 100 draws per budget;
-2. stratified random sampling by dataset and available query labels;
-3. query-feature k-medoids;
-4. prior IR topic-selection methods, including *A Few Good Topics*,
-   uncertainty-aware selection, and intelligent topic selection where their
-   assumptions apply;
-5. Anchor Points;
-6. tinyBenchmarks;
-7. visible aggregate-mean matching;
-8. supervised greedy pairwise-margin preservation;
-9. recent ranking-preserving dataset-selection and coreset methods, when code
-   and licenses permit;
-10. the proposed AutoCompress-IR method; and
-11. a test-panel oracle used only to show headroom, clearly labeled invalid for
-    deployment.
+1. uniform and stratified random sampling, with at least 100 draws per budget;
+2. Anchor Points and tinyBenchmarks;
+3. visible aggregate-mean matching;
+4. supervised greedy pairwise-margin preservation; and
+5. AutoCompress-IR.
+
+Choose the “strongest prior method” shown in Figure 1B using grouped development
+folds, then freeze that choice before sealed evaluation. Keep the other
+Priority-0 methods in the appendix.
+
+Priority 1 is query-feature k-medoids, applicable methods from *A Few Good
+Topics*, uncertainty-aware and intelligent topic selection, and recent
+ranking-preserving dataset-selection or coreset methods whose code and cost
+models can be reproduced.
+
+A test-panel oracle may be used only to show headroom. Label it invalid for
+deployment and never include it in the empirical frontier.
 
 Active sampling methods designed to reduce relevance judging should be
 included only in the related-work comparison or adapted transparently; do not
@@ -704,31 +827,40 @@ Report the entire frontier. A single favorable budget is not sufficient.
 
 ### Experiment matrix
 
-| ID | Experiment | Decision enabled |
-|---|---|---|
-| E0 | Build and audit all full run files | establishes the full-evaluation target |
-| E1 | Random and fitted frontiers on fixed panels | measures basic compressibility and visible overfit |
-| E2 | Checkpoint, lineage, and mechanism shift matrix | tests whether family shift is real and how serious it is |
-| E3 | AutoCompress-IR versus all baselines | tests the algorithmic contribution |
-| E4 | Vary construction-panel size and diversity | estimates the price and value of retriever coverage |
-| E5 | Behavioral-distance prediction | tests the transfer-bound mechanism |
-| E6 | Sealed and temporal systems | supplies the final non-adaptive test |
-| E7 | Measured end-to-end cost | translates nominal compression into practical savings |
-| E8 | Progressive evaluation | tests whether close-call expansion saves more cost |
+| ID | Priority | Experiment | Decision enabled |
+|---|---|---|---|
+| E0 | P0 | Build and audit core full run files | establishes the full-evaluation target |
+| E1 | P0 | Random and fitted frontiers on fixed panels | measures basic compressibility and visible overfit |
+| E2 | P0 | Checkpoint, lineage, and mechanism shift matrix | tests whether family shift is real and how serious it is |
+| E3 | P0 | AutoCompress-IR versus required baselines | tests the algorithmic contribution |
+| E4 | P1 | Vary construction-panel size and diversity | estimates the price and value of retriever coverage |
+| E5 | P0 | Behavioral-distance prediction | tests the transfer-bound mechanism |
+| E6 | P0 | One-time sealed-system evaluation | supplies the final non-adaptive test |
+| E7 | P0 | Targeted measured-cost study | translates nominal compression into practical savings |
+| E8 | P2 | Progressive evaluation | tests whether close-call expansion saves more cost |
+| E9 | P2 | Prospective temporal and NQ stress tests | tests longer-range external validity |
 
 ### Required ablations
 
+Priority 0:
+
 - uniform versus learned weights;
-- nested versus independently optimized policies;
 - average-risk versus worst-group optimization;
 - random folds versus lineage-grouped folds;
+- pairwise-decision loss versus score-reconstruction loss; and
+- practical tie-margin choices.
+
+Priority 1:
+
+- nested versus independently optimized policies;
 - outcome vectors versus query features versus both;
 - with and without retriever-family metadata;
 - number of reference systems at fixed mechanism diversity;
 - mechanism diversity at fixed reference-system count;
-- pairwise-decision loss versus score-reconstruction loss;
-- practical tie-margin choices;
-- per-dataset compression versus global suite-level budget allocation; and
+- per-dataset compression versus global suite-level budget allocation.
+
+Priority 2:
+
 - greedy/local search versus optional outer-loop search at matched candidate
   evaluation count.
 
@@ -815,7 +947,8 @@ The intended novelty is the conjunction of:
 
 1. treating **out-of-retriever reliability** as the central quantity;
 2. mapping full cost–reliability frontiers rather than reporting one subset;
-3. separating checkpoint, lineage, mechanism, pipeline, and temporal shifts;
+3. separating checkpoint, lineage, and mechanism shifts, with pipeline and
+   temporal tests as extensions;
 4. automatically constructing nested policies for a declared target
    population;
 5. proving why finite-panel fit can be arbitrarily misleading and when
@@ -852,7 +985,7 @@ needed for the contribution.
 > full benchmark for retrievers not used to compress it? We formalize this
 > tradeoff as the **compression–reliability frontier**, where reliability is
 > held-out agreement on pairwise system comparisons under declared checkpoint,
-> lineage, mechanism, pipeline, and temporal shifts. We introduce
+> lineage, and mechanism shifts. We introduce
 > **AutoCompress-IR**, a behavioral-coreset method that produces nested,
 > cost-aware query policies and an estimated budget for a target reliability.
 > We also separate finite-panel fit from transfer: a weighted subset of at most
@@ -910,9 +1043,10 @@ after seeing sealed results.
 
 - [ ] Implement one run adapter and per-query metric schema.
 - [ ] Smoke-test every candidate system on TREC-COVID and SciFact.
-- [ ] Select 20–24 core and 4–6 sealed open systems.
-- [ ] Generate or acquire full ranked runs for the nine main BEIR entries.
-- [ ] Preserve CQADupStack constituent-task boundaries.
+- [ ] Select 16 core and 4 sealed open systems for Priority 0.
+- [ ] Generate or acquire full ranked runs for the six core BEIR entries.
+- [ ] Expand systems and datasets only after the headline experiment works.
+- [ ] Preserve CQADupStack constituent-task boundaries if it is added.
 - [ ] Profile fixed and per-query costs for every mechanism.
 - [ ] Validate checksums, score direction, query counts, and metric parity.
 - [ ] Implement the eight-system end-to-end audit path.
@@ -964,11 +1098,12 @@ independent check.
 
 ### Phase 5 — Full evaluation and one-time seal
 
-- [ ] Run all methods on all budgets and datasets using frozen grouped folds.
+- [ ] Run all Priority-0 methods, budgets, and datasets using frozen grouped
+      folds.
 - [ ] Generate frontiers and coverage-price curves.
-- [ ] Complete measured-cost and NQ stress-test studies.
+- [ ] Complete the two targeted measured-cost studies.
 - [ ] Commit the final code, method choice, and analysis notebook.
-- [ ] Unlock the 4–6 sealed systems exactly once.
+- [ ] Unlock the frozen sealed panel exactly once.
 - [ ] Run the pre-registered sealed analysis without method changes.
 - [ ] Release sealed run files and record the unlock.
 - [ ] If a bug requires rerunning, document it and label the sealed panel
