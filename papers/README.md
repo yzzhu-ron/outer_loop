@@ -13,7 +13,10 @@
   develops the selected direction into an ICLR 2027 main-track discussion
   proposal: a concrete method, source/target information contract, closest prior
   work, decisive pilot, cost and transfer evaluation, and open research choices.
-  No experiments have been run for this new effort.
+  The first [executable pilot and result ledger](learning-to-explore-search-environments/)
+  now cover full-corpus SciFact/FiQA retrieval with BM25 and MiniLM. The reduced
+  lexical action/probe library has limited oracle headroom and no profile gain;
+  stronger actions and probes are needed before learning a selector.
 
 These research documents are self-contained HTML reports. Open them locally
 in a browser or HTML preview for the formatted view; GitHub displays their source.

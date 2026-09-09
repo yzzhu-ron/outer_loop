@@ -1,0 +1,490 @@
+{
+  "scope": "Offline audit; these text/ID examples never enter runtime profiles.",
+  "histories": [
+    {
+      "dataset": "scifact",
+      "seed": 11,
+      "family": "exact_title",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 6,
+      "nonidentical_pairs": 58,
+      "buckets": [
+        4,
+        2,
+        11,
+        47
+      ],
+      "minimum_query_tokens": 6,
+      "maximum_query_tokens": 29,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 0
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 6
+        }
+      }
+    },
+    {
+      "dataset": "scifact",
+      "seed": 11,
+      "family": "body_terms",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 43,
+      "nonidentical_pairs": 21,
+      "buckets": [
+        0,
+        0,
+        12,
+        52
+      ],
+      "minimum_query_tokens": 12,
+      "maximum_query_tokens": 12,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 22
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 21
+        }
+      }
+    },
+    {
+      "dataset": "scifact",
+      "seed": 23,
+      "family": "exact_title",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 6,
+      "nonidentical_pairs": 58,
+      "buckets": [
+        10,
+        9,
+        10,
+        35
+      ],
+      "minimum_query_tokens": 4,
+      "maximum_query_tokens": 25,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 0
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 6
+        }
+      }
+    },
+    {
+      "dataset": "scifact",
+      "seed": 23,
+      "family": "body_terms",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 43,
+      "nonidentical_pairs": 21,
+      "buckets": [
+        0,
+        0,
+        16,
+        48
+      ],
+      "minimum_query_tokens": 12,
+      "maximum_query_tokens": 12,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 22
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 21
+        }
+      }
+    },
+    {
+      "dataset": "scifact",
+      "seed": 47,
+      "family": "exact_title",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 4,
+      "nonidentical_pairs": 60,
+      "buckets": [
+        8,
+        5,
+        19,
+        32
+      ],
+      "minimum_query_tokens": 4,
+      "maximum_query_tokens": 26,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 0
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 4
+        }
+      }
+    },
+    {
+      "dataset": "scifact",
+      "seed": 47,
+      "family": "body_terms",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 43,
+      "nonidentical_pairs": 21,
+      "buckets": [
+        0,
+        0,
+        15,
+        49
+      ],
+      "minimum_query_tokens": 12,
+      "maximum_query_tokens": 12,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 22
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 21
+        }
+      }
+    },
+    {
+      "dataset": "fiqa",
+      "seed": 11,
+      "family": "exact_title",
+      "sampled_documents": 64,
+      "valid": 0,
+      "invalid": 64,
+      "identical_pairs": 0,
+      "nonidentical_pairs": 0,
+      "buckets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "minimum_query_tokens": null,
+      "maximum_query_tokens": null,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 0,
+          "identical": 0
+        },
+        "identifier_terms": {
+          "assigned": 0,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 0,
+          "identical": 0
+        }
+      }
+    },
+    {
+      "dataset": "fiqa",
+      "seed": 11,
+      "family": "body_terms",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 43,
+      "nonidentical_pairs": 21,
+      "buckets": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "minimum_query_tokens": 9,
+      "maximum_query_tokens": 12,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 22
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 21
+        }
+      }
+    },
+    {
+      "dataset": "fiqa",
+      "seed": 23,
+      "family": "exact_title",
+      "sampled_documents": 64,
+      "valid": 0,
+      "invalid": 64,
+      "identical_pairs": 0,
+      "nonidentical_pairs": 0,
+      "buckets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "minimum_query_tokens": null,
+      "maximum_query_tokens": null,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 0,
+          "identical": 0
+        },
+        "identifier_terms": {
+          "assigned": 0,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 0,
+          "identical": 0
+        }
+      }
+    },
+    {
+      "dataset": "fiqa",
+      "seed": 23,
+      "family": "body_terms",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 43,
+      "nonidentical_pairs": 21,
+      "buckets": [
+        1,
+        0,
+        33,
+        30
+      ],
+      "minimum_query_tokens": 4,
+      "maximum_query_tokens": 12,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 22
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 21
+        }
+      }
+    },
+    {
+      "dataset": "fiqa",
+      "seed": 47,
+      "family": "exact_title",
+      "sampled_documents": 64,
+      "valid": 0,
+      "invalid": 64,
+      "identical_pairs": 0,
+      "nonidentical_pairs": 0,
+      "buckets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "minimum_query_tokens": null,
+      "maximum_query_tokens": null,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 0,
+          "identical": 0
+        },
+        "identifier_terms": {
+          "assigned": 0,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 0,
+          "identical": 0
+        }
+      }
+    },
+    {
+      "dataset": "fiqa",
+      "seed": 47,
+      "family": "body_terms",
+      "sampled_documents": 64,
+      "valid": 64,
+      "invalid": 0,
+      "identical_pairs": 43,
+      "nonidentical_pairs": 21,
+      "buckets": [
+        0,
+        0,
+        33,
+        31
+      ],
+      "minimum_query_tokens": 12,
+      "maximum_query_tokens": 12,
+      "action_pairs": {
+        "keywords": {
+          "assigned": 22,
+          "identical": 22
+        },
+        "identifier_terms": {
+          "assigned": 21,
+          "identical": 0
+        },
+        "lead_clause": {
+          "assigned": 21,
+          "identical": 21
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "dataset": "scifact",
+      "family": "exact_title",
+      "sampled_document_id": "20887554",
+      "title": "Preoperative C-reactive protein predicts mid-term outcome after cardiac surgery.",
+      "body_excerpt": "BACKGROUND C-reactive protein (CRP) is a known risk factor for cardiovascular events in the healthy population and in patients with coronary artery disease. High CRP levels before cardiac surgery are associated with worse short-term outcome, but its ",
+      "probe": "Preoperative C-reactive protein predicts mid-term outcome after cardiac surgery.",
+      "assigned_alternative": "keywords",
+      "transformed_probe": "Preoperative C-reactive protein predicts mid-term outcome after cardiac surgery",
+      "identical_pair": false
+    },
+    {
+      "dataset": "scifact",
+      "family": "exact_title",
+      "sampled_document_id": "36855703",
+      "title": "The non-catalytic function of XPG protein during dual incision in human nucleotide excision repair.",
+      "body_excerpt": "XPG is a member of the FEN-1 structure-specific endonuclease family. It has 3'-junction cutting activity on bubble substrates and makes the 3'-incision in the human dual incision (excision nuclease) repair system. To investigate the precise role of X",
+      "probe": "The non-catalytic function of XPG protein during dual incision in human nucleotide excision repair.",
+      "assigned_alternative": "identifier_terms",
+      "transformed_probe": "non-catalytic function XPG protein during dual",
+      "identical_pair": false
+    },
+    {
+      "dataset": "scifact",
+      "family": "exact_title",
+      "sampled_document_id": "22174015",
+      "title": "PI3K-Akt-mTORC1-S6K1/2 axis controls Th17 differentiation by regulating Gfi1 expression and nuclear translocation of ROR\u03b3.",
+      "body_excerpt": "The PI3K-Akt-mTORC1 axis contributes to the activation, survival, and proliferation of CD4(+) T cells upon stimulation through TCR and CD28. Here, we demonstrate that the suppression of this axis by deletion of p85\u03b1 or PI3K/mTORC1 inhibitors as well ",
+      "probe": "PI3K-Akt-mTORC1-S6K1/2 axis controls Th17 differentiation by regulating Gfi1 expression and nuclear translocation of ROR\u03b3.",
+      "assigned_alternative": "lead_clause",
+      "transformed_probe": "PI3K-Akt-mTORC1-S6K1/2 axis controls Th17 differentiation by regulating Gfi1 expression and nuclear translocation of ROR\u03b3",
+      "identical_pair": false
+    },
+    {
+      "dataset": "scifact",
+      "family": "body_terms",
+      "sampled_document_id": "20887554",
+      "title": "Preoperative C-reactive protein predicts mid-term outcome after cardiac surgery.",
+      "body_excerpt": "BACKGROUND C-reactive protein (CRP) is a known risk factor for cardiovascular events in the healthy population and in patients with coronary artery disease. High CRP levels before cardiac surgery are associated with worse short-term outcome, but its ",
+      "probe": "BACKGROUND disease evaluate undergoing group Follow-up mortality 16.5 2.8 higher level causes",
+      "assigned_alternative": "keywords",
+      "transformed_probe": "BACKGROUND disease evaluate undergoing group Follow-up mortality 16.5 2.8 higher level causes",
+      "identical_pair": true
+    },
+    {
+      "dataset": "scifact",
+      "family": "body_terms",
+      "sampled_document_id": "36855703",
+      "title": "The non-catalytic function of XPG protein during dual incision in human nucleotide excision repair.",
+      "body_excerpt": "XPG is a member of the FEN-1 structure-specific endonuclease family. It has 3'-junction cutting activity on bubble substrates and makes the 3'-incision in the human dual incision (excision nuclease) repair system. To investigate the precise role of X",
+      "probe": "member bubble investigate involved baculovirus/insect modest uncoupled activities bonds Asp-812 making XPF-ERCC1",
+      "assigned_alternative": "identifier_terms",
+      "transformed_probe": "member bubble investigate involved baculovirus/insect modest Asp-812 XPF-ERCC1",
+      "identical_pair": false
+    },
+    {
+      "dataset": "scifact",
+      "family": "body_terms",
+      "sampled_document_id": "22174015",
+      "title": "PI3K-Akt-mTORC1-S6K1/2 axis controls Th17 differentiation by regulating Gfi1 expression and nuclear translocation of ROR\u03b3.",
+      "body_excerpt": "The PI3K-Akt-mTORC1 axis contributes to the activation, survival, and proliferation of CD4(+) T cells upon stimulation through TCR and CD28. Here, we demonstrate that the suppression of this axis by deletion of p85\u03b1 or PI3K/mTORC1 inhibitors as well ",
+      "probe": "PI3K-Akt-mTORC1 proliferation TCR suppression PI3K/mTORC1 essential vivo impairs Furthermore S6K1 nucleus pivotal",
+      "assigned_alternative": "lead_clause",
+      "transformed_probe": "PI3K-Akt-mTORC1 proliferation TCR suppression PI3K/mTORC1 essential vivo impairs Furthermore S6K1 nucleus pivotal",
+      "identical_pair": true
+    },
+    {
+      "dataset": "fiqa",
+      "family": "body_terms",
+      "sampled_document_id": "232261",
+      "title": "",
+      "body_excerpt": "\"When you buy a put on a stock, you buy the right to sell the stock at fixed price, F, that his usually different from the market price, M. You paid a price, P, for the put.  Your potential profit, going forward, is represented by the DIFFERENCE you ",
+      "probe": "buy his going assumes higher already 19 fall less chance 11 race",
+      "assigned_alternative": "keywords",
+      "transformed_probe": "buy his going assumes higher already 19 fall less chance 11 race",
+      "identical_pair": true
+    },
+    {
+      "dataset": "fiqa",
+      "family": "body_terms",
+      "sampled_document_id": "313941",
+      "title": "",
+      "body_excerpt": "\"&gt;it will likely be a list of telecoms industry wishes that the FCC will use its power to push through local government  So the whole article is lame biased garbage projecting what things \"\"will likely be\"\" based on nothing but sky is falling nons",
+      "probe": "likely telecoms FCC power local lame based sky dare companies work der",
+      "assigned_alternative": "identifier_terms",
+      "transformed_probe": "likely telecoms FCC power local lame",
+      "identical_pair": false
+    },
+    {
+      "dataset": "fiqa",
+      "family": "body_terms",
+      "sampled_document_id": "296781",
+      "title": "",
+      "body_excerpt": "the government wants to tax your money before you die. If you die your 401(k) becomes part of your estate and will not be taxed to as great an extent.",
+      "probe": "government tax money die 401 becomes estate taxed great extent",
+      "assigned_alternative": "lead_clause",
+      "transformed_probe": "government tax money die 401 becomes estate taxed great extent",
+      "identical_pair": true
+    }
+  ]
+}

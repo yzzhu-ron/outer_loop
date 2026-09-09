@@ -1,0 +1,3 @@
+# Normalize CSV line endings; Matplotlib SVG path formatting is generated.
+results/*.csv text eol=lf
+results/figures/*.svg -whitespace

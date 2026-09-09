@@ -28,10 +28,10 @@ ENVIRONMENT_LABELS = {
 }
 COLORS = ("#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00", "#56B4E9")
 METHODS = {
-    "source_router": ("Source router", "#545454", "o", "--"),
-    "profile_router": ("Profile router", "#0072B2", "o", "-"),
-    "probe_only": ("Probe-only choice", "#D55E00", "s", "-"),
-    "rrf_extra": ("Extra task searches (RRF)", "#009E73", "^", "-"),
+    "source_router": ("Source router", "#0072B2", "D", "--"),
+    "profile_router": ("Profile router", "#D55E00", "o", "-"),
+    "probe_only": ("Probe-only choice", "#009E73", "s", "-"),
+    "rrf_extra": ("Extra task searches (RRF)", "#CC79A7", "^", "-"),
 }
 FAMILIES = {
     "exact_title": ("Exact-title control", "o"),
@@ -237,7 +237,11 @@ def plot_adaptation(plt, Line2D, rows: list[dict[str, str]], output: Path) -> No
                 ax.plot(
                     [point[0] for point in points], [point[1] for point in points],
                     color=color, marker=marker, linestyle=linestyle,
-                    linewidth=1.6, markersize=5, markeredgecolor="white", markeredgewidth=0.45,
+                    linewidth=1.6, markersize=7 if method == "source_router" else 5,
+                    markerfacecolor="none" if method == "source_router" else color,
+                    markeredgecolor=color if method == "source_router" else "white",
+                    markeredgewidth=1.2 if method == "source_router" else 0.45,
+                    zorder=4 if method == "source_router" else 2,
                 )
         ax.set_title(ENVIRONMENT_LABELS[environment], loc="left", fontsize=11)
         ax.ticklabel_format(axis="y", style="plain", useOffset=False)
@@ -250,7 +254,8 @@ def plot_adaptation(plt, Line2D, rows: list[dict[str, str]], output: Path) -> No
     for ax in axes[:, 0]:
         ax.set_ylabel("Task nDCG@10")
     handles = [
-        Line2D([], [], label=label, color=color, marker=marker, linestyle=linestyle)
+        Line2D([], [], label=label, color=color, marker=marker, linestyle=linestyle,
+               markerfacecolor="none" if method == "source_router" else color)
         for method, (label, color, marker, linestyle) in METHODS.items() if method in present
     ]
     fig.suptitle("Adaptation quality versus operational cost · 50 future tasks", x=0.08, ha="left", y=0.99)

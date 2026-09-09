@@ -1,0 +1,125 @@
+{
+  "note": "Initial cold-cache execution timings; protocol annotation hash was finalized during this run. Engine/data and experiment settings did not change. Final cached validation rerun uses one enforced contract and is checked against the same task outcomes, not counted as another replicate.",
+  "elapsed_seconds": 239.8921725830296,
+  "environments": {
+    "fiqa_bm25": {
+      "index_load_or_build_seconds": 3.532758624991402,
+      "actual_uncached_queries": 1570,
+      "actual_uncached_search_seconds": 0.5858070419635624,
+      "mean_serial_search_seconds_20_tasks": 0.0005518791498616338,
+      "phase_costs": {
+        "onboarding_grid": {
+          "uncached_queries": 251,
+          "uncached_seconds": 0.07003800105303526,
+          "virtual_queries": 540
+        },
+        "source_calibration": {
+          "uncached_queries": 206,
+          "uncached_seconds": 0.07910016702953726,
+          "virtual_queries": 256
+        },
+        "source_router_training": {
+          "uncached_queries": 631,
+          "uncached_seconds": 0.2487095829565078,
+          "virtual_queries": 768
+        },
+        "target_test_cache": {
+          "uncached_queries": 482,
+          "uncached_seconds": 0.18795929092448205,
+          "virtual_queries": 600
+        }
+      }
+    },
+    "fiqa_dense": {
+      "index_load_or_build_seconds": 192.55885100003798,
+      "actual_uncached_queries": 1570,
+      "actual_uncached_search_seconds": 2.1575173252495006,
+      "mean_serial_search_seconds_20_tasks": 0.004112212499603629,
+      "phase_costs": {
+        "onboarding_grid": {
+          "uncached_queries": 251,
+          "uncached_seconds": 0.9316376582719386,
+          "virtual_queries": 540
+        },
+        "source_calibration": {
+          "uncached_queries": 206,
+          "uncached_seconds": 0.18687670805957168,
+          "virtual_queries": 256
+        },
+        "source_router_training": {
+          "uncached_queries": 631,
+          "uncached_seconds": 0.5940054999664426,
+          "virtual_queries": 768
+        },
+        "target_test_cache": {
+          "uncached_queries": 482,
+          "uncached_seconds": 0.44499745895154774,
+          "virtual_queries": 600
+        }
+      }
+    },
+    "scifact_bm25": {
+      "index_load_or_build_seconds": 0.4544258750975132,
+      "actual_uncached_queries": 2067,
+      "actual_uncached_search_seconds": 0.13255925523117185,
+      "mean_serial_search_seconds_20_tasks": 7.540415390394628e-05,
+      "phase_costs": {
+        "onboarding_grid": {
+          "uncached_queries": 600,
+          "uncached_seconds": 0.047846547211520374,
+          "virtual_queries": 1080
+        },
+        "source_calibration": {
+          "uncached_queries": 225,
+          "uncached_seconds": 0.012221083045005798,
+          "virtual_queries": 256
+        },
+        "source_router_training": {
+          "uncached_queries": 715,
+          "uncached_seconds": 0.04204441700130701,
+          "virtual_queries": 768
+        },
+        "target_test_cache": {
+          "uncached_queries": 527,
+          "uncached_seconds": 0.030447207973338664,
+          "virtual_queries": 600
+        }
+      }
+    },
+    "scifact_dense": {
+      "index_load_or_build_seconds": 35.2096992500592,
+      "actual_uncached_queries": 2067,
+      "actual_uncached_search_seconds": 2.726427049958147,
+      "mean_serial_search_seconds_20_tasks": 0.003552445798413828,
+      "phase_costs": {
+        "onboarding_grid": {
+          "uncached_queries": 600,
+          "uncached_seconds": 1.5818661339581013,
+          "virtual_queries": 1080
+        },
+        "source_calibration": {
+          "uncached_queries": 225,
+          "uncached_seconds": 0.1558051670435816,
+          "virtual_queries": 256
+        },
+        "source_router_training": {
+          "uncached_queries": 715,
+          "uncached_seconds": 0.5595224159769714,
+          "virtual_queries": 768
+        },
+        "target_test_cache": {
+          "uncached_queries": 527,
+          "uncached_seconds": 0.42923333297949284,
+          "virtual_queries": 600
+        }
+      }
+    }
+  },
+  "generation_runner_sha256": "3f7296744efa10317323bbf1f391e4f3b1c9e486a6f032731ac531aa5cec590e",
+  "task_score_hashes": {
+    "fiqa_dense": "aa8e8d97f67212faec1a5ba342369ee5e9690e0398c1432370c1f9685b11e69d",
+    "scifact_dense": "0d16fb618f1e467f3b54c27702ed85e832b3c051cc26e8bccc58a9559540916a",
+    "fiqa_bm25": "337dae2a829380cf9e335d0c460b9d8833a783769bdc7126a7a7d97e3c554f32",
+    "scifact_bm25": "d6a571d210703744fc6cb48d606eecca21ab56591b9d72d2bdc2980f9e46ca56"
+  }
+}

@@ -39,6 +39,8 @@ papers/learning-to-explore-search-environments/pilot/.venv/bin/python \
 OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 TOKENIZERS_PARALLELISM=false \
   papers/learning-to-explore-search-environments/pilot/.venv/bin/python \
   papers/learning-to-explore-search-environments/pilot/run_pilot.py
+papers/learning-to-explore-search-environments/pilot/.venv/bin/python \
+  papers/learning-to-explore-search-environments/pilot/audit_probes.py
 MPLCONFIGDIR=/tmp/search-exploration-matplotlib \
   papers/learning-to-explore-search-environments/pilot/.venv/bin/python \
   papers/learning-to-explore-search-environments/pilot/plot_results.py
@@ -48,7 +50,7 @@ The runner defaults to offline model loading after preparation. The first run
 builds embeddings for every corpus document; later runs reuse valid caches.
 Different hardware or numeric libraries can affect dense-score ties and timing.
 `--analyze-only` rebuilds summaries from local outcome caches only when the
-input-code/protocol contract and sample parameters still match. The original
+input-code/protocol contract (including the runner) and sample parameters still match. The original
 generation hash is preserved separately from the analysis-code hashes.
 
 Run the contract, ranking, and cache checks:

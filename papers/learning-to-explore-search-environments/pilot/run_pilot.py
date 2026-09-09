@@ -54,7 +54,7 @@ def write_csv(path, rows):
 
 def generation_contract(args):
     return {'input_code': {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-                           for name in ('engine.py', 'data.py', 'protocol.json')},
+                           for name in ('engine.py', 'data.py', 'protocol.json', 'run_pilot.py')},
             'actions': list(ACTIONS), 'test_queries': args.test_queries,
             'source_queries': args.source_queries, 'probes': args.probes,
             'seeds': list(SEEDS), 'budgets': list(BUDGETS)}
@@ -459,6 +459,7 @@ def main():
     os.environ.setdefault('HF_HOME', str(args.data / 'hf'))
     os.environ.setdefault('HF_HUB_OFFLINE', '1')
     started = time.perf_counter()
+    frozen_contract = generation_contract(args)
     manifest_path = args.output / 'manifest.json'
     manifest = json.loads(manifest_path.read_text()) if args.analyze_only else {
         'proposal_commit': 'a24a29a90c8dd6a91e5ee91f525ea0a1a2266392',
@@ -470,6 +471,8 @@ def main():
     records = []
     for name in ('scifact', 'fiqa'):
         for backend in ('bm25', 'dense'):
+            if generation_contract(args) != frozen_contract:
+                raise RuntimeError('Generation code/protocol changed while the run was active')
             if args.analyze_only:
                 record = json.loads((args.cache / f'{name}_{backend}_outcomes.json').read_text())
                 if record.get('generation_contract') != generation_contract(args):
@@ -477,6 +480,8 @@ def main():
                 records.append(record)
             else:
                 records.append(build_environment(name, backend, args, manifest))
+                if records[-1]['generation_contract'] != frozen_contract:
+                    raise RuntimeError('Generation code/protocol changed while building an environment')
                 write_json(manifest_path, manifest)
     analyze(records, args, manifest)
     manifest['last_analysis_total_seconds'] = time.perf_counter() - started

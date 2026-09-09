@@ -1,0 +1,9 @@
+environment,family,budget,mean_delta,conditional_95_low,conditional_95_high,histories,queries
+scifact_bm25,exact_title,256,0.0,0.0,0.0,3,150
+scifact_bm25,body_terms,256,0.0,0.0,0.0,3,150
+scifact_dense,exact_title,256,0.0,0.0,0.0,3,150
+scifact_dense,body_terms,256,0.0,0.0,0.0,3,150
+fiqa_bm25,exact_title,256,0.0,0.0,0.0,3,150
+fiqa_bm25,body_terms,256,0.0,0.0,0.0,3,150
+fiqa_dense,exact_title,256,0.0,0.0,0.0,3,150
+fiqa_dense,body_terms,256,0.0,0.0,0.0,3,150
