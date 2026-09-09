@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stronger Research Directions for IR and Self-Improving Search</title>
+<style>
+  :root {
+    /* Warm paper palette — see design-system.md */
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --sky:      #6A8CAF;
+    --white:    #FFFFFF;
+    --gray-150: #F0EEE6;
+    --gray-300: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-700: #3D3D3A;
+    --danger:   #B04A3F;
+
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ivory:    #1A1A18;
+      --slate:    #F0EFE9;
+      --clay:     #E68A6A;
+      --oat:      #3A3530;
+      --olive:    #9CB077;
+      --sky:      #87A2C2;
+      --white:    #232220;
+      --gray-150: #2A2926;
+      --gray-300: #3A3935;
+      --gray-500: #8A8881;
+      --gray-700: #C8C6BF;
+      --danger:   #D97766;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ivory);
+    color: var(--gray-700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+
+  /* Two-column layout: prose + sticky aside.
+     Drop the aside and switch to a single column for short docs. */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 48px;
+  }
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; }
+    aside { order: 2; position: static; }
+  }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--slate);
+    margin: 40px 0 14px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--slate);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  .lead { max-width: 640px; font-size: 16px; }
+  .muted { color: var(--gray-500); }
+  em { font-style: italic; }
+  a { color: var(--clay); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--clay); }
+
+  code { font-family: var(--mono); font-size: 13px; background: var(--gray-150); padding: 0.125em 0.35em; border-radius: 4px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--slate); background: var(--white); border: 1.5px solid var(--gray-300); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* TL;DR card */
+  .tldr {
+    border: 1.5px solid var(--gray-300);
+    border-left: 3px solid var(--clay);
+    border-radius: 10px;
+    background: var(--white);
+    padding: 16px 18px;
+    margin: 8px 0 20px;
+  }
+  .tldr b { color: var(--slate); }
+
+  /* Demo / figure panel */
+  .panel {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 14px;
+    background: var(--white);
+    padding: 24px;
+    margin: 12px 0;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--oat);
+    background: rgba(227, 218, 204, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--clay); font-weight: 600; }
+
+  /* Dotted-underline term linked to glossary */
+  .term {
+    border-bottom: 1.5px dotted var(--clay);
+    cursor: help;
+    color: var(--slate);
+  }
+
+  /* Sticky aside (glossary or on-this-page) */
+  aside {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 18px 18px 8px;
+  }
+  aside .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  aside dl dt {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 0;
+  }
+  aside dl dd {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    margin: 2px 0 14px;
+  }
+  aside dl dt.hl, aside dl dt.hl + dd {
+    background: rgba(217, 119, 87, 0.10);
+    margin-left: -8px; margin-right: -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 4px;
+  }
+
+  /* Collapsible details */
+  details {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--slate);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    color: var(--clay);
+    font-family: var(--sans);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body { padding: 0 16px 16px; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 680px; font-size: 13.5px; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 500; }
+  td.good { color: var(--olive); }
+  td.bad  { color: var(--danger); }
+</style>
+<style>
+main {min-width:0;overflow-wrap:anywhere;}
+.meta {font-size:12px;color:var(--gray-700);overflow-wrap:anywhere;}
+.eyebrow, th, aside .label {color:var(--gray-700);}
+a {color:var(--slate);text-decoration:underline;text-decoration-color:var(--clay);text-underline-offset:3px;}
+a:hover {color:var(--clay);}
+strong {color:var(--slate);}
+li {margin:0 0 10px 22px;padding-left:3px;}
+ul, ol {max-width:680px;margin:12px 0 20px;}
+nav a {display:block;margin:0 0 11px;font-size:13px;}
+.table-wrap {overflow-x:auto;}
+table {max-width:none;}
+.proposal {border-left:3px solid var(--clay);padding:12px 18px;background:var(--gray-150);}
+:focus-visible {outline:2px solid var(--slate);outline-offset:4px;}
+section {scroll-margin-top:24px;}
+.table-wrap {max-width:100%;}
+.table-wrap table {min-width:600px;}
+#ratings table {min-width:560px;}
+@media print {details .body {display:block;} .table-wrap {overflow:visible;} .table-wrap table {min-width:0;} #ratings table {min-width:0;}}
+@media (max-width:960px) {.page{grid-template-columns:minmax(0,1fr);}aside {position:static;order:-1;}nav{display:flex;flex-wrap:wrap;gap:8px 18px;}nav a{margin:0;}aside .label{margin-bottom:8px;}.page{gap:30px;}body{padding:28px 18px 70px;}th,td{padding:8px 7px;}}
+@media print {body{padding:0;background:white;color:black;}.page{display:block;max-width:none;}aside{display:none;}details{break-inside:avoid;}a{color:inherit;}h2,h3{break-after:avoid;}}
+</style>
+</head>
+<body><div class="page"><main>
+<header>
+<div class="eyebrow">Research proposals and comparative ratings · 8 September 2026</div>
+<h1>Stronger Research Directions for IR and Self-Improving Search</h1>
+<p class="meta">Related documents: <a href="README.md">original frontier proposal</a> · <a href="frontier-assessment.html">frontier novelty and validity assessment</a>.</p>
+<p class="lead">My first research bet is an agent that learns how to search an unfamiliar environment through a small number of self-generated experiments. My more concrete method bet is retrieval that learns which documents help the next search step.</p>
+<div class="tldr"><p><strong>Choose a learning problem with a falsifiable mechanism before choosing the paper outline.</strong> The strongest continuation of the original motivation is transferable self-improvement: what does an agent learn from interacting with a search environment, and does that learning help on new tasks? Benchmark compression can remain experimental infrastructure.</p><p>These are proposals, not established novelty claims or acceptance predictions. The literature check rules out several broad pitches; it does not establish that every narrower idea is untouched. A successful method can still make a substantial contribution to a problem that prior work already identifies.</p></div>
+<p class="meta">Assumptions: public data, modest initial compute, flexible timeline. No training or evaluation experiments were run. Literature was checked through September 8, 2026; several close papers are recent preprints. Their reported results have not been reproduced here.</p>
+</header>
+
+<section id="choice"><h2>Which bet would I choose?</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Direction</th><th>Why pursue it</th><th>Main uncertainty</th></tr></thead>
+<tbody>
+<tr><td><a href="#explore">1. Learn an unfamiliar search environment</a></td><td>My lead for an ambitious ICLR-oriented project. Direct connection to autonomous improvement and adaptation.</td><td>Can deliberate exploration beat clear instructions, passive experience, and synthetic-query adaptation?</td></tr>
+<tr><td><a href="#value">2. Learn the future search value of evidence</a></td><td>Clearest method project and a natural IR contribution. Start with a small oracle experiment.</td><td>Does an affordable predictor improve decisions and transfer beyond its training agent?</td></tr>
+<tr><td><a href="#feedback">3. Study evaluation as a limit on self-improvement</a></td><td>Best reuse of current assets and cheapest path to an informative pilot.</td><td>Is there a consequential mechanism beyond ordinary adaptive overfitting?</td></tr>
+<tr><td><a href="#scope">4. Learn compositional evidence applicability</a></td><td>Strong practical motivation in technical search; potentially broader compositional learning.</td><td>Does a hard residual problem remain after filtering and prompted verification?</td></tr>
+</tbody></table></div>
+<p>I would pilot <strong>1 and 2</strong> before committing to a larger project. If minimizing new infrastructure is the dominant constraint, pilot <strong>3</strong> first. These are separate paper candidates, not four work packages to combine into one submission.</p>
+</section>
+
+<section id="ratings"><h2>Novelty and effort ratings</h2>
+<p>These are qualitative judgments on a <strong>1–5 scale</strong>, based on the ideas as currently specified and the literature reviewed above. They are not measured results, acceptance probabilities, or scores to average into a single ranking.</p>
+<div class="table-wrap"><table role="table">
+<thead>
+<tr>
+<th>Direction</th>
+<th>Novelty today</th>
+<th>Lightbulb potential</th>
+<th>Engineering / experimental lift: pilot → full study</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#explore">1. Learn an unfamiliar search environment</a></td>
+<td><strong>3 / 5</strong></td>
+<td><strong>4 / 5</strong></td>
+<td><strong>2 → 4 / 5</strong></td>
+</tr>
+<tr>
+<td><a href="#value">2. Learn the future search value of evidence</a></td>
+<td><strong>2 / 5</strong></td>
+<td><strong>3 / 5</strong></td>
+<td><strong>2 → 3 / 5</strong></td>
+</tr>
+<tr>
+<td><a href="#feedback">3. Study evaluation as a limit on self-improvement</a></td>
+<td><strong>2 / 5</strong></td>
+<td><strong>4 / 5</strong></td>
+<td><strong>1–2 → 3 / 5</strong></td>
+</tr>
+<tr>
+<td><a href="#scope">4. Learn compositional evidence applicability</a></td>
+<td><strong>2 / 5</strong></td>
+<td><strong>4 / 5</strong></td>
+<td><strong>2 → 4 / 5</strong></td>
+</tr>
+<tr>
+<td><a href="#parked">Reserve: selective index repair</a></td>
+<td><strong>2 / 5</strong></td>
+<td><strong>3 / 5</strong></td>
+<td><strong>2 → 4 / 5</strong></td>
+</tr>
+<tr>
+<td><a href="README.md">Original frontier proposal, for comparison</a></td>
+<td><strong>1 / 5</strong></td>
+<td><strong>2 / 5</strong></td>
+<td><strong>2 → 4 / 5</strong></td>
+</tr>
+</tbody>
+</table></div>
+<details><summary>How to read the ratings</summary><div class="body"><ul>
+<li><strong>Novelty today:</strong> 1 = established framing; 2 = close precedent with a narrow, provisional gap; 3 = a plausibly distinct research target or mechanism; 4 = a clearly differentiated method or finding; 5 = a new research paradigm. Ratings can rise or fall after a focused prior-art check and pilot.</li>
+<li><strong>Lightbulb potential:</strong> 1 = routine optimization; 2 = useful refinement; 3 = a meaningful method insight; 4 = a result that could change how we understand learning or retrieval; 5 = a field-shaping principle. This rates the upside of a successful result, not how likely that result is.</li>
+<li><strong>Engineering / experimental lift:</strong> 1 = mostly existing artifacts and light analysis; 2 = a small new prototype and bounded evaluation; 3 = substantial integration, repeated experiments, or modest training; 4 = major data curation or multiple environments/models plus extensive controls; 5 = large-scale infrastructure and training. Higher means harder. <strong>Pilot → full study</strong> separates the first decisive experiment from a convincing submission.</li>
+</ul></div></details>
+<details><summary>Why each idea received its ratings</summary><div class="body"><p><strong>Why these ratings:</strong></p>
+<ul>
+<li><strong>Unfamiliar-environment exploration</strong> has the strongest potential distinction: learning which experiments acquire reusable search knowledge. Synthetic tasks and procedural memory already exist. The full study needs varied environments, a learned exploration policy, transfer controls, and honest amortized costs.</li>
+<li><strong>Future search value</strong> has a clear method opportunity, but Bridge Evidence already identifies the problem and suggests learning its predictor. A useful solution can still be publishable. Branched agent rollouts and cross-agent evaluation drive the lift.</li>
+<li><strong>Evaluation feedback</strong> could reveal why an apparently reliable evaluator limits automated discovery, which gives it high conceptual upside. Adaptive overfitting and reusable holdouts are established, so the current novelty is low until a new predictive mechanism emerges. The pilot is relatively cheap if suitable cached ranked runs exist; reduced-corpus matrices alone only support protocol debugging.</li>
+<li><strong>Compositional applicability</strong> could explain a general failure to combine conditions across evidence. Existing scope and temporal-validity work sharply narrows the gap. Auditing real conditional cases, separating retrieval from reading errors, and testing unseen combinations make the full study demanding.</li>
+<li><strong>Selective index repair</strong> faces both partial-backfilling and representation-capacity precedents. A new constraint-guided repair method is only a hypothesis; a full study needs index updates, strong adaptation baselines, and cost accounting.</li>
+<li><strong>The original frontier</strong> is a useful organizing view, but the curve, target-budget inversion, and held-out-system framing have direct precedents. Its proposed full-corpus, multi-retriever study is still expensive. The rating applies to that outline, not to every possible new method for reliable evaluation.</li>
+</ul>
+<p>No direction receives a 5: none yet has a demonstrated new mechanism or result. The generic memory, sufficiency, and grounding ideas discussed in reserve are excluded as standalone proposals; their broad framing is already established.</p>
+</div></details>
+</section>
+
+<section id="explore"><h2>1. Can a search agent teach itself how to use a new corpus?</h2>
+<p class="proposal"><strong>Research question:</strong> Can an agent use a bounded set of self-generated search experiments to learn a procedure that improves future tasks in an unfamiliar environment, without human relevance labels or answers to those tasks?</p>
+<p>A search policy that works on Wikipedia may struggle with API documentation, scientific abstracts, or an unfamiliar enterprise index. The useful query forms, aliases, metadata fields, and routes between documents differ. The opportunity is to learn these properties before many user tasks arrive.</p>
+<p><strong>Hypothesis.</strong> Carefully chosen probes reveal reusable properties of the environment more efficiently than accumulating ordinary task trajectories. The benefit survives changes in evaluation entities and answers, and pays back the exploration cost over a realistic number of later tasks.</p>
+<h3>A concrete mechanism to investigate</h3>
+<p>Let the agent sample documents and create rediscovery tasks: find a known document using an indirect description, an alias, a relation, or a conjunction of conditions. Document identity supplies self-supervision. Paired probes can distinguish hypotheses about which query transformations work. A small learned controller chooses the next informative probe and updates a compact search procedure.</p>
+<p>The eventual learning contribution could be a policy for <em>choosing experiments</em>, trained across source environments and adapted on unseen ones. A first pilot can use prompt or memory updates. It should not require large-scale RL to establish that useful information exists.</p>
+<details><summary>Closest work and the proposed distinction</summary><div class="body">
+<p><a href="https://arxiv.org/html/2503.09516">Search-R1</a> already trains search behavior with outcome rewards. <a href="https://arxiv.org/html/2609.02253">APEx</a> already combines procedural skill distillation and test-time RL. <a href="https://arxiv.org/html/2606.26122">DocArena</a> builds corpus-grounded training environments. <a href="https://arxiv.org/html/2605.29307">GrepSeek</a> learns direct corpus interaction, and <a href="https://arxiv.org/html/2608.29953">SearchWiki</a> builds and navigates a knowledge structure.</p>
+<p>The proposed distinction is <strong>deliberate, bounded adaptation to an unseen environment without target-task labels</strong>, with evidence that the learned procedure transfers independently of answer storage. Memory, synthetic queries, and self-generated tasks are established ingredients. Classical synthetic-query retriever adaptation and broader unsupervised/meta-RL require a further focused novelty audit if this pilot succeeds.</p>
+</div></details>
+<h3>Smallest useful pilot</h3>
+<p>Use two or three public collections, a fixed search agent, and lexical/dense interfaces. Compare no adaptation, an accurate interface description, random probes, passive experience, deliberate probes, and corpus-generated synthetic-query adaptation at matched cost. Illustrative exploration budgets are 0, 10, 50, and 200 probes; these are experimental choices, not forecasts.</p>
+<p>Keep probe and test answers/entities disjoint. Include at least one natural change in corpus or index behavior. Measure task success, search calls, tokens, and the number of later tasks needed to repay exploration. Coherent changes to corpus facts can provide an additional test that the improvement concerns procedure.</p>
+<p><strong>Stop if</strong> a short tool description removes the gain, improvement depends on answer overlap, or random/passive probes are equally effective. <strong>Advance if</strong> active exploration produces portable improvements at a useful amortized cost.</p>
+<p><strong>What could make it ICLR-level:</strong> an effective learning rule for acquiring environment knowledge, robust transfer, and an explanation of when exploration helps. A small prompt-memory gain in one search interface would be insufficient. This is a promising connection to self-improvement; it is not evidence of recursive improvement in learning ability.</p>
+</section>
+
+<section id="value"><h2>2. Retrieve evidence for its effect on the next search</h2>
+<p class="proposal"><strong>Research question:</strong> Can a retriever learn a document’s contribution to future evidence acquisition, conditioned on what the agent already knows?</p>
+<p>A document may reveal an obscure project name that unlocks the decisive next query. After that name is known, the same document adds little. Ordinary relevance ranking does not directly optimize this changing value.</p>
+<p><strong>Hypothesis.</strong> A cheap predictor of this future search value improves end-to-end success under a fixed evidence budget, beyond relevance, diversity, and simple entity-novelty heuristics.</p>
+<h3>A concrete method</h3>
+<p>Start with a fixed agent. Cache search prefixes, substitute candidate documents, and continue the agent for a small number of paired rollouts. Use the resulting success and cost differences to train a small state–document value model. Rerank candidates using that value together with relevance. If the oracle experiment supports the idea, investigate affordable label acquisition and transfer across agent policies.</p>
+<details><summary>Closest work and the proposed distinction</summary><div class="body">
+<p><a href="https://arxiv.org/html/2607.15253">Bridge Evidence</a> already documents static-versus-trajectory utility differences and explicitly proposes cheaply predicting trajectory utility as future work. <a href="https://arxiv.org/html/2606.05263">CVT-RL</a> already uses policy-conditioned counterfactual credit and learned outcomes. <a href="https://arxiv.org/html/2608.07531v1">Search-G1 v1</a> uses evidence-deletion-based signals and document replacement tests.</p>
+<p>The contribution must therefore be an <strong>effective, affordable, transferable ranking method</strong>. Neither the existence of bridge documents nor counterfactual credit is new. Following up on an explicit open problem is worthwhile when the solution is substantial.</p>
+</div></details>
+<h3>Smallest useful pilot</h3>
+<p>Use roughly 200–300 multi-hop questions and a fixed small open agent. First compare oracle trajectory-value selection with a strong relevance reranker at the same token budget. If the ceiling is material, fit a small predictor. Required controls include MMR/diversity, entity novelty, question-only versus full-state ranking, and simply retrieving more documents at the same total cost.</p>
+<p>Use length-matched document substitutions so deleting a document does not simply shorten the context. Evaluate uncertainty at the question level. A second corpus and second agent are necessary before claiming transfer.</p>
+<p><strong>Stop if</strong> oracle gains are tiny, a simple novelty heuristic captures them, or rollout labeling costs erase the benefit. <strong>Advance if</strong> a cheap predictor delivers robust gains and works across policies.</p>
+<p><strong>What could make it ICLR-level:</strong> a generalizable representation or learning principle for evidence value across changing agents. A strong method on several retrieval tasks is also a natural SIGIR/ACL/EMNLP contribution; those venues are appropriate scientific targets in their own right.</p>
+</section>
+
+<section id="feedback"><h2>3. When does cheap evaluation limit self-improvement?</h2>
+<p class="proposal"><strong>Research question:</strong> Can two evaluators with similar held-out accuracy lead an adaptive optimizer to discover very different final systems, and can we predict and prevent that divergence?</p>
+<p>The current proposal studies an evaluator against an existing model panel. In a development loop, the evaluator changes which models are produced next. An optimizer may learn modifications that exploit a reusable evaluator error. Cheap scores can then improve while independently measured quality stagnates or declines.</p>
+<p><strong>Hypothesis.</strong> How candidate changes align with structured evaluation errors predicts final discovery quality better than passive agreement and trial count alone. This may create a regime where more search is harmful, but that result must be tested rather than assumed.</p>
+<h3>A concrete method to earn the claim</h3>
+<p>Track behavioral departures from the systems used to validate the evaluator. Use a small independent audit stream to test whether recent improvements are real, then selectively refresh the evaluator. The diagnostic must use information available during search; a full-benchmark oracle can explain failures but cannot serve as a deployable method.</p>
+<details><summary>Closest work and the proposed distinction</summary><div class="body">
+<p><a href="https://proceedings.mlr.press/v37/blum15.html">The Ladder</a> and <a href="https://arxiv.org/html/1506.02629">adaptive data analysis / reusable holdouts</a> already establish the danger of adaptive feedback and provide remedies. <a href="https://arxiv.org/html/2506.07673">How benchmark prediction from fewer data misses the mark</a> already shows failure under model extrapolation. <a href="https://arxiv.org/html/2510.08730v2">How Reliable is Language Model Micro-Benchmarking?</a> already studies passive decision reliability.</p>
+<p>The proposed advance is a <strong>predictive mechanism and better discovery outcome in a real feedback loop</strong>. Showing that repeated noisy selection overfits, or periodically checking a holdout, would not suffice.</p>
+</div></details>
+<h3>Smallest useful pilot</h3>
+<p>Use cached ranked runs on two public datasets to generate new rank-fusion or query-routing candidates adaptively. Routing must use deployable query features, not query IDs or hidden judgments. A static matrix of pre-existing model rows does not demonstrate adaptive candidate creation.</p>
+<p>Compare fixed random subsets, a learned compressor, fresh sampling, thresholded/reusable-holdout feedback, and full feedback. Match total development cost. Plot final independent quality against total cost and separate fixed-benchmark fidelity from generalization to untouched queries.</p>
+<p><strong>Stop if</strong> the phenomenon is explained by ordinary winner’s curse or fresh sampling plus a final audit solves it cheaply. <strong>Advance if</strong> a substantial, predictable interaction remains and the remedy improves final systems at matched cost.</p>
+<p><strong>What could make it ICLR-level:</strong> a substantive result about the dynamics of automated discovery. This is the best use of the existing compression infrastructure, but it should not be selected solely because the infrastructure already exists.</p>
+</section>
+
+<section id="scope"><h2>4. Retrieve the evidence whose conditions apply</h2>
+<p class="proposal"><strong>Research question:</strong> Can a retriever compose validity conditions across documents and generalize to new combinations of version, configuration, and exceptions?</p>
+<p>“The feature is enabled by default” can be true for version 2, false for version 1, and overridden in a particular mode. All the documents may be correct. A query about version 1 needs a different answer from an otherwise identical query about version 2. Some exceptions are documented separately from the default.</p>
+<p><strong>Hypothesis.</strong> A learned representation of applicability, coupled with retrieval of missing conditions and exceptions, improves unseen condition combinations beyond metadata filtering and a strong prompted verifier.</p>
+<details><summary>Closest work and the proposed distinction</summary><div class="body">
+<p><a href="https://aclanthology.org/2025.acl-long.301/">HoH</a> already studies outdated evidence. <a href="https://arxiv.org/html/2608.20685">Temporal Validity on Real Software Histories</a> handles atomic supersession. <a href="https://arxiv.org/html/2608.07622">Controlled Memory Interference</a> is a serious collision: it already covers scope, authority, transient changes, and applicable stable updates.</p>
+<p>The narrower bet is <strong>query-dependent validity among simultaneously correct branches, with held-out combinations of conditions</strong>. Broad applicability-aware retrieval is not an adequate novelty claim. This direction needs further checking against conditional reasoning and version-aware retrieval before substantial investment.</p>
+</div></details>
+<h3>Smallest useful pilot</h3>
+<p>Audit 30–50 real cases from public versioned documentation before constructing a benchmark. Use matched queries that change one condition over the same corpus. Include ordinary ranking, metadata filtering, prompted verification, and explicit condition composition. Give readers oracle evidence in a diagnostic condition to distinguish retrieval from interpretation failures.</p>
+<p><strong>Stop if</strong> metadata or a short prompt handles the cases. <strong>Advance if</strong> realistic cross-document exceptions remain difficult and a learned method transfers to unseen combinations and product families.</p>
+<p><strong>What could make it ICLR-level:</strong> a result about compositional learning and retrieval, rather than a version-filtering feature. This is an attractive practical IR project but a higher-risk conceptual bet than its broad motivation initially suggests.</p>
+</section>
+
+<section id="parked"><h2>Ideas I would keep in reserve</h2>
+<details><summary>Selective index repair: attractive, but substantial prior work</summary><div class="body">
+<p>One possible core IR project is to diagnose ranking constraints that a frozen document index cannot satisfy through query adaptation, then repair only the limiting document representations. The proposed distinction would be repair guided by task-specific representational constraints.</p>
+<p>However, <a href="https://arxiv.org/html/2303.04766">FastFill</a> already learns a policy for partial backfilling using uncertainty; <a href="https://arxiv.org/abs/2210.06954">Darwinian Model Upgrades</a> already uses selective compatibility. <a href="https://arxiv.org/html/2604.03403">Align Then Adapt</a> and <a href="https://arxiv.org/html/2506.00037">Query Drift Compensation</a> already support adaptation with frozen document indexes. <a href="https://arxiv.org/abs/2508.21038">On the Theoretical Limitations of Embedding-Based Retrieval</a> already studies the representational ceiling, including freely optimized embeddings.</p>
+<p>The cheap first experiment would measure an oracle query-vector ceiling on real tasks. If that ceiling is effectively perfect, a geometry-based repair story has little support. If the gap is substantial, test whether targeted repairs beat FastFill-style uncertainty and strong query adapters at the same re-encoding cost. The ceiling and partial-refresh framing are not themselves new. The theory paper and Darwinian paper were checked at abstract level in this pass; FastFill, ERA, and QDC received targeted full-text reading.</p>
+</div></details>
+<details><summary>Generic agent memory, evidence sufficiency, and counterfactual grounding</summary><div class="body">
+<p>These remain useful areas, but recent primary papers already cover much of the obvious pitch: <a href="https://arxiv.org/html/2609.02253">APEx</a> for procedural memory and adaptation; <a href="https://arxiv.org/html/2505.02811">Knowing You Don’t Know</a> for learned sufficiency and search continuation; <a href="https://arxiv.org/html/2609.01687">Learning Evidence Sufficiency Boundaries</a> for partial-to-sufficient-to-redundant context; <a href="https://arxiv.org/html/2608.07531v1">Search-G1 v1</a> for evidence-reliance rewards and replacement tests.</p>
+<p>Coherent fact-changing corpus interventions are useful controls for proposals 1 and 2. They are a less convincing standalone paper unless they uncover a new mechanism and support a correction.</p>
+</div></details>
+</section>
+
+<section id="next"><h2>The decision before the paper</h2>
+<p><strong>My preferred high-level proposal:</strong> <em>Learning to Explore Unfamiliar Search Environments Without Task Labels.</em> Its motivating question is whether an agent can learn how to find evidence through interaction and carry that improvement to future tasks. It connects naturally to the original self-improvement interest while making the transferable capability explicit.</p>
+<p>The first deliverable should be a comparison showing whether deliberate exploration adds useful, reusable information beyond strong simple baselines. In parallel, a small oracle experiment for future-search evidence value offers a concrete alternative. Pick one direction after those results; then write its statistical contract and full experimental plan.</p>
+<p>For ICLR, I would look for three things: a learning mechanism that differs materially from its nearest papers, a substantial result at matched total cost, and transfer that survives realistic controls. I would pursue these ideas as research bets; I would not yet predict acceptance for any of them.</p>
+<p class="meta">This memo synthesizes targeted primary-source checks with the <a href="frontier-assessment.html">frontier assessment</a> of <a href="https://github.com/yzzhu-ron/outer_loop/pull/1">outer_loop PR #1</a>. The linked papers, scope notes, baselines, and stop/go criteria above provide the context needed to evaluate these proposals without access to a local research workspace.</p>
+</section>
+</main><aside><div class="label">Research choices</div><nav aria-label="On this page">
+<a href="#choice">Recommendation</a><a href="#ratings">Novelty and effort ratings</a><a href="#explore">1 · Learn an environment</a><a href="#value">2 · Future search value</a><a href="#feedback">3 · Evaluation feedback</a><a href="#scope">4 · Evidence applicability</a><a href="#parked">Ideas in reserve</a><a href="#next">Next decision</a>
+</nav></aside></div></body></html>

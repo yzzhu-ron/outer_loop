@@ -6,11 +6,15 @@ No paper experiments described below have been run unless explicitly marked as
 pilot evidence.
 
 The design and recommendations below preserve the original proposal. The
-subsequent [frontier assessment](frontier-assessment.md) finds insufficient
+subsequent [frontier assessment](frontier-assessment.html) finds insufficient
 novelty in the current framing and unresolved reliability claims; it does not
 recommend executing the full plan yet. Read the assessment alongside the
-[alternative research directions and ratings](research-directions.md) before
+[alternative research directions and ratings](research-directions.html) before
 choosing a pilot or committing to a paper.
+
+Both companion documents are self-contained HTML. Open the files locally in a
+browser or an HTML preview to see the formatted reports; GitHub's file view
+shows their source.
 
 ## Executive decision
 
