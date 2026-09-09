@@ -1,8 +1,16 @@
-# The Compression–Reliability Frontier: How Compressible Is a Retrieval Benchmark?
+# The Compression–Reliability Frontier: How Compressible Is a Retrieval Benchmark? (research proposal)
 
-Status: research handoff and execution plan for a possible ICLR 2027 submission.
+Status: research proposal under reassessment, originally developed as a handoff
+and execution plan for a possible ICLR 2027 submission.
 No paper experiments described below have been run unless explicitly marked as
 pilot evidence.
+
+The design and recommendations below preserve the original proposal. The
+subsequent [frontier assessment](frontier-assessment.md) finds insufficient
+novelty in the current framing and unresolved reliability claims; it does not
+recommend executing the full plan yet. Read the assessment alongside the
+[alternative research directions and ratings](research-directions.md) before
+choosing a pilot or committing to a paper.
 
 ## Executive decision
 

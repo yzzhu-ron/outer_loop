@@ -4,8 +4,11 @@
   and ICLR generations of the general theory paper, review records, figures,
   simulations, essay, and companion blog.
 - [`benchmark-compression-for-retriever-evaluation/`](benchmark-compression-for-retriever-evaluation/)
-  is the prospective empirical paper direction built around compact retriever
-  evaluation sets.
+  contains the original compression–reliability frontier research proposal,
+  now under reassessment. Read its
+  [novelty and validity assessment](benchmark-compression-for-retriever-evaluation/frontier-assessment.md)
+  and the [alternative IR and self-improving-search proposals](benchmark-compression-for-retriever-evaluation/research-directions.md),
+  including novelty, lightbulb-potential, and engineering/experimental-lift ratings.
 
 Paper material for a single application stays with that application. All
 ShopGym drafts therefore live in `applications/shopgym/papers/`.
