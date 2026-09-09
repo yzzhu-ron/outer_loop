@@ -1,0 +1,1646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Compression–Reliability Frontier: How Compressible Is a Retrieval Benchmark? (research proposal)</title>
+<style>
+  :root {
+    /* Warm paper palette — see design-system.md */
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --sky:      #6A8CAF;
+    --white:    #FFFFFF;
+    --gray-150: #F0EEE6;
+    --gray-300: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-700: #3D3D3A;
+    --danger:   #B04A3F;
+
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ivory:    #1A1A18;
+      --slate:    #F0EFE9;
+      --clay:     #E68A6A;
+      --oat:      #3A3530;
+      --olive:    #9CB077;
+      --sky:      #87A2C2;
+      --white:    #232220;
+      --gray-150: #2A2926;
+      --gray-300: #3A3935;
+      --gray-500: #8A8881;
+      --gray-700: #C8C6BF;
+      --danger:   #D97766;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ivory);
+    color: var(--gray-700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+
+  /* Two-column layout: prose + sticky aside.
+     Drop the aside and switch to a single column for short docs. */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 48px;
+  }
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; }
+    aside { order: 2; position: static; }
+  }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--slate);
+    margin: 40px 0 14px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--slate);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  .lead { max-width: 640px; font-size: 16px; }
+  .muted { color: var(--gray-500); }
+  em { font-style: italic; }
+  a { color: var(--clay); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--clay); }
+
+  code { font-family: var(--mono); font-size: 13px; background: var(--gray-150); padding: 0.125em 0.35em; border-radius: 4px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--slate); background: var(--white); border: 1.5px solid var(--gray-300); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* TL;DR card */
+  .tldr {
+    border: 1.5px solid var(--gray-300);
+    border-left: 3px solid var(--clay);
+    border-radius: 10px;
+    background: var(--white);
+    padding: 16px 18px;
+    margin: 8px 0 20px;
+  }
+  .tldr b { color: var(--slate); }
+
+  /* Demo / figure panel */
+  .panel {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 14px;
+    background: var(--white);
+    padding: 24px;
+    margin: 12px 0;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--oat);
+    background: rgba(227, 218, 204, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--clay); font-weight: 600; }
+
+  /* Dotted-underline term linked to glossary */
+  .term {
+    border-bottom: 1.5px dotted var(--clay);
+    cursor: help;
+    color: var(--slate);
+  }
+
+  /* Sticky aside (glossary or on-this-page) */
+  aside {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 18px 18px 8px;
+  }
+  aside .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  aside dl dt {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 0;
+  }
+  aside dl dd {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    margin: 2px 0 14px;
+  }
+  aside dl dt.hl, aside dl dt.hl + dd {
+    background: rgba(217, 119, 87, 0.10);
+    margin-left: -8px; margin-right: -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 4px;
+  }
+
+  /* Collapsible details */
+  details {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--slate);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    color: var(--clay);
+    font-family: var(--sans);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body { padding: 0 16px 16px; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 680px; font-size: 13.5px; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 500; }
+  td.good { color: var(--olive); }
+  td.bad  { color: var(--danger); }
+</style>
+<style>
+main {min-width:0;overflow-wrap:anywhere;}
+.meta {font-size:12px;color:var(--gray-700);overflow-wrap:anywhere;}
+.eyebrow, th, aside .label {color:var(--gray-700);}
+a {color:var(--slate);text-decoration:underline;text-decoration-color:var(--clay);text-underline-offset:3px;}
+a:hover {color:var(--clay);}
+strong {color:var(--slate);}
+li {margin:0 0 10px 22px;padding-left:3px;}
+ul, ol {max-width:680px;margin:12px 0 20px;}
+nav a {display:block;margin:0 0 11px;font-size:13px;}
+.table-wrap {overflow-x:auto;}
+table {max-width:none;}
+.proposal {border-left:3px solid var(--clay);padding:12px 18px;background:var(--gray-150);}
+:focus-visible {outline:2px solid var(--slate);outline-offset:4px;}
+section {scroll-margin-top:24px;}
+.table-wrap {max-width:100%;}
+.table-wrap table {min-width:600px;}
+#ratings table {min-width:560px;}
+@media print {details .body {display:block;} .table-wrap {overflow:visible;} .table-wrap table {min-width:0;} #ratings table {min-width:0;}}
+@media (max-width:960px) {.page{grid-template-columns:minmax(0,1fr);}aside {position:static;order:-1;}nav{display:flex;flex-wrap:wrap;gap:8px 18px;}nav a{margin:0;}aside .label{margin-bottom:8px;}.page{gap:30px;}body{padding:28px 18px 70px;}th,td{padding:8px 7px;}}
+@media print {body{padding:0;background:white;color:black;}.page{display:block;max-width:none;}aside{display:none;}details{break-inside:avoid;}a{color:inherit;}h2,h3{break-after:avoid;}}
+</style>
+<style>
+blockquote {max-width:680px;border-left:3px solid var(--clay);padding:12px 18px;margin:16px 0;background:var(--gray-150);}
+blockquote p:last-child {margin-bottom:0;}
+.equation {max-width:100%;overflow-x:auto;margin:20px 0;padding:12px 4px;}
+math {font-size:1.05em;color:var(--slate);}
+.equation math {min-width:max-content;}
+aside {max-height:calc(100vh - 64px);overflow-y:auto;}
+aside nav a {font-size:12px;margin-bottom:8px;}
+li > p {margin-bottom:6px;}
+li > ul, li > ol {margin-top:8px;}
+@media(max-width:960px) {aside {max-height:300px;} aside nav {display:block;}}
+@media print {aside {display:none;} .equation {overflow:visible;}}
+</style>
+</head>
+<body><div class="page"><main><header>
+<div class="eyebrow">Research proposal · under reassessment</div>
+<h1>The Compression–Reliability Frontier: How Compressible Is a Retrieval Benchmark? (research proposal)</h1>
+<p class="meta">Related documents: <a href="frontier-assessment.html">frontier assessment</a> · <a href="research-directions.html">alternative research directions and ratings</a>.</p>
+<p>Status: research proposal under reassessment, originally developed as a handoff
+and execution plan for a possible ICLR 2027 submission.
+No paper experiments described below have been run unless explicitly marked as
+pilot evidence.</p>
+<p>The design and recommendations below preserve the original proposal. The
+subsequent <a href="frontier-assessment.html">frontier assessment</a> finds insufficient
+novelty in the current framing and unresolved reliability claims; it does not
+recommend executing the full plan yet. Read the assessment alongside the
+<a href="research-directions.html">alternative research directions and ratings</a> before
+choosing a pilot or committing to a paper.</p>
+<p>All three research documents are self-contained HTML. Open the files locally in a
+browser or an HTML preview to see the formatted reports; GitHub's file view
+shows their source.</p>
+</header>
+<section>
+<h2 id="executive-decision">Executive decision</h2>
+<p>Proceed with this direction, but make the submission conditional on an early
+go/no-go experiment. The paper should not sell one more clever way to choose a
+small query set. Its central move is to replace the question</p>
+<blockquote>
+<p>What is the best tiny version of this benchmark?</p>
+</blockquote>
+<p>with</p>
+<blockquote>
+<p>What is the smallest version that reaches a stated reliability target for a
+stated population of retrievers?</p>
+</blockquote>
+<p>The memorable scientific question is:</p>
+<blockquote>
+<p><strong>How small can a retrieval benchmark become before it stops reaching the
+same conclusions as the full benchmark?</strong></p>
+</blockquote>
+<p>The answer is a <strong>compression–reliability frontier</strong>. Its horizontal axis is
+the fraction of variable evaluation cost retained. Its vertical axis is the
+probability that the compressed benchmark preserves the full benchmark's
+model-comparison decisions on retrievers that were not used to construct it.</p>
+<p>The core thesis is:</p>
+<blockquote>
+<p><strong>Compressibility is not an intrinsic scalar property of a benchmark. It is
+conditional on the benchmark, the target retriever population, the decision
+being preserved, and the evaluation budget. There is no universally correct
+“tiny BEIR.”</strong></p>
+</blockquote>
+<p>This is a substantially stronger and broader paper than the earlier narrow
+proposal. Outer-loop or recursive search may appear as a solver ablation, but
+it is not the subject of the paper.</p>
+<p>The idea is strong enough to justify the pilot. Full ICLR 2027 execution is
+high risk unless the run matrix can be assembled quickly or retrieval jobs can
+be parallelized; the pilot must come before a costly full-system sweep.</p>
+</section>
+<section>
+<h2 id="the-30-second-pitch">The 30-second pitch</h2>
+<p>Retrieval benchmarks are expensive to run repeatedly, so researchers often
+want a small set of representative queries. Existing methods generally start
+from a chosen subset size and return one compressed benchmark. That leaves the
+practical question unanswered: was that size small enough to save meaningful
+work, yet large enough to preserve the decisions of the full benchmark?</p>
+<p>We formulate this missing tradeoff as the <strong>compression–reliability
+frontier</strong>. At every retained-cost budget, the frontier records the best
+held-out decision reliability attained by an eligible compression method.
+<strong>AutoCompress-IR</strong> estimates this curve, produces nested weighted query
+policies, and returns the smallest tested budget whose reliability confidence
+bound reaches a user-chosen target. The empirical study asks how these
+frontiers differ across retrieval benchmarks and how much AutoCompress-IR
+improves them over random sampling and prior compressors.</p>
+<p>The intended outcome is both scientific and practical:</p>
+<ul>
+<li>a frontier that says how much evaluation cost is actually safe to remove;</li>
+<li>an algorithm that creates a benchmark policy for a declared reliability
+target and retriever population;</li>
+<li>upper and lower limits on how small a reliable evaluation can be;</li>
+<li>canonical run files that let others reproduce the paper without rerunning
+every retriever.</li>
+</ul>
+</section>
+<section>
+<h2 id="why-this-matters">Why this matters</h2>
+<p>A microbenchmark is often used to choose a winner among retrieval systems. A
+wrong ordering is more consequential than a small average score error, but a
+compression ratio by itself gives no assurance about that decision. Five
+percent may be ample for one benchmark and unreliable for another because
+query count, redundancy, system disagreement, and full-benchmark decision
+margins differ.</p>
+<p>The missing scientific and practical object is therefore a calibrated answer
+to two linked questions:</p>
+<ol>
+<li>At a given cost, how reliably can a compressed benchmark reproduce the
+full benchmark's system comparisons?</li>
+<li>For a required reliability, what is the smallest supported cost?</li>
+</ol>
+<p>Answering these questions across datasets reveals whether benchmark
+compressibility has stable structure or is merely an arbitrary subset-design
+choice. It also gives practitioners an explicit rule for choosing a budget
+instead of copying a universal ratio. Structured holdouts by lineage or
+retrieval mechanism are Priority-1 stress tests; the main paper neither
+assumes nor requires them to reduce reliability.</p>
+</section>
+<section>
+<h2 id="scope">Scope</h2>
+<h3>What is being compressed</h3>
+<p>The main object is the <strong>query dimension of ranked-retrieval evaluation</strong>.
+For a dataset <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>B</mi><mo>=</mo><mo stretchy="false">(</mo><mi>Q</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>J</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B=(Q,C,J)</annotation></semantics></math>:</p>
+<ul>
+<li><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math> is the query set;</li>
+<li><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math> is the document collection;</li>
+<li><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>J</mi></mrow><annotation encoding="application/x-tex">J</annotation></semantics></math> is the relevance judgment set;</li>
+<li>a retrieval system <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math> returns a ranked list for each query; and</li>
+<li><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><mi>r</mi></mrow></msub><mo>∈</mo><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">x_{q,r}\in[0,1]</annotation></semantics></math> is a per-query utility such as nDCG@10.</li>
+</ul>
+<p>The full score is</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>μ</mi><mi>B</mi></msub><mo stretchy="false">(</mo><mi>r</mi><mo stretchy="false">)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mi>q</mi><mo>∈</mo><mi>Q</mi></mrow></munder><msub><mi>p</mi><mi>q</mi></msub><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><mi>r</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\mu_B(r)=\sum_{q\in Q}p_q x_{q,r},</annotation></semantics></math></div>
+<p>where <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>p</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">p_q</annotation></semantics></math> is normally uniform within a dataset. A compressed policy at
+budget <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math> selects support <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>S</mi><mi>b</mi></msub><mo>⊆</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">S_b\subseteq Q</annotation></semantics></math> and nonnegative weights
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>w</mi><mrow><mi>b</mi><mo>,</mo><mi>q</mi></mrow></msub></mrow><annotation encoding="application/x-tex">w_{b,q}</annotation></semantics></math> that sum to one:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mover><mrow><mi>μ</mi></mrow><mo>^</mo></mover><mrow><mi>B</mi><mo>,</mo><mi>b</mi></mrow></msub><mo stretchy="false">(</mo><mi>r</mi><mo stretchy="false">)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mi>q</mi><mo>∈</mo><msub><mi>S</mi><mi>b</mi></msub></mrow></munder><msub><mi>w</mi><mrow><mi>b</mi><mo>,</mo><mi>q</mi></mrow></msub><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><mi>r</mi></mrow></msub><mo>.</mo></mrow><annotation encoding="application/x-tex">\widehat{\mu}_{B,b}(r)=\sum_{q\in S_b}w_{b,q}x_{q,r}.</annotation></semantics></math></div>
+<p>Once ranked runs have been converted to the query-by-system outcome matrix
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>X</mi><mo>=</mo><mo stretchy="false">[</mo><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><mi>r</mi></mrow></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">X=[x_{q,r}]</annotation></semantics></math>, the compression problem is agnostic to how a system produced
+its ranking. The same interface covers:</p>
+<ul>
+<li>BM25 and query expansion;</li>
+<li>learned sparse retrieval;</li>
+<li>dense bi-encoders;</li>
+<li>instruction-conditioned encoders;</li>
+<li>late-interaction models;</li>
+<li>sparse/dense hybrids; and</li>
+<li>cross-encoders when used in a declared candidate-generation and reranking
+pipeline.</li>
+</ul>
+<p>A raw cross-encoder over every query-document pair is not required. A
+cross-encoder system means a reproducible end-to-end reranking pipeline, such
+as BM25 top-100 followed by a fixed cross-encoder.</p>
+<h3>Non-goals</h3>
+<p>This paper is not about:</p>
+<ul>
+<li>model, embedding, index, or document-corpus compression;</li>
+<li>reducing relevance-judgment collection cost;</li>
+<li>claiming that the full benchmark is itself statistically or socially valid;</li>
+<li>finding one static subset that is optimal for every future retriever;</li>
+<li>making recursive self-improvement the source of novelty; or</li>
+<li>replacing full evaluation for final claims without a declared reliability
+target.</li>
+</ul>
+</section>
+<section>
+<h2 id="precise-definitions">Precise definitions</h2>
+<h3>Evaluation budget and savings</h3>
+<p>For a system <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math>, write its cost as</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>C</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>Q</mi><mo stretchy="false">)</mo><mo>=</mo><msubsup><mi>C</mi><mi>r</mi><mrow><mrow><mi mathvariant="normal">f</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">x</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">d</mi></mrow></mrow></msubsup><mo>+</mo><munder><mo>∑</mo><mrow><mi>q</mi><mo>∈</mo><mi>Q</mi></mrow></munder><msub><mi>c</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo><mo>.</mo></mrow><annotation encoding="application/x-tex">C_r(Q)=C_r^{\mathrm{fixed}}+\sum_{q\in Q}c_r(q).</annotation></semantics></math></div>
+<p>Index construction and model loading are fixed costs. Query encoding, search,
+and reranking are variable costs. Query selection can reduce only the second
+term.</p>
+<p>The primary budget is the retained fraction of variable evaluation cost:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>b</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>S</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><msub><mo>∑</mo><mrow><mi>q</mi><mo>∈</mo><mi>S</mi></mrow></msub><msub><mi>c</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo></mrow><mrow><msub><mo>∑</mo><mrow><mi>q</mi><mo>∈</mo><mi>Q</mi></mrow></msub><msub><mi>c</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>.</mo></mrow><annotation encoding="application/x-tex">b_r(S)=
+\frac{\sum_{q\in S}c_r(q)}
+     {\sum_{q\in Q}c_r(q)}.</annotation></semantics></math></div>
+<p>When query costs are treated as equal, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>b</mi><mo>=</mo><mo stretchy="false">|</mo><mi>S</mi><mo stretchy="false">|</mo><mo>/</mo><mo stretchy="false">|</mo><mi>Q</mi><mo stretchy="false">|</mo></mrow><annotation encoding="application/x-tex">b=|S|/|Q|</annotation></semantics></math>. A 5% budget therefore
+means 95% fewer query executions, not necessarily 95% less end-to-end
+wall-clock time. The paper must report both this normalized budget and measured
+wall-clock/GPU savings under explicit index-amortization assumptions.</p>
+<p>Report three workload views separately:</p>
+<ol>
+<li><strong>Index already available:</strong> query encoding, search, and metric cost only.</li>
+<li><strong>Fresh end-to-end system:</strong> document encoding and index construction are
+included, so query compression may save much less.</li>
+<li><strong>Reranking pipeline:</strong> candidate generation is fixed and query-document
+reranking cost scales with the selected queries and candidate depth.</li>
+</ol>
+<p>Never translate a 5% retained query budget into “95% cheaper” without the
+measured workload-specific result.</p>
+<h3>The decision to preserve</h3>
+<p>For systems <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub><mo>,</mo><msub><mi>r</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">r_i,r_j</annotation></semantics></math>, the full-benchmark difference is</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>Δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mi>B</mi></msub><mo stretchy="false">(</mo><msub><mi>r</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>−</mo><msub><mi>μ</mi><mi>B</mi></msub><mo stretchy="false">(</mo><msub><mi>r</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">\Delta_{ij}=\mu_B(r_i)-\mu_B(r_j),</annotation></semantics></math></div>
+<p>and the compressed difference is <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mover><mrow><mi>Δ</mi></mrow><mo>^</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\widehat{\Delta}_{ij}</annotation></semantics></math>. The primary
+decision is the sign of this difference. The primary fidelity metric is
+pairwise decision agreement:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>A</mi><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">r</mi></mrow></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>;</mi><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mo minsize="2.047em" maxsize="2.047em">(</mo><mfrac linethickness="0"><mrow><mo stretchy="false">|</mo><mi>R</mi><mo stretchy="false">|</mo></mrow><mrow><mn>2</mn></mrow></mfrac><mo minsize="2.047em" maxsize="2.047em">)</mo></mrow></mfrac><munder><mo>∑</mo><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow></munder><mrow><mn mathvariant="double-struck">1</mn></mrow><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mo>sign</mo><mo stretchy="false">(</mo><msub><mover><mrow><mi>Δ</mi></mrow><mo>^</mo></mover><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">)</mo><mo>=</mo><mo>sign</mo><mo stretchy="false">(</mo><msub><mi>Δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">)</mo><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mo>.</mo></mrow><annotation encoding="application/x-tex">A_{\mathrm{pair}}(S;R)=
+\frac{1}{\binom{|R|}{2}}
+\sum_{i&lt;j}
+\mathbb{1}\left[
+\operatorname{sign}(\widehat{\Delta}_{ij})
+=\operatorname{sign}(\Delta_{ij})
+\right].</annotation></semantics></math></div>
+<p>For held-out-system evaluation, define the evaluated pair set before training.
+The primary set contains every comparison with at least one held-out system.
+Report held-out–reference and held-out–held-out comparisons separately; the
+latter is available when a fold contains at least two systems. Replace the sum
+and denominator above by this declared pair set.</p>
+<p>Near-ties must not be hidden. Results will also be stratified by the magnitude
+of <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mo stretchy="false">|</mo><msub><mi>Δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false">|</mo></mrow><annotation encoding="application/x-tex">|\Delta_{ij}|</annotation></semantics></math>, and repeated with pre-registered practical tie margins.
+Score error, Kendall rank correlation, winner agreement, and top-<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math>
+membership are secondary outcomes.</p>
+<h3>Fidelity versus reliability</h3>
+<p>These terms must remain distinct throughout the paper:</p>
+<ul>
+<li><strong>Fidelity</strong> is observed agreement with the full benchmark on one fixed
+panel of retrievers.</li>
+<li><strong>Reliability</strong> is expected out-of-sample fidelity for a declared target
+population of retrievers, estimated using held-out systems and reported
+with uncertainty.</li>
+</ul>
+<p>In plain language, fidelity asks, “Did this subset reproduce these systems?”
+Reliability asks, “How often should it reproduce the conclusion for another
+system drawn from the use case we claimed?”</p>
+<h3>Compression–reliability frontier</h3>
+<p>Let <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi mathvariant="script">P</mi></mrow><annotation encoding="application/x-tex">\mathcal P</annotation></semantics></math> denote the target retriever population, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\mathcal D</annotation></semantics></math> the
+decision rule, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\mathcal A</annotation></semantics></math> a compression procedure that may use only its
+development systems. Its frontier is</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>F</mi><mrow><mi mathvariant="script">A</mi></mrow></msub><mo stretchy="false">(</mo><mi>b</mi><mo>∣</mo><mi>B</mi><mo>,</mo><mi mathvariant="script">P</mi><mo>,</mo><mi mathvariant="script">D</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="double-struck">E</mi><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><msub><mi>A</mi><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">r</mi></mrow></mrow></msub><mrow><mo stretchy="true" fence="true" form="prefix">(</mo><mi mathvariant="script">A</mi><mo stretchy="false">(</mo><mi>B</mi><mo>,</mo><msub><mi>R</mi><mrow><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">v</mi></mrow></mrow></msub><mo>,</mo><mi>b</mi><mo stretchy="false">)</mo><mi>;</mi><msub><mi>R</mi><mrow><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow></mrow></msub><mo stretchy="true" fence="true" form="postfix">)</mo></mrow><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">F_{\mathcal A}(b\mid B,\mathcal P,\mathcal D)
+=
+\mathbb E\left[
+A_{\mathrm{pair}}\left(
+\mathcal A(B,R_{\mathrm{dev}},b);R_{\mathrm{test}}
+\right)
+\right],</annotation></semantics></math></div>
+<p>where development and test systems are separated according to the declared
+resampling protocol. Priority 0 uses repeated, balanced random-system folds
+plus a frozen final holdout. Structured group holdouts are optional stress
+tests. For fixed <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math>, the expectation is estimated across held-out-system
+folds and method seeds. Dataset-specific curves are reported separately; the
+headline macro curve gives each dataset equal weight.</p>
+<p>For a pre-declared eligible method set <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi mathvariant="fraktur">A</mi></mrow><annotation encoding="application/x-tex">\mathfrak A</annotation></semantics></math>, define the attained
+frontier</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mo>max</mo><mrow><mi mathvariant="script">A</mi><mo>∈</mo><mi mathvariant="fraktur">A</mi></mrow></msub><msub><mi>F</mi><mrow><mi mathvariant="script">A</mi></mrow></msub><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo><mo>.</mo></mrow><annotation encoding="application/x-tex">F(b)=\max_{\mathcal A\in\mathfrak A}F_{\mathcal A}(b).</annotation></semantics></math></div>
+<p>This empirical upper envelope is the best currently attained result, not a
+claim about the unknowable global optimum.</p>
+<p>For target reliability <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math>, define a method's required budget</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>b</mi><mrow><mi mathvariant="script">A</mi></mrow><mo>*</mo></msubsup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo><mo>=</mo><mo>inf</mo><mo stretchy="false">{</mo><mi>b</mi><mi>:</mi><msub><mi>F</mi><mrow><mi mathvariant="script">A</mi></mrow></msub><mo stretchy="false">(</mo><mi>b</mi><mo stretchy="false">)</mo><mo>≥</mo><mi>ρ</mi><mo stretchy="false">}</mo><mo>.</mo></mrow><annotation encoding="application/x-tex">b^*_{\mathcal A}(\rho)=\inf\{b:F_{\mathcal A}(b)\geq\rho\}.</annotation></semantics></math></div>
+<p>Dropping the method subscript denotes the budget on the attained frontier.</p>
+<p>This turns a plot into an actionable answer: for example, “retain 10% of query
+cost to achieve 95% held-out pairwise agreement for this benchmark and
+declared system population.” For deployment, choose the first tested budget
+whose <strong>simultaneous lower confidence bound</strong>, not just point estimate, reaches
+the target reliability. Denote this conservative grid estimate by
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msubsup><mover><mi>b</mi><mo>^</mo></mover><mrow><mi mathvariant="script">A</mi><mo>,</mo><mrow><mi mathvariant="normal">L</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">B</mi></mrow></mrow><mo>*</mo></msubsup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\widehat b^*_{\mathcal A,\mathrm{LCB}}(\rho)</annotation></semantics></math>.</p>
+<p>Comparing <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(\rho)</annotation></semantics></math> across benchmarks is a Priority-0 analysis. Comparing
+it across narrower and broader retriever populations is a Priority-1 stress
+test, not part of the headline claim.</p>
+</section>
+<section>
+<h2 id="headline-figure-and-minimum-paper">Headline figure and minimum paper</h2>
+<p>The paper should be designed around one image:</p>
+<blockquote>
+<p><strong>Retrieval benchmarks have different compression–reliability frontiers;
+AutoCompress-IR reaches a chosen reliability with less evaluation.</strong></p>
+</blockquote>
+<p>If a reviewer remembers only one figure, it should be <strong>Figure 1: The
+Compression–Reliability Frontier</strong>. Its two panels focus on method comparison
+and benchmark heterogeneity.</p>
+<h3>Figure 1A — Reliability as a function of retained cost</h3>
+<ul>
+<li><strong>Horizontal axis:</strong> retained variable evaluation cost at 1%, 2%, 5%, 10%,
+20%, 40%, and 100%. Add a secondary label for the fraction of queries
+removed.</li>
+<li><strong>Vertical axis:</strong> held-out pairwise decision agreement under nDCG@10.</li>
+<li><strong>Protocol:</strong> pre-declared balanced random-system cross-validation over the
+core retriever panel, macro-averaged equally across the six datasets.</li>
+<li><strong>Curves:</strong> uniform or stratified random sampling, the strongest eligible
+prior compressor, and AutoCompress-IR.</li>
+<li><strong>Frontier:</strong> emphasize the empirical upper envelope of the eligible method
+curves, while preserving the individual curves.</li>
+<li><strong>Reference line:</strong> 95% reliability, with each method's required budget
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msubsup><mover><mi>b</mi><mo>^</mo></mover><mrow><mi mathvariant="script">A</mi><mo>,</mo><mrow><mi mathvariant="normal">L</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">B</mi></mrow></mrow><mo>*</mo></msubsup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\widehat b^*_{\mathcal A,\mathrm{LCB}}(0.95)</annotation></semantics></math> marked.</li>
+</ul>
+<p>The intended visual impression is an up-and-left improvement: at the same
+cost AutoCompress-IR is more reliable, or at the same reliability it evaluates
+less of the benchmark. All methods reach 100% fidelity at 100% cost by
+definition.</p>
+<h3>Figure 1B — There is no universal safe compression ratio</h3>
+<p>Use one row for each core dataset: TREC-COVID, NFCorpus, FiQA, ArguAna, Quora,
+and SciFact. Plot the required retained budget for 95% reliability for the
+same three methods, with uncertainty. If a method does not cross the target
+before full evaluation, show that explicitly rather than clipping or dropping
+the row.</p>
+<p>This panel answers “How compressible is this benchmark?” directly. It should
+make both benchmark heterogeneity and any AutoCompress-IR budget reduction
+visible. A compact set of six per-dataset frontier plots can appear as Figure
+2 or in the appendix; do not crowd them into Figure 1.</p>
+<h3>Plotting rules</h3>
+<ul>
+<li>Dots are the measured budgets; connecting lines are visual guides, not
+evidence of a continuously observed curve.</li>
+<li>A method-specific line is a <strong>reliability curve</strong>. Reserve <strong>frontier</strong> for
+the upper envelope across eligible policies at a budget.</li>
+<li>Show raw estimates and clustered 95% confidence bands. Do not show only an
+isotonic-smoothed line.</li>
+<li>Use an equal-dataset macro average in Panel A; never weight datasets by query
+count.</li>
+<li>Keep method colors and the 95% target consistent across both panels.</li>
+<li>Do not add every baseline, metric, or stress test to Figure 1. If the
+legend needs explaining, the plot is too busy.</li>
+<li>Freeze the held-out-system protocol and strongest prior method before the
+final evaluation.</li>
+</ul>
+<p>Figure 1 succeeds only if a reader can say, without reading the caption:</p>
+<blockquote>
+<p>“The safe compression level differs by benchmark, and the proposed method
+reaches the same reliability with less evaluation.”</p>
+</blockquote>
+<p>If the data do not support the method half, the paper needs a substantially
+stronger limits result or should be redirected; do not force the figure.</p>
+<h3>Priority 0: minimum credible ICLR paper</h3>
+<p>Protect these experiments first:</p>
+<ul>
+<li><strong>Datasets:</strong> TREC-COVID, NFCorpus, FiQA, ArguAna, Quora, and SciFact. This
+six-dataset core spans 50 to 10,000 queries and several domains while keeping
+the retrieval sweep manageable.</li>
+<li><strong>Systems:</strong> roughly 16 development systems plus 4 frozen held-out systems,
+covering
+lexical, learned sparse, dense, instruction-conditioned, late-interaction,
+hybrid, and reranking pipelines. These are existing public systems chosen
+for panel coverage and reproducibility, not because any is “new.”</li>
+<li><strong>Reliability protocol:</strong> repeated balanced random-system folds for method
+development and uncertainty estimation, followed by one frozen held-out
+evaluation after all choices are fixed.</li>
+<li><strong>Budgets:</strong> 1%, 2%, 5%, 10%, 20%, 40%, and 100%.</li>
+<li><strong>Methods:</strong> random, the strongest prior method, a strong supervised greedy
+baseline, and AutoCompress-IR. Other inexpensive baselines still belong in
+the appendix.</li>
+<li><strong>Outcomes:</strong> pairwise decision agreement under nDCG@10, each dataset's
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(0.95)</annotation></semantics></math>, and the equal-dataset macro frontier. Score error and rank
+correlation are diagnostics.</li>
+<li><strong>Theory:</strong> finite-panel exact compression, a finite-population
+random-sampling guarantee, margin-dependent sample-complexity limits, and
+valid uncertainty for selecting a budget from the estimated frontier.</li>
+<li><strong>Practical evidence:</strong> one index-reuse workload, one reranking workload, and
+the static run-file reproduction path.</li>
+</ul>
+<p>This scope must produce Figure 1, a compact table of per-dataset required
+budgets, and the six per-dataset reliability curves.</p>
+<h3>Priority 1: strengthen if time and compute allow</h3>
+<ul>
+<li>add Touche-2020, CQADupStack, and SciDocs;</li>
+<li>expand to 20–24 development and 4–6 frozen held-out systems;</li>
+<li>run lineage, mechanism, and pipeline holdout stress tests;</li>
+<li>test construction-panel size and behavioral diversity;</li>
+<li>test the behavioral-span diagnostic and associated transfer bound;</li>
+<li>test the unrestricted-panel no-free-lunch result only as supporting theory;</li>
+<li>study the price of broadening the declared retriever population;</li>
+<li>run independently optimized non-nested policies;</li>
+<li>report secondary retrieval metrics; and</li>
+<li>broaden the end-to-end cost audit.</li>
+</ul>
+<h3>Priority 2: cut first</h3>
+<ul>
+<li>Natural Questions as a large-corpus stress test;</li>
+<li>temporal holdouts;</li>
+<li>progressive evaluation;</li>
+<li>outer-loop/RSI optimization;</li>
+<li>an NP-hardness result;</li>
+<li>exhaustive energy accounting; and</li>
+<li>large grids of query representations, optimizers, and tie thresholds.</li>
+</ul>
+<p>These ideas may be useful follow-up work. None should delay the headline
+frontier, benchmark-heterogeneity result, AutoCompress comparison, or frozen
+held-out result.</p>
+</section>
+<section>
+<h2 id="research-questions-and-falsifiable-hypotheses">Research questions and falsifiable hypotheses</h2>
+<h3>RQ1: What do retrieval frontiers look like?</h3>
+<p>How does reliability change from 1% to 100% retained query cost across
+benchmarks and decision margins? How much does the budget required for 95%
+reliability vary across the six core datasets?</p>
+<h3>RQ2: Can an automatic compressor improve the frontier?</h3>
+<p>Does AutoCompress-IR achieve higher held-out decision agreement, or reach a
+fixed reliability target with less cost, than random sampling and the
+strongest prior selection method?</p>
+<h3>RQ3: What controls how small a benchmark can be?</h3>
+<p>How do the number of queries, per-query system disagreement, redundancy,
+effective behavioral dimension, and full-benchmark pairwise margins relate to
+the observed frontier? Do the theoretical upper and lower limits explain when
+extreme compression is or is not possible?</p>
+<h3>RQ4: Do nominal savings become real savings?</h3>
+<p>How do query-count reductions translate to wall-clock, accelerator, energy,
+and monetary savings for sparse, dense, late-interaction, and reranking
+pipelines when fixed indexing costs are included or amortized?</p>
+<h3>Secondary RQ (Priority 1): How sensitive is the frontier to the system panel?</h3>
+<p>Repeat selected experiments with lineage, mechanism, and pipeline group
+holdouts. This tests whether panel composition changes the estimated frontier;
+it does not assume that any group holdout must be harder than a random-system
+holdout.</p>
+</section>
+<section>
+<h2 id="proposed-contributions">Proposed contributions</h2>
+<p>The final paper should make at most these five claims, with numerical language
+filled in only after the frozen held-out evaluation:</p>
+<ol>
+<li><strong>Scientific object.</strong> Define and estimate the
+compression–reliability frontier and the minimum retained cost
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(\rho)</annotation></semantics></math> for decision-preserving retrieval evaluation.</li>
+<li><strong>Empirical map.</strong> Measure complete frontiers across six heterogeneous
+retrieval datasets and show how the required budget varies by benchmark,
+reliability target, and decision margin.</li>
+<li><strong>Method.</strong> Introduce AutoCompress-IR, which converts a benchmark, a
+reference run panel, and a reliability target into nested weighted query
+policies plus a conservative estimate of the minimum required budget.</li>
+<li><strong>Theory.</strong> Characterize exact weighted compression on a finite panel,
+provide finite-population random-sampling guarantees, and derive
+margin-dependent limits on how small a decision-preserving benchmark can
+be.</li>
+<li><strong>Artifact.</strong> Release versioned run files, per-query outcomes, metadata,
+compressed policies, costs, and frontier-generation code so the central
+results can be reproduced without repeating all retrieval inference.</li>
+</ol>
+<p>The core contribution is the combination of the first four. A release of
+query subsets by itself is not enough.</p>
+</section>
+<section>
+<h2 id="autocompress-ir">AutoCompress-IR</h2>
+<h3>Inputs</h3>
+<p>AutoCompress-IR takes:</p>
+<ol>
+<li>a benchmark: queries, qrels, dataset strata, and target metric;</li>
+<li>canonical run files or a per-query utility matrix for reference systems;</li>
+<li>optional retriever group metadata for stratified folds or Priority-1 stress
+tests;</li>
+<li>one or more retained-cost budgets;</li>
+<li>a target decision, normally pairwise ordering under nDCG@10;</li>
+<li>constraints such as nesting, nonnegative weights, minimum dataset coverage,
+and maximum support; and</li>
+<li>a confidence level or target reliability.</li>
+</ol>
+<h3>Outputs</h3>
+<p>It emits:</p>
+<ul>
+<li>one ordered query policy whose prefixes realize all requested budgets;</li>
+<li>a nonnegative weight vector for each prefix;</li>
+<li>an unweighted-policy variant for easier deployment;</li>
+<li>cross-validated reliability estimates and confidence intervals at each
+budget;</li>
+<li>the smallest estimated budget meeting the requested reliability target; and</li>
+<li>a manifest recording inputs, splits, costs, seeds, and software revisions.</li>
+</ul>
+<p>The output is a policy for a stated retriever population, not a universal
+benchmark replacement.</p>
+<h3>Behavioral coreset formulation</h3>
+<p>For each reference-system pair <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>p</mi><mo>=</mo><mo stretchy="false">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p=(i,j)</annotation></semantics></math>, define a per-query difference</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>z</mi><mrow><mi>q</mi><mo>,</mo><mi>p</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><msub><mi>r</mi><mi>i</mi></msub></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><msub><mi>r</mi><mi>j</mi></msub></mrow></msub><mo>.</mo></mrow><annotation encoding="application/x-tex">z_{q,p}=x_{q,r_i}-x_{q,r_j}.</annotation></semantics></math></div>
+<p>Each query is therefore represented by the model comparisons it supports or
+opposes. The full mean of each coordinate gives a pairwise system difference.
+The compressor seeks a sparse weighted approximation that preserves these
+means and, more importantly, their signs.</p>
+<p>The training objective should combine:</p>
+<ul>
+<li>a smooth surrogate for pairwise decision error, weighted toward close
+decisions without ignoring easy pairs;</li>
+<li>normalized aggregate-score error;</li>
+<li>a worst-dataset or distributionally robust term across benchmark strata;</li>
+<li>penalties for instability across held-out-system folds; and</li>
+<li>explicit dataset-coverage and nesting constraints.</li>
+</ul>
+<p>Exact pairwise agreement remains the evaluation metric. The smoother objective
+is only an optimization device.</p>
+<h3>First implementation</h3>
+<p>Build the first credible version before exploring elaborate search:</p>
+<ol>
+<li>Construct the per-query utility and pair-difference matrices.</li>
+<li>Create pre-declared balanced random-system cross-validation folds.</li>
+<li>Learn continuous nonnegative weights with a conditional-gradient
+(Frank–Wolfe) or projected sparse optimization step.</li>
+<li>Convert the support to a single priority ordering and deterministically
+round it at all budgets.</li>
+<li>Improve rounded prefixes with budget-aware add/swap moves against the
+worst held-out-development fold.</li>
+<li>Select hyperparameters only by nested cross-validation.</li>
+<li>Calibrate a lower confidence bound for reliability at every budget.</li>
+</ol>
+<p>For small datasets, solve a mixed-integer version to obtain an oracle
+optimization-gap diagnostic. It may inspect the development panel only.</p>
+<p>An outer-loop/RSI search can be evaluated later as another optimizer over the
+same valid policy space and evaluation budget. It earns space in the paper
+only if it improves the held-out frontier; it is not required for the main
+story.</p>
+<h3>Optional progressive evaluation</h3>
+<p>The earlier phrase “confidence-based escalation” means something simple:</p>
+<blockquote>
+<p>Start with a small prefix. If two systems are too close to call under the
+estimated error interval, evaluate the next prefix. Close calls receive more
+queries; clear decisions stop early.</p>
+</blockquote>
+<p>The nested policy makes this possible without discarding prior work. Call it
+<strong>progressive evaluation</strong> in the paper. Treat it as a secondary application,
+not part of the definition of the frontier.</p>
+</section>
+<section>
+<h2 id="theory-agenda">Theory agenda</h2>
+<p>The Priority-0 theory should bracket how small a benchmark can be and justify
+how a target-reliability budget is selected from benchmark structure, decision
+margins, and held-out reliability.</p>
+<h3>T1. Exact fitting of a finite system panel</h3>
+<p>For <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math> known retrievers, let</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>v</mi><mi>q</mi></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><msub><mi>r</mi><mn>1</mn></msub></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>x</mi><mrow><mi>q</mi><mo>,</mo><msub><mi>r</mi><mi>K</mi></msub></mrow></msub><mo stretchy="false">)</mo><mo>∈</mo><mo stretchy="false">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><msup><mo stretchy="false">]</mo><mi>K</mi></msup><mo>.</mo></mrow><annotation encoding="application/x-tex">v_q=(x_{q,r_1},\ldots,x_{q,r_K})\in[0,1]^K.</annotation></semantics></math></div>
+<p>The full score vector is the mean of the <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>v</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">v_q</annotation></semantics></math>'s and therefore lies in their
+convex hull. By Carathéodory's theorem, there exists a nonnegative weighted
+subset of at most <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>K</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K+1</annotation></semantics></math> queries that exactly reconstructs all <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math> aggregate
+scores.</p>
+<p>This gives an exact finite-panel upper bound and explains why weighted
+compression can be surprisingly strong when the number of evaluated systems
+is small. It also shows why in-sample fit alone cannot estimate reliability.
+State all qualifications:</p>
+<ul>
+<li>it permits nonuniform weights;</li>
+<li>it guarantees only the systems included in the finite panel;</li>
+<li>multiple separately constrained datasets or metrics increase the effective
+dimension; and</li>
+<li>finding a useful nested or uniform subset is a different problem.</li>
+</ul>
+<h3>T2. Finite-population random-sampling guarantee</h3>
+<p>For bounded per-query utilities and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math> fixed retrievers, uniform sampling
+with</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo>=</mo><mi>O</mi><mrow><mo stretchy="true" fence="true" form="prefix">(</mo><mfrac><mrow><mi>log</mi><mo stretchy="false">(</mo><mi>K</mi><mo>/</mo><mi>δ</mi><mo stretchy="false">)</mo></mrow><mrow><msup><mi>ϵ</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">n=O\left(\frac{\log(K/\delta)}{\epsilon^2}\right)</annotation></semantics></math></div>
+<p>queries estimates all <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math> aggregate scores to error <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math> with
+probability at least <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mn>1</mn><mo>−</mo><mi>δ</mi></mrow><annotation encoding="application/x-tex">1-\delta</annotation></semantics></math>. Pairwise signs are then preserved for full
+benchmark margins larger than <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mn>2</mn><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">2\epsilon</annotation></semantics></math>.</p>
+<p>Provide constants, finite-population correction, stratified extension, and a
+matching lower-bound discussion. This is the honest baseline any learned
+compressor must beat.</p>
+<h3>T3. Margin-dependent limits: how micro can evaluation be?</h3>
+<p>For a protected system pair with full-benchmark margin <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math> and
+per-query difference variance <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>σ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\sigma^2</annotation></semantics></math>, sign recovery should require on
+the order of</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><msup><mi>σ</mi><mn>2</mn></msup></mrow><mrow><msup><mi>γ</mi><mn>2</mn></msup></mrow></mfrac><mi>log</mi><mfrac><mrow><mn>1</mn></mrow><mrow><mi>δ</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{\sigma^2}{\gamma^2}\log\frac{1}{\delta}</annotation></semantics></math></div>
+<p>informative query observations in the corresponding statistical model, capped
+by the finite benchmark size. Protecting many pairs adds a complexity term.
+Prove matching upper and minimax lower bounds under explicit assumptions,
+rather than presenting this heuristic rate as a theorem before it is checked.</p>
+<p>Combine three answers to “how micro can it be?”:</p>
+<ol>
+<li>the Carathéodory exact-fit upper bound for a fixed weighted panel;</li>
+<li>distribution-free upper and lower sample-complexity bounds when only bounded
+outcomes and margins are assumed; and</li>
+<li>an instance-specific optimum or lower bound from a mixed-integer solver on
+datasets small enough to solve exactly.</li>
+</ol>
+<p>The empirical section should test whether query-level variance, effective
+behavioral rank, and pairwise margins explain the large differences in
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(0.95)</annotation></semantics></math> across datasets.</p>
+<h3>T4. Confidence for a selected frontier point</h3>
+<p>AutoCompress-IR selects both a policy and the first tested budget that appears
+to reach <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math>. Pointwise intervals can become optimistic after this
+selection. Construct a simultaneous lower confidence band over the declared
+method–budget grid using system-level resampling or a bounded U-statistic
+argument, with assumptions stated explicitly. Then choose
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msubsup><mover><mi>b</mi><mo>^</mo></mover><mrow><mi mathvariant="script">A</mi><mo>,</mo><mrow><mi mathvariant="normal">L</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">B</mi></mrow></mrow><mo>*</mo></msubsup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\widehat b^*_{\mathcal A,\mathrm{LCB}}(\rho)</annotation></semantics></math> from that band.</p>
+<p>Validate coverage in simulation and report how often the chosen policy reaches
+its target on the frozen held-out systems. This connects the formal frontier
+to the practical output of the algorithm.</p>
+<h3>T5. Optional system-panel transfer theory (Priority 1)</h3>
+<p>Two results may support the structured-holdout stress test, but they are not
+required for the headline paper:</p>
+<ol>
+<li><strong>Unrestricted-panel no-free-lunch.</strong> For any strict query subset,
+construct retrievers that agree on selected queries but differ on omitted
+queries enough to reverse a full-benchmark order. This only says that a
+guarantee needs a declared population or structural assumption; it does not
+predict that named retriever families will fail.</li>
+<li><strong>Behavioral-coverage bound.</strong> Relate held-out score error to approximation
+by the behavioral span of the construction panel, then test the bound only
+if the residual-distance diagnostic is stable and useful.</li>
+</ol>
+<p>For the second result, let <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>u</mi><mi>r</mi></msub><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mo stretchy="false">|</mo><mi>Q</mi><mo stretchy="false">|</mo></mrow></msup></mrow><annotation encoding="application/x-tex">u_r\in\mathbb R^{|Q|}</annotation></semantics></math> be the per-query utility
+vector of a held-out retriever and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math> the matrix of reference utility
+vectors. For full weights <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math> and compressed weights <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math>, decompose</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>u</mi><mi>r</mi></msub><mo>=</mo><mi>U</mi><mi>α</mi><mo>+</mo><mi>e</mi><mo>.</mo></mrow><annotation encoding="application/x-tex">u_r=U\alpha+e.</annotation></semantics></math></div>
+<p>Then</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">|</mo><mo stretchy="false">(</mo><mi>w</mi><mo>−</mo><mi>p</mi><msup><mo stretchy="false">)</mo><mo>⊤</mo></msup><msub><mi>u</mi><mi>r</mi></msub><mo stretchy="false">|</mo><mo>≤</mo><mo fence="false" stretchy="false">‖</mo><mi>α</mi><mo fence="false" stretchy="false">‖</mo><mspace width="0.167em" /><mo fence="false" stretchy="false">‖</mo><mo stretchy="false">(</mo><mi>w</mi><mo>−</mo><mi>p</mi><msup><mo stretchy="false">)</mo><mo>⊤</mo></msup><mi>U</mi><mo fence="false" stretchy="false">‖</mo><mo>+</mo><mo fence="false" stretchy="false">‖</mo><mi>w</mi><mo>−</mo><mi>p</mi><msub><mo fence="false" stretchy="false">‖</mo><mo>*</mo></msub><mspace width="0.167em" /><mo fence="false" stretchy="false">‖</mo><mi>e</mi><mo fence="false" stretchy="false">‖</mo><mo>.</mo></mrow><annotation encoding="application/x-tex">|(w-p)^\top u_r|
+\leq
+\|\alpha\|\,\|(w-p)^\top U\|
++
+\|w-p\|_*\,\|e\|.</annotation></semantics></math></div>
+<p>The first term is reference-panel approximation error. The second is the
+held-out retriever's distance from the reference behavioral span. State the
+bound with an explicit pair of compatible dual norms; the display above is
+only shorthand. The algebra alone does not imply that named system groups
+differ in difficulty.</p>
+<p>Turn this into a computable diagnostic using held-out residual distance or a
+regularized projection. Keep it only if it predicts actual error beyond simple
+margin and variance baselines.</p>
+<h3>T6. Optional optimization hardness (Priority 2)</h3>
+<p>If a clean reduction is available, show that minimum-support uniform or nested
+decision-preserving selection is NP-hard, motivating approximation algorithms.
+This is optional. Do not spend the theory budget on it before T1–T4 are
+complete and checked.</p>
+<h3>Theory definition of done</h3>
+<ul>
+<li>Every theorem has assumptions matching an experiment.</li>
+<li>T1–T4 have independent proof checks and synthetic sanity tests.</li>
+<li>T2 and T3 give constants or finite-sample calculations that can be compared
+with the empirical frontiers.</li>
+<li>T4 has a target-coverage simulation and a frozen-holdout calibration result.</li>
+<li>T5 appears only if the Priority-1 stress test earns space.</li>
+<li>No asymptotic result is presented as a practical saving without constants.</li>
+</ul>
+</section>
+<section>
+<h2 id="empirical-design">Empirical design</h2>
+<h3>Public benchmark suite</h3>
+<p>The extended suite contains all English BEIR entries with at most 600,000
+documents. The six Priority-0 entries are marked as core:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>BEIR entry</th>
+<th style="text-align:right">Documents</th>
+<th style="text-align:right">Test queries</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TREC-COVID</td>
+<td style="text-align:right">171,332</td>
+<td style="text-align:right">50</td>
+<td>core; very small query set; biomedical</td>
+</tr>
+<tr>
+<td>NFCorpus</td>
+<td style="text-align:right">3,633</td>
+<td style="text-align:right">323</td>
+<td>core; small corpus; biomedical</td>
+</tr>
+<tr>
+<td>FiQA-2018</td>
+<td style="text-align:right">57,638</td>
+<td style="text-align:right">648</td>
+<td>core; finance</td>
+</tr>
+<tr>
+<td>ArguAna</td>
+<td style="text-align:right">8,674</td>
+<td style="text-align:right">1,406</td>
+<td>core; argument retrieval</td>
+</tr>
+<tr>
+<td>Touche-2020</td>
+<td style="text-align:right">382,545</td>
+<td style="text-align:right">49</td>
+<td>Priority 1; argument retrieval</td>
+</tr>
+<tr>
+<td>CQADupStack</td>
+<td style="text-align:right">457,199</td>
+<td style="text-align:right">13,145</td>
+<td>Priority 1; twelve heterogeneous CQA tasks</td>
+</tr>
+<tr>
+<td>Quora</td>
+<td style="text-align:right">522,931</td>
+<td style="text-align:right">10,000</td>
+<td>core; duplicate-question retrieval</td>
+</tr>
+<tr>
+<td>SciDocs</td>
+<td style="text-align:right">25,657</td>
+<td style="text-align:right">1,000</td>
+<td>Priority 1; scientific document links</td>
+</tr>
+<tr>
+<td>SciFact</td>
+<td style="text-align:right">5,183</td>
+<td style="text-align:right">300</td>
+<td>core; scientific claim evidence</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align:right"><strong>1,634,792</strong></td>
+<td style="text-align:right"><strong>26,921</strong></td>
+<td>before deduplication across entries</td>
+</tr>
+</tbody>
+</table></div>
+<p>Verify these counts against the pinned BEIR/ir_datasets revision and preserve
+the twelve CQADupStack task boundaries. Do not silently change the suite after
+seeing results.</p>
+<p>Natural Questions is a Priority-2 large-corpus stress test. It must not control
+method selection or delay the core suite. Its purpose is to show how query
+reduction interacts with a roughly 2.7-million-document index and therefore
+with fixed versus variable cost.</p>
+<p>The primary metric is nDCG@10. Recall@100 and MRR@10 are secondary where
+defined. Report each dataset separately and an equal-dataset macro average;
+never let Quora or CQADupStack dominate merely because they have more queries.</p>
+<h3>Retriever population</h3>
+<p>The paper evaluates a fixed panel of existing, public retrieval systems.
+“Retriever family” is not a single objective label, so family names are not
+used to define the Priority-0 result. Record the following overlapping metadata
+for panel auditing and optional stress tests:</p>
+<ol>
+<li>retrieval mechanism: lexical, learned sparse, dense, late interaction,
+hybrid, or reranking;</li>
+<li>checkpoint lineage: models sharing architecture and training ancestry;</li>
+<li>supervision/training data: unsupervised, MS MARCO supervised, contrastive,
+distillation, or instruction tuned;</li>
+<li>pipeline composition: first-stage model, fusion, candidate depth, and
+reranker; and</li>
+<li>release time.</li>
+</ol>
+<p>Freeze this metadata before outcome analysis. For a Priority-1 grouped
+holdout, all checkpoints from one lineage must stay in the same split.</p>
+<p>The minimum headline panel is roughly 16 development systems plus 4 frozen
+held-out systems. Expand to 20–24 development and 4–6 held-out systems only
+after the core figure is secure. The following is a candidate registry, not
+permission to substitute whichever systems give the best story:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Candidate systems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lexical</td>
+<td>BM25; BM25+RM3</td>
+</tr>
+<tr>
+<td>Learned sparse</td>
+<td>uniCOIL; SPLADE++; one independently trained SPLADE lineage</td>
+</tr>
+<tr>
+<td>Task-trained dense bi-encoder</td>
+<td>DPR; ANCE; TAS-B</td>
+</tr>
+<tr>
+<td>General-purpose dense bi-encoder</td>
+<td>Contriever; E5 base/large; BGE base/large; GTE base/large</td>
+</tr>
+<tr>
+<td>Instruction-conditioned</td>
+<td>INSTRUCTOR; Nomic Embed; Snowflake Arctic Embed</td>
+</tr>
+<tr>
+<td>Late interaction</td>
+<td>ColBERTv2; a second independently trained late-interaction checkpoint if reproducible</td>
+</tr>
+<tr>
+<td>Hybrid</td>
+<td>BM25+E5 reciprocal-rank fusion; BM25+SPLADE fusion; sparse+dense learned or fixed fusion</td>
+</tr>
+<tr>
+<td>Reranking pipelines</td>
+<td>BM25 top-100 + MiniLM cross-encoder; BM25 top-100 + BGE reranker; dense top-100 + fixed reranker</td>
+</tr>
+</tbody>
+</table></div>
+<p>Before full runs:</p>
+<ul>
+<li>smoke-test every candidate on two datasets;</li>
+<li>verify license, public availability, deterministic inference, memory, and
+query/document formatting;</li>
+<li>select exact model and code revisions;</li>
+<li>record index and run checksums in systems.lock.yaml; and</li>
+<li>freeze the panel before evaluating compression methods.</li>
+</ul>
+<p>Do not use proprietary or API-only retrievers in the primary claims. Frozen
+held-out means withheld from compressor development, not unavailable to
+readers. All held-out run files and manifests are released after final
+evaluation.</p>
+<p>Generating this panel is the expensive part of the project, but it happens
+once. Cap the panel rather than chasing every leaderboard model. If compute is
+tight, preserve broad retrieval-behavior coverage before preserving raw model
+count. This is panel design, not a claim that mechanism holdout must reduce
+reliability.</p>
+<h3>System splits and optional structured stress tests</h3>
+<p>Use simple held-out-system resampling for the headline result. Group labels
+support secondary stress tests; they are not ordered from “easy” to “hard,” and
+no degradation is guaranteed.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Regime</th>
+<th>Priority</th>
+<th>What is held out</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Balanced random-system folds</td>
+<td>P0</td>
+<td>pre-declared subsets of the development panel</td>
+<td>estimate ordinary out-of-system reliability and method variance</td>
+</tr>
+<tr>
+<td>Frozen final holdout</td>
+<td>P0</td>
+<td>four reproducibly selected public systems</td>
+<td>one non-adaptive confirmation after choices are fixed</td>
+</tr>
+<tr>
+<td>Checkpoint group</td>
+<td>P1</td>
+<td>size, seed, or nearby checkpoints together</td>
+<td>sensitivity to correlated panel members</td>
+</tr>
+<tr>
+<td>Lineage group</td>
+<td>P1</td>
+<td>all checkpoints assigned to one declared lineage</td>
+<td>sensitivity to training ancestry</td>
+</tr>
+<tr>
+<td>Mechanism group</td>
+<td>P1</td>
+<td>one sparse, dense, late-interaction, hybrid, or reranking group</td>
+<td>sensitivity to retrieval mechanism</td>
+</tr>
+<tr>
+<td>Pipeline group</td>
+<td>P1</td>
+<td>a fusion or reranking composition</td>
+<td>sensitivity to pipeline composition</td>
+</tr>
+<tr>
+<td>Temporal group</td>
+<td>P2</td>
+<td>release-date cohorts</td>
+<td>exploratory time-based sensitivity</td>
+</tr>
+</tbody>
+</table></div>
+<p>Use repeated balanced random-system cross-validation within the development
+panel. Freeze 4 systems for the final Priority-0 evaluation, increasing to at
+most 6 only if resources allow. Hold their outcome matrix until the method,
+hyperparameters, plots, and claim thresholds are committed. Unlock it once,
+archive the unlock record, and then release it publicly.</p>
+<p>Run lineage or mechanism group holdouts only after the headline frontiers are
+complete. Report a null result plainly. These systems are established models;
+avoid “new model family” language unless a genuinely prospective cohort is
+later collected.</p>
+<h3>Budgets</h3>
+<p>The Priority-0 retained variable-cost budgets are:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>20</mn><mo>,</mo><mn>40</mn><mo>,</mo><mn>100</mn><mo stretchy="false">}</mo><mi>%</mi><mo>.</mo></mrow><annotation encoding="application/x-tex">\{1,2,5,10,20,40,100\}\%.</annotation></semantics></math></div>
+<p>Add 60% and 80% points only if they are cheap to generate or needed to resolve
+the 95%-reliability crossing.</p>
+<p>For equal-cost analysis, use the exact integer count implied by each dataset
+and report rounding. Very small test sets will make the 1% and 2% points
+intentionally unstable. For measured-cost analysis, select under profiled
+per-query costs.</p>
+<p>Policies should be nested so work at a smaller budget is reused at a larger
+one. Also run independently optimized non-nested policies as an upper-bound
+ablation.</p>
+<h3>Baseline pool and reporting priority</h3>
+<p>Every baseline receives the same development systems and no frozen held-out
+outcomes.
+Priority 0 is:</p>
+<ol>
+<li>uniform and stratified random sampling, with at least 100 draws per budget;</li>
+<li>Anchor Points and tinyBenchmarks;</li>
+<li>development-panel aggregate-mean matching;</li>
+<li>supervised greedy pairwise-margin preservation; and</li>
+<li>AutoCompress-IR.</li>
+</ol>
+<p>Choose the “strongest prior method” shown in Figure 1 using the development
+folds, then freeze that choice before held-out evaluation. Keep the other
+Priority-0 methods in the appendix.</p>
+<p>Priority 1 is query-feature k-medoids, applicable methods from <em>A Few Good
+Topics</em>, uncertainty-aware and intelligent topic selection, and recent
+ranking-preserving dataset-selection or coreset methods whose code and cost
+models can be reproduced.</p>
+<p>A test-panel oracle may be used only to show headroom. Label it invalid for
+deployment and never include it in the empirical frontier.</p>
+<p>Active sampling methods designed to reduce relevance judging should be
+included only in the related-work comparison or adapted transparently; do not
+pretend their cost model is identical.</p>
+<h3>Primary and secondary outcomes</h3>
+<p>Primary:</p>
+<ul>
+<li>held-out pairwise decision agreement under nDCG@10;</li>
+<li>required budget <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(0.95)</annotation></semantics></math> for 95% reliability; and</li>
+<li>equal-dataset macro and per-dataset frontiers, including worst-dataset
+reliability.</li>
+</ul>
+<p>Secondary:</p>
+<ul>
+<li>aggregate-score mean and maximum absolute error;</li>
+<li>Kendall's <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math> and Spearman rank correlation;</li>
+<li>winner and top-<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math> membership agreement;</li>
+<li>reliability by full-benchmark pair margin;</li>
+<li>calibration of predicted reliability and the selected
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msubsup><mover><mi>b</mi><mo>^</mo></mover><mrow><mi mathvariant="script">A</mi><mo>,</mo><mrow><mi mathvariant="normal">L</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">B</mi></mrow></mrow><mo>*</mo></msubsup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\widehat b^*_{\mathcal A,\mathrm{LCB}}(0.95)</annotation></semantics></math> on frozen held-out systems;</li>
+<li>support overlap and policy stability across seeds;</li>
+<li>wall-clock, GPU-hours, energy if available, and monetary cost; and</li>
+<li>storage and one-time indexing cost.</li>
+</ul>
+<p>Report the entire frontier. A single favorable budget is not sufficient.</p>
+<h3>Experiment matrix</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Priority</th>
+<th>Experiment</th>
+<th>Decision enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E0</td>
+<td>P0</td>
+<td>Build and audit core full run files</td>
+<td>establishes the full-evaluation target</td>
+</tr>
+<tr>
+<td>E1</td>
+<td>P0</td>
+<td>Estimate random and prior-method frontiers across six datasets</td>
+<td>measures baseline compressibility and benchmark heterogeneity</td>
+</tr>
+<tr>
+<td>E2</td>
+<td>P0</td>
+<td>AutoCompress-IR versus required baselines</td>
+<td>tests fixed-cost reliability and fixed-reliability budget gains</td>
+</tr>
+<tr>
+<td>E3</td>
+<td>P0</td>
+<td>Frontier confidence and target-budget calibration</td>
+<td>tests whether the selected budget actually reaches its target</td>
+</tr>
+<tr>
+<td>E4</td>
+<td>P0</td>
+<td>Small-instance exact solver and theory diagnostics</td>
+<td>compares empirical compression with finite-panel and margin limits</td>
+</tr>
+<tr>
+<td>E5</td>
+<td>P0</td>
+<td>One-time frozen-system evaluation</td>
+<td>supplies the final non-adaptive confirmation</td>
+</tr>
+<tr>
+<td>E6</td>
+<td>P0</td>
+<td>Targeted measured-cost study</td>
+<td>translates nominal compression into practical savings</td>
+</tr>
+<tr>
+<td>E7</td>
+<td>P1</td>
+<td>Checkpoint, lineage, mechanism, and pipeline holdouts</td>
+<td>tests sensitivity to structured panel composition without assuming failure</td>
+</tr>
+<tr>
+<td>E8</td>
+<td>P1</td>
+<td>Vary panel size/diversity and test behavioral distance</td>
+<td>studies when broader reference coverage helps</td>
+</tr>
+<tr>
+<td>E9</td>
+<td>P2</td>
+<td>Temporal, progressive-evaluation, and NQ extensions</td>
+<td>tests optional longer-range applications</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Required ablations</h3>
+<p>Priority 0:</p>
+<ul>
+<li>uniform versus learned weights;</li>
+<li>average-risk versus worst-dataset optimization;</li>
+<li>pairwise-decision loss versus score-reconstruction loss;</li>
+<li>practical tie-margin choices; and</li>
+<li>pointwise versus simultaneous-confidence budget selection.</li>
+</ul>
+<p>Priority 1:</p>
+<ul>
+<li>nested versus independently optimized policies;</li>
+<li>outcome vectors versus query features versus both;</li>
+<li>with and without retriever-family metadata;</li>
+<li>random folds versus checkpoint-, lineage-, and mechanism-grouped folds;</li>
+<li>number of reference systems at fixed mechanism diversity;</li>
+<li>mechanism diversity at fixed reference-system count;</li>
+<li>per-dataset compression versus global suite-level budget allocation.</li>
+</ul>
+<p>Priority 2:</p>
+<ul>
+<li>greedy/local search versus optional outer-loop search at matched candidate
+evaluation count.</li>
+</ul>
+<h3>Statistical protocol</h3>
+<ul>
+<li>Pre-register the primary metric, system splits, budgets, tie-margin
+sensitivity, and go/no-go thresholds before frozen evaluation.</li>
+<li>Use identical folds and random seeds for paired method comparisons.</li>
+<li>Resample at the retriever-system and dataset level. Retriever pairs sharing
+a system are not independent observations; do not bootstrap them as if they
+were.</li>
+<li>Report 95% confidence intervals and raw per-dataset values.</li>
+<li>Use at least 100 random-subset replicates and at least 10 method seeds where
+the algorithm is stochastic.</li>
+<li>Plot raw frontier estimates. An isotonic curve may summarize the expected
+monotone trend, but it must not replace raw values.</li>
+<li>Report failures and variance at tiny budgets, not only means.</li>
+<li>Use simultaneous confidence bands when selecting <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(\rho)</annotation></semantics></math> from several
+budgets or methods; report the point estimate separately.</li>
+<li>Choose hyperparameters through nested validation; never through frozen
+held-out systems.</li>
+<li>Treat full-benchmark scores as the target being reproduced, not as noiseless
+ground truth. Include paired-bootstrap uncertainty of the full benchmark as
+context.</li>
+</ul>
+</section>
+<section>
+<h2 id="reproducibility-and-cost-contract">Reproducibility and cost contract</h2>
+<p>Others should not need to rerun 25 expensive retrievers to verify the
+compression claims.</p>
+<h3>Lightweight reproduction</h3>
+<p>Release:</p>
+<ul>
+<li>canonical TREC-format ranked-run files;</li>
+<li>qrels and exact query IDs;</li>
+<li>per-query metric matrices;</li>
+<li>retriever metadata and split assignments;</li>
+<li>query costs and profiling logs;</li>
+<li>every selected policy and weight vector;</li>
+<li>all random seeds and environment locks; and</li>
+<li>one command that regenerates every frontier, table, and statistical test
+from static artifacts.</li>
+</ul>
+<p>This path should run on CPU in hours or less.</p>
+<h3>End-to-end audit</h3>
+<p>Define an eight-system audit panel spanning BM25, learned sparse, task-trained
+dense, general-purpose dense, instruction-conditioned, late interaction,
+hybrid, and reranking mechanisms. Provide scripts to recreate its indexes and
+runs on all main datasets. The remaining systems are reproducible from pinned
+open models but need not be rerun for an ordinary paper reproduction.</p>
+<p>Publish container hashes, package locks, model revisions, prompt prefixes,
+tokenization, pooling, normalization, candidate depths, fusion constants,
+hardware, and run checksums. Avoid mutable “latest” model references.</p>
+<h3>Suggested artifact layout</h3>
+<pre><code class="language-text">papers/benchmark-compression-for-retriever-evaluation/
+├── compression-reliability-frontier-proposal.html
+├── frontier-assessment.html
+├── research-directions.html
+├── protocol.md
+├── systems.lock.yaml
+├── datasets.lock.yaml
+├── configs/
+├── runs/
+├── outcomes/
+├── policies/
+├── results/
+├── scripts/
+└── paper/
+</code></pre>
+<p>Large run artifacts may live in a versioned external release, with checksums
+and download scripts kept here.</p>
+</section>
+<section>
+<h2 id="novelty-boundary-and-iclr-bar">Novelty boundary and ICLR bar</h2>
+<p>Query/topic selection for cheaper IR evaluation is established work. General
+benchmark compression, anchor selection, model-performance prediction, and
+ranking-preserving coresets are also active areas. The paper must not claim to
+invent benchmark subsets or ranking preservation.</p>
+<p>The intended novelty is the conjunction of:</p>
+<ol>
+<li>treating <strong>held-out decision reliability at a stated cost</strong> as the central
+quantity;</li>
+<li>mapping full compression–reliability frontiers and their inverse
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(\rho)</annotation></semantics></math>, rather than reporting one subset at an arbitrary ratio;</li>
+<li>establishing how frontiers vary across heterogeneous retrieval benchmarks;</li>
+<li>automatically constructing nested policies and a conservative budget for a
+declared reliability target;</li>
+<li>connecting exact finite-panel compression, random-sampling guarantees, and
+margin-dependent lower limits to the measured frontiers; and</li>
+<li>releasing a broad, static, reproducible run panel.</li>
+</ol>
+<p>For an ICLR submission, the paper needs all of the following:</p>
+<ul>
+<li>a material, reproducible variation in the compression–reliability tradeoff;</li>
+<li>an algorithmic gain at fixed reliability or fixed cost;</li>
+<li>theory that brackets or predicts the observed compressibility;</li>
+<li>breadth across datasets and retrieval mechanisms; and</li>
+<li>a reusable artifact whose claims can be reproduced cheaply.</li>
+</ul>
+<p>The frontier definition alone is not enough for ICLR; without algorithmic gain
+or unusually strong limits theory, this is likely an incremental IR
+topic-selection paper. Structured family holdouts can strengthen external
+validity, but they are not an acceptance gate. Without either a convincing
+method contribution or a genuinely informative theory/empirical atlas, stop
+or redirect to a smaller IR venue.</p>
+<p>The connection to outer-loop research is practical, not rhetorical: reliable
+cheap evaluation allows a model-development loop to compare more candidates
+without silently changing its objective. No agent-specific assumption is
+needed for the contribution.</p>
+</section>
+<section>
+<h2 id="proposed-abstract">Proposed abstract</h2>
+<blockquote>
+<p>Retrieval benchmarks are repeatedly used to choose among sparse, dense,
+late-interaction, hybrid, and reranking systems, yet running every query for
+every candidate can dominate repeated evaluation cost. Existing
+benchmark-compression methods typically choose a subset for a prespecified
+size; they do not answer how much compression is safe for a required level of
+decision fidelity. We formalize this tradeoff as the
+<strong>compression–reliability frontier</strong>: the highest held-out agreement with
+full-benchmark system comparisons attained at each retained-cost budget for
+a declared benchmark, metric, and retriever population. We introduce
+<strong>AutoCompress-IR</strong>, which produces nested, cost-aware query policies and
+selects the smallest tested budget whose reliability lower bound reaches a
+target. Our analysis characterizes exact weighted compression for a finite
+system panel and gives finite-population, margin-dependent bounds on the
+queries needed to preserve pairwise decisions. Across [DATASETS] and
+[SYSTEMS], the budget required for [RELIABILITY] reliability ranges from
+[LOWEST BUDGET] to [HIGHEST BUDGET], showing [HETEROGENEITY RESULT]. At the
+same target, AutoCompress-IR reduces retained cost by [METHOD RESULT] versus
+[STRONGEST BASELINE]. We release policies, static run files, and code that
+reproduces every frontier without rerunning retrieval models.</p>
+</blockquote>
+<p>All bracketed fields are mandatory result placeholders. Do not replace them
+with qualitative claims until the frozen held-out run is complete.</p>
+</section>
+<section>
+<h2 id="paper-outline">Paper outline</h2>
+<ol>
+<li><strong>Introduction:</strong> evaluation cost, the danger of a universal tiny
+benchmark, and the frontier question.</li>
+<li><strong>Problem formulation:</strong> ranked-run abstraction, cost, decisions, fidelity,
+reliability, the frontier, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mi>ρ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(\rho)</annotation></semantics></math>.</li>
+<li><strong>How micro can evaluation be?:</strong> exact finite-panel compression,
+random-sampling guarantees, margin-dependent limits, and frontier
+confidence.</li>
+<li><strong>AutoCompress-IR:</strong> behavioral representation, nested cost-aware selection,
+and reliability calibration.</li>
+<li><strong>Experimental protocol:</strong> BEIR suite, fixed retriever registry, baselines,
+held-out-system protocol, leakage controls, and costs.</li>
+<li><strong>Results:</strong> headline frontier, per-dataset required budgets,
+AutoCompress-IR comparison, theory diagnostics, and frozen-holdout
+calibration.</li>
+<li><strong>Practical use:</strong> target-reliability policy selection and measured savings.</li>
+<li><strong>Related work and limitations:</strong> IR topic selection, benchmark
+compression, qrel limitations, system-population scope, and environmental
+cost.</li>
+<li><strong>Conclusion:</strong> compression is a conditional reliability decision, not a
+fixed subset.</li>
+</ol>
+</section>
+<section>
+<h2 id="execution-plan">Execution plan</h2>
+<h3>Phase 0 — Freeze the question and protocol</h3>
+<ul>
+<li>[ ] Copy the definitions in this document into protocol.md.</li>
+<li>[ ] Confirm the official ICLR 2027 timeline and work backward from it.</li>
+<li>[ ] Complete a claim-by-claim related-work table.</li>
+<li>[ ] Verify all dataset counts and licenses.</li>
+<li>[ ] Define the exact pairwise decision rule and tie-margin sensitivity.</li>
+<li>[ ] Pre-register budgets, held-out-system folds, confidence intervals, and
+pilot gates.</li>
+<li>[ ] Create datasets.lock.yaml and an initial systems.lock.yaml.</li>
+<li>[ ] Freeze code/data boundaries so final-holdout outcome files cannot be
+loaded by development jobs.</li>
+</ul>
+<p><strong>Deliverable:</strong> a versioned protocol whose primary analysis cannot be changed
+after seeing final held-out results.</p>
+<h3>Phase 1 — Build the static evaluation panel</h3>
+<ul>
+<li>[ ] Implement one run adapter and per-query metric schema.</li>
+<li>[ ] Smoke-test every candidate system on TREC-COVID and SciFact.</li>
+<li>[ ] Select roughly 16 development and 4 frozen held-out open systems for
+Priority 0.</li>
+<li>[ ] Generate or acquire full ranked runs for the six core BEIR entries.</li>
+<li>[ ] Expand systems and datasets only after the headline experiment works.</li>
+<li>[ ] Preserve CQADupStack constituent-task boundaries if it is added.</li>
+<li>[ ] Profile fixed and per-query costs for every mechanism.</li>
+<li>[ ] Validate checksums, score direction, query counts, and metric parity.</li>
+<li>[ ] Implement the eight-system end-to-end audit path.</li>
+</ul>
+<p><strong>Deliverable:</strong> immutable run and per-query outcome matrices plus cost and
+panel metadata.</p>
+<h3>Phase 2 — Run the decisive pilot</h3>
+<ul>
+<li>[ ] Use all six core datasets: TREC-COVID, NFCorpus, FiQA, ArguAna, Quora,
+and SciFact.</li>
+<li>[ ] Use at least 12 reproducible systems spanning the main retrieval
+mechanisms.</li>
+<li>[ ] Run random, stratified random, visible mean matching, Anchor Points,
+tinyBenchmarks, greedy pairwise preservation, and AutoCompress-IR.</li>
+<li>[ ] Measure 1%, 2%, 5%, 10%, and 20% budgets.</li>
+<li>[ ] Use repeated balanced random-system folds; reserve structured holdouts
+for Priority 1.</li>
+<li>[ ] Plot all three headline method curves and per-dataset
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(0.95)</annotation></semantics></math>.</li>
+<li>[ ] Estimate simultaneous confidence bands and check whether the first
+selected target budget is calibrated in resampling simulations.</li>
+<li>[ ] Run the go/no-go review below before scaling.</li>
+</ul>
+<p><strong>Deliverable:</strong> one compact evidence packet that decides whether the ICLR
+story exists.</p>
+<h3>Phase 3 — Complete AutoCompress-IR</h3>
+<ul>
+<li>[ ] Implement behavioral difference vectors and balanced system folds.</li>
+<li>[ ] Implement continuous sparse weighting and deterministic rounding.</li>
+<li>[ ] Implement budget-aware local swaps and nesting.</li>
+<li>[ ] Add worst-dataset optimization and reliability calibration.</li>
+<li>[ ] Add per-dataset coverage constraints and cost-aware selection.</li>
+<li>[ ] Build a small-instance mixed-integer oracle.</li>
+<li>[ ] Run every required ablation.</li>
+<li>[ ] Freeze method and hyperparameters before final held-out evaluation.</li>
+</ul>
+<p><strong>Deliverable:</strong> a documented command that accepts benchmark artifacts and
+emits policies plus a frontier report.</p>
+<h3>Phase 4 — Prove and test the theory</h3>
+<ul>
+<li>[ ] Write formal statements and proofs for T1–T4.</li>
+<li>[ ] Check edge cases: weights, multiple metrics, strata, ties, and finite
+populations.</li>
+<li>[ ] Derive finite-sample constants for random sampling and margin-dependent
+upper and lower limits.</li>
+<li>[ ] Build synthetic examples spanning easy, redundant, high-variance, and
+near-tie regimes.</li>
+<li>[ ] Compare theory with a mixed-integer optimum or bound on small datasets.</li>
+<li>[ ] Validate simultaneous-band coverage and selected-budget calibration in
+simulation.</li>
+<li>[ ] Seek an independent proof review.</li>
+<li>[ ] Attempt structured-panel transfer theory only after the core theory is
+complete and a Priority-1 experiment motivates it.</li>
+</ul>
+<p><strong>Deliverable:</strong> theory that explains a measured phenomenon and survives an
+independent check.</p>
+<h3>Phase 5 — Full evaluation and one-time held-out check</h3>
+<ul>
+<li>[ ] Run all Priority-0 methods, budgets, and datasets using frozen
+random-system folds.</li>
+<li>[ ] Generate the macro frontier, six per-dataset frontiers, and
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>b</mi><mo>*</mo></msup><mo stretchy="false">(</mo><mn>0.95</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b^*(0.95)</annotation></semantics></math> comparison.</li>
+<li>[ ] Complete the two targeted measured-cost studies.</li>
+<li>[ ] Commit the final code, method choice, and analysis notebook.</li>
+<li>[ ] Unlock the frozen held-out panel exactly once.</li>
+<li>[ ] Run the pre-registered held-out analysis without method changes.</li>
+<li>[ ] Release held-out run files and record the unlock.</li>
+<li>[ ] If a bug requires rerunning, document it and label the held-out panel
+compromised rather than silently resetting it.</li>
+</ul>
+<p><strong>Deliverable:</strong> final numbers with a complete provenance trail.</p>
+<h3>Phase 6 — Write and release</h3>
+<ul>
+<li>[ ] Fill abstract placeholders only from the frozen result tables.</li>
+<li>[ ] Lead the paper with the frontier, benchmark heterogeneity, and the
+fixed-reliability method comparison.</li>
+<li>[ ] Put every per-dataset result and all Priority-1 structured-holdout results
+in the appendix/artifact.</li>
+<li>[ ] Include limitations about the declared system population, qrels, corpus
+indexing, and full-benchmark uncertainty.</li>
+<li>[ ] Package the CPU-only reproduction path.</li>
+<li>[ ] Reproduce every figure and table from a clean environment.</li>
+<li>[ ] Run an internal skeptical review against the ICLR bar.</li>
+</ul>
+<p><strong>Deliverable:</strong> submission, public artifacts, and an auditable result ledger.</p>
+</section>
+<section>
+<h2 id="pilot-go-no-go-criteria">Pilot go/no-go criteria</h2>
+<p>Set these thresholds before running the pilot to avoid rationalizing a weak
+signal.</p>
+<h3>Gate A: the frontier is informative and practically nontrivial</h3>
+<p>Pass if the pilot can estimate stable reliability curves and supports both of
+these statements:</p>
+<ul>
+<li>at least one legitimate method reaches a 95% reliability lower confidence
+bound at 20% retained query cost or less on at least four of the six core
+datasets; and</li>
+<li>the required budget differs by at least twofold across core datasets, with
+uncertainty or sensitivity analysis ruling out the claim that one fixed
+ratio is adequate everywhere.</li>
+</ul>
+<p>Also inspect results by pairwise margin so the effect does not depend on a
+single pathological system pair. If the exact numerical threshold proves
+statistically ill-posed in the pilot, revise and commit it before any frozen
+held-out result is opened.</p>
+<h3>Gate B: the proposed method adds value</h3>
+<p>Pass if AutoCompress-IR, against the strongest legitimate baseline, either:</p>
+<ul>
+<li>improves held-out pairwise agreement by at least 2 absolute points at a
+budget of 10% or less; or</li>
+<li>reduces the budget required for 95% reliability by at least a factor of 1.5,</li>
+</ul>
+<p>without losing more than one point on worst-dataset reliability. Confirm the
+same direction on most main datasets in the full study.</p>
+<h3>Gate C: the theory says something non-vacuous</h3>
+<p>Pass if the finite-population and margin-dependent results yield numerical
+bounds or difficulty predictions that can be compared with the empirical
+frontiers, and if selected-budget confidence reaches its nominal coverage in
+simulation. A restatement of Carathéodory plus asymptotic big-O notation is not
+enough for the ICLR claim.</p>
+<h3>Gate D: the savings are operationally meaningful</h3>
+<p>Pass if a 10% query policy yields at least a fivefold measured speedup for an
+index-reuse or reranking workload and the paper can name a realistic repeated
+evaluation setting where fixed costs do not erase the benefit. Report the
+fresh-index case even if it shows little end-to-end saving.</p>
+<h3>Gate E: the result is practically reproducible</h3>
+<p>Pass if the full run panel can be frozen, the central analyses regenerate from
+static artifacts on CPU, and the audit panel can be rebuilt from pinned public
+models with matching run checksums or documented numerical tolerance.</p>
+<h3>Decision</h3>
+<ul>
+<li><strong>A + B + C + D + E pass:</strong> proceed as the intended ICLR 2027 paper.</li>
+<li><strong>A passes, B fails:</strong> consider a frontier/limits paper only if the theory and
+benchmark atlas are unusually informative; otherwise target an IR venue.</li>
+<li><strong>B passes, A fails:</strong> this may still be a compression-method paper, but the
+“no universal ratio” claim must be narrowed to what the data establish.</li>
+<li><strong>C fails:</strong> the work needs a stronger algorithmic or empirical contribution
+to clear the ICLR bar.</li>
+<li><strong>D fails:</strong> retain the statistical contribution only if it is strong, and
+remove broad compute-saving claims.</li>
+<li><strong>A or E fails and no strong replacement result appears:</strong> stop or narrow
+the project.</li>
+</ul>
+<p>Results from lineage, mechanism, pipeline, or temporal holdouts are not a
+go/no-go gate. Promote them only if they reveal a large, reproducible secondary
+finding after the Priority-0 story is complete.</p>
+<p>The numerical gates are planning thresholds, not claims of statistical or
+practical significance for every use case. Freeze or revise them, with written
+reasoning, before looking at pilot outcomes.</p>
+</section>
+<section>
+<h2 id="handoff-rules-for-the-executing-agent">Handoff rules for the executing agent</h2>
+<ol>
+<li>Start with Phase 0 and the pilot. Do not launch the full matrix before the
+go/no-go review.</li>
+<li>Maintain a result ledger with one row per sentence-level claim, its script,
+artifact checksum, table/figure, and status.</li>
+<li>Never tune on frozen held-out outcomes, including by manually viewing their
+summary statistics.</li>
+<li>Keep failed methods and negative datasets in the artifact.</li>
+<li>Distinguish exploratory plots from frozen confirmatory analyses.</li>
+<li>Record every panel or protocol change in Git before rerunning.</li>
+<li>Prefer public run artifacts and deterministic pipelines over a larger but
+irreproducible system count.</li>
+<li>Keep family, lineage, and mechanism holdouts at Priority 1. Do not call the
+fixed public systems “new,” and do not imply that structured holdouts must
+be harder.</li>
+<li>Do not claim a global optimum. Report an empirical method frontier and an
+oracle only where its information access is explicit.</li>
+<li>Keep the main message crisp: <strong>each retrieval benchmark has a
+compression–reliability frontier, and AutoCompress-IR finds the smallest
+tested evaluation that meets a chosen reliability target.</strong></li>
+</ol>
+</section>
+<section>
+<h2 id="primary-related-work">Primary related work</h2>
+<ul>
+<li><a href="https://doi.org/10.1145/1629096.1629099">A Few Good Topics: Experiments in Topic Set Reduction for Retrieval Evaluation</a></li>
+<li><a href="https://doi.org/10.1145/2348283.2348403">Uncertainty-aware query selection for evaluation</a></li>
+<li><a href="https://doi.org/10.1016/j.ipm.2017.09.002">Intelligent topic selection for information retrieval evaluation</a></li>
+<li><a href="https://arxiv.org/abs/1709.01709">Active Sampling for Large-scale Information Retrieval Evaluation</a></li>
+<li><a href="https://arxiv.org/abs/2104.08663">BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models</a></li>
+<li><a href="https://arxiv.org/abs/2309.08638">Anchor Points: Benchmarking Models with Much Fewer Examples</a></li>
+<li><a href="https://arxiv.org/abs/2402.14992">tinyBenchmarks: Evaluating LLMs with Fewer Examples</a></li>
+<li><a href="https://arxiv.org/abs/2510.08730">Microbenchmark reliability (ICLR 2026)</a></li>
+<li><a href="https://arxiv.org/abs/2510.10457">EssenceBench</a></li>
+<li><a href="https://arxiv.org/abs/2606.27997">Ranking-preserving dataset selection (KDD 2026)</a></li>
+<li><a href="https://arxiv.org/abs/2607.09739">Coresets Before Score Sets</a></li>
+</ul>
+<p>The first literature task is to build a claim matrix for these papers: setting,
+unit of compression, cost model, target statistic, whether systems are held
+out at all, optional lineage/mechanism/time grouping, theory, and released
+artifacts. The novelty section should be rewritten from that matrix rather
+than from memory.</p>
+</section>
+</main><aside><div class="label">In this proposal</div><nav aria-label="On this page">
+<a href="#executive-decision">Executive decision</a>
+<a href="#the-30-second-pitch">The 30-second pitch</a>
+<a href="#why-this-matters">Why this matters</a>
+<a href="#scope">Scope</a>
+<a href="#precise-definitions">Precise definitions</a>
+<a href="#headline-figure-and-minimum-paper">Headline figure and minimum paper</a>
+<a href="#research-questions-and-falsifiable-hypotheses">Research questions and falsifiable hypotheses</a>
+<a href="#proposed-contributions">Proposed contributions</a>
+<a href="#autocompress-ir">AutoCompress-IR</a>
+<a href="#theory-agenda">Theory agenda</a>
+<a href="#empirical-design">Empirical design</a>
+<a href="#reproducibility-and-cost-contract">Reproducibility and cost contract</a>
+<a href="#novelty-boundary-and-iclr-bar">Novelty boundary and ICLR bar</a>
+<a href="#proposed-abstract">Proposed abstract</a>
+<a href="#paper-outline">Paper outline</a>
+<a href="#execution-plan">Execution plan</a>
+<a href="#pilot-go-no-go-criteria">Pilot go/no-go criteria</a>
+<a href="#handoff-rules-for-the-executing-agent">Handoff rules for the executing agent</a>
+<a href="#primary-related-work">Primary related work</a>
+</nav></aside></div></body></html>
