@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning to Explore Unfamiliar Search Environments Without Task Labels — Research Proposal</title>
+<style>
+  :root {
+    /* Warm paper palette — see design-system.md */
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --sky:      #6A8CAF;
+    --white:    #FFFFFF;
+    --gray-150: #F0EEE6;
+    --gray-300: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-700: #3D3D3A;
+    --danger:   #B04A3F;
+
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ivory:    #1A1A18;
+      --slate:    #F0EFE9;
+      --clay:     #E68A6A;
+      --oat:      #3A3530;
+      --olive:    #9CB077;
+      --sky:      #87A2C2;
+      --white:    #232220;
+      --gray-150: #2A2926;
+      --gray-300: #3A3935;
+      --gray-500: #8A8881;
+      --gray-700: #C8C6BF;
+      --danger:   #D97766;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ivory);
+    color: var(--gray-700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+
+  /* Two-column layout: prose + sticky aside.
+     Drop the aside and switch to a single column for short docs. */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 48px;
+  }
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; }
+    aside { order: 2; position: static; }
+  }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--slate);
+    margin: 40px 0 14px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--slate);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  .lead { max-width: 640px; font-size: 16px; }
+  .muted { color: var(--gray-500); }
+  em { font-style: italic; }
+  a { color: var(--clay); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--clay); }
+
+  code { font-family: var(--mono); font-size: 13px; background: var(--gray-150); padding: 0.125em 0.35em; border-radius: 4px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--slate); background: var(--white); border: 1.5px solid var(--gray-300); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* TL;DR card */
+  .tldr {
+    border: 1.5px solid var(--gray-300);
+    border-left: 3px solid var(--clay);
+    border-radius: 10px;
+    background: var(--white);
+    padding: 16px 18px;
+    margin: 8px 0 20px;
+  }
+  .tldr b { color: var(--slate); }
+
+  /* Demo / figure panel */
+  .panel {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 14px;
+    background: var(--white);
+    padding: 24px;
+    margin: 12px 0;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--oat);
+    background: rgba(227, 218, 204, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--clay); font-weight: 600; }
+
+  /* Dotted-underline term linked to glossary */
+  .term {
+    border-bottom: 1.5px dotted var(--clay);
+    cursor: help;
+    color: var(--slate);
+  }
+
+  /* Sticky aside (glossary or on-this-page) */
+  aside {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 18px 18px 8px;
+  }
+  aside .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  aside dl dt {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 0;
+  }
+  aside dl dd {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    margin: 2px 0 14px;
+  }
+  aside dl dt.hl, aside dl dt.hl + dd {
+    background: rgba(217, 119, 87, 0.10);
+    margin-left: -8px; margin-right: -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 4px;
+  }
+
+  /* Collapsible details */
+  details {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--slate);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    color: var(--clay);
+    font-family: var(--sans);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body { padding: 0 16px 16px; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 680px; font-size: 13.5px; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 500; }
+  td.good { color: var(--olive); }
+  td.bad  { color: var(--danger); }
+</style>
+<style>
+main {min-width:0;overflow-wrap:anywhere;}
+.meta {font-size:12px;color:var(--gray-700);overflow-wrap:anywhere;}
+.eyebrow, th, aside .label {color:var(--gray-700);}
+a {color:var(--slate);text-decoration:underline;text-decoration-color:var(--clay);text-underline-offset:3px;}
+a:hover {color:var(--clay);}
+strong {color:var(--slate);}
+li {margin:0 0 10px 22px;padding-left:3px;}
+ul, ol {max-width:680px;margin:12px 0 20px;}
+nav a {display:block;margin:0 0 11px;font-size:13px;}
+.table-wrap {overflow-x:auto;}
+table {max-width:none;}
+.proposal {border-left:3px solid var(--clay);padding:12px 18px;background:var(--gray-150);}
+:focus-visible {outline:2px solid var(--slate);outline-offset:4px;}
+section {scroll-margin-top:24px;}
+.table-wrap {max-width:100%;}
+.table-wrap table {min-width:600px;}
+#ratings table {min-width:560px;}
+@media print {details .body {display:block;} .table-wrap {overflow:visible;} .table-wrap table {min-width:0;} #ratings table {min-width:0;}}
+@media (max-width:960px) {.page{grid-template-columns:minmax(0,1fr);}aside {position:static;order:-1;}nav{display:flex;flex-wrap:wrap;gap:8px 18px;}nav a{margin:0;}aside .label{margin-bottom:8px;}.page{gap:30px;}body{padding:28px 18px 70px;}th,td{padding:8px 7px;}}
+@media print {body{padding:0;background:white;color:black;}.page{display:block;max-width:none;}aside{display:none;}details{break-inside:avoid;}a{color:inherit;}h2,h3{break-after:avoid;}}
+</style>
+<style>
+.flow {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0;}
+.flow > div {background:var(--white);border:1px solid var(--gray-300);border-top:3px solid var(--clay);border-radius:10px;padding:16px;}
+.flow span {display:block;font-family:var(--mono);font-size:11px;color:var(--gray-700);margin-bottom:8px;}
+.flow strong {display:block;font-family:var(--serif);font-size:18px;line-height:1.3;}
+.flow p {font-size:13px;margin:8px 0 0;}
+.equation {max-width:100%;overflow-x:auto;margin:20px 0;padding:10px 4px;}
+math {font-size:1.05em;color:var(--slate);}
+.equation math {min-width:max-content;}
+aside {max-height:calc(100vh - 64px);overflow-y:auto;}
+aside nav a {font-size:12px;margin-bottom:10px;}
+@media(max-width:960px) {aside {max-height:240px;} aside nav {display:block;} .flow {grid-template-columns:minmax(0,1fr);}}
+@media print {.flow {grid-template-columns:repeat(2,minmax(0,1fr));}.equation{overflow:visible;}}
+</style>
+</head>
+<body><div class="page"><main>
+<header>
+<div class="eyebrow">Discussion proposal v0.1 · 9 September 2026 · ICLR 2027 main track target</div>
+<h1>Learning to Explore Unfamiliar Search Environments Without Task Labels</h1>
+<p class="lead">Can an agent learn which search experiments to conduct before future tasks arrive, then use the results to find evidence more effectively?</p>
+<p class="meta">Selected from the <a href="../benchmark-compression-for-retriever-evaluation/research-directions.html">research shortlist</a>, following the <a href="../benchmark-compression-for-retriever-evaluation/frontier-assessment.html">frontier assessment</a>. This document proposes a method and experiments for discussion. No results, novelty guarantees, or acceptance predictions are implied.</p>
+<div class="tldr"><p><strong>Recommended paper target:</strong> learn the value of automatically verifiable search probes for improving later retrieval decisions. At a new corpus, the system gets documents and a documented search interface, but no future task queries, relevance judgments, or answers. A small exploration budget produces a compact profile that changes how a frozen agent searches.</p><p><strong>The central uncertainty:</strong> success on synthetic document-rediscovery tasks may have little to do with success on real user tasks. We should first establish that useful, transferable information exists in those probes, then learn to acquire it efficiently.</p></div>
+<p class="meta">Working scope: public text corpora; fixed retrieval indexes and frozen base LLMs during target adaptation; small learned controllers; modest initial compute. The full study is materially larger than the first pilot. These are defaults for refinement, not finalized experimental commitments.</p>
+</header>
+
+<section id="claim"><h2>1. The paper we are trying to earn</h2>
+<p class="proposal"><strong>Candidate claim:</strong> a probe-selection policy trained on source environments can identify which self-generated search experiments will improve a search procedure in an unseen environment, using only automatically observable retrieval outcomes there. The resulting improvement transfers to new tasks and repays its exploration cost.</p>
+<p>A useful example is technical documentation search. A general agent may alternate between a verbose description, a precise identifier, and decomposed subqueries. The best choice depends on the corpus and index. A short experiment that contrasts these query forms could teach a reusable preference. Finding a particular document once is not enough: the experiment must improve decisions for documents and questions that were absent from exploration.</p>
+<p>The proposed scientific contribution is the <strong>connection between probe observations and downstream decision improvement</strong>. We should not claim to invent active exploration, meta-learning, synthetic queries, procedural memory, or search RL.</p>
+<div class="table-wrap"><table><thead><tr><th>Potential contribution</th><th>Evidence required</th></tr></thead><tbody>
+<tr><td>A concrete learning method</td><td>A learned probe-value predictor beats fixed designs, random probes, and uncertainty-based exploration with the same router, observations, and cost limits.</td></tr>
+<tr><td>A transfer result</td><td>Improvements survive held-out corpus families, new evaluation documents/entities, and natural changes in retrieval behavior. A task-label-free target phase is enforced.</td></tr>
+<tr><td>An explanatory result</td><td>Probe-to-task alignment and changes in which search strategy works explain when adaptation helps, fails, or is not worth paying for.</td></tr>
+</tbody></table></div>
+<p><strong>ICLR main-track bar:</strong> a substantial learning result with a clear mechanism, credible comparisons, and generalization. A new memory prompt, a benchmark with several search backends, or a small gain over an unadapted agent would not be sufficient. Novelty remains provisional until the concrete algorithm survives comparison with the closest methods.</p>
+</section>
+
+<section id="contract"><h2>2. The setting and information contract</h2>
+<p>An environment is a corpus snapshot, its indexing/chunking choices, a documented search API, and the distribution of future tasks. Our main setting is a <strong>read-only retrieval service</strong>: the agent can inspect a bounded sample of corpus content and issue queries, but it cannot retrain the backend or rebuild the index.</p>
+<p>All methods receive accurate tool syntax, available fields and filters, and a task-type description such as “technical evidence retrieval.” We do not hide basic documentation to manufacture a discovery problem. No method sees the actual future test questions during onboarding. Sampling documents is an explicit capability with an explicit cost; an environment with only a search box and no sampling access is an extension, not the main claim.</p>
+<div class="table-wrap"><table><thead><tr><th>Stage</th><th>Allowed information</th><th>What changes</th></tr></thead><tbody>
+<tr><td>Source training</td><td>Source corpora, search interfaces, relevance labels and, where available, answer/evidence annotations. Source task labels may supervise probe utility.</td><td>Learn the query router and probe-value predictor. Choose features and hyperparameters using separate development environments.</td></tr>
+<tr><td>Target exploration</td><td>Public interface description, bounded document samples, generated probes, returned ranks/documents, and measured costs. Known sampled document IDs give synthetic supervision.</td><td>Update a compact environment profile. Keep controller weights, query generator, base LLM, and index fixed.</td></tr>
+<tr><td>Target task evaluation</td><td>The individual user query and ordinary search results. Evaluation labels are available only to the scorer after the method is frozen.</td><td>Allow normal within-task search state. Freeze the onboarding profile and reset task-specific state between questions.</td></tr>
+</tbody></table></div>
+<p><strong>“Without task labels” refers to adaptation in the target environment.</strong> The method can use labeled source tasks and automatically generated target supervision. It is not a claim of learning without supervision anywhere, nor a claim of recursive improvement in the learning algorithm itself.</p>
+<details><summary>Compact formalization and cost objective</summary><div class="body">
+<p>Let <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math> index an environment and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>D</mi><mi>e</mi></msub></mrow><annotation encoding="application/x-tex">D_e</annotation></semantics></math> its future task distribution. Exploration policy <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>η</mi><mi>θ</mi></msub></mrow><annotation encoding="application/x-tex">\eta_\theta</annotation></semantics></math> produces history <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>H</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">H_B</annotation></semantics></math> within a budget; an updater produces profile <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>z</mi><mi>e</mi></msub><mo>=</mo><mi>U</mi><mo stretchy="false">(</mo><msub><mi>H</mi><mi>B</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">z_e=U(H_B)</annotation></semantics></math>. The frozen executor <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>π</mi><mi>ϕ</mi></msub></mrow><annotation encoding="application/x-tex">\pi_\phi</annotation></semantics></math> uses that profile during later tasks. The quantity of interest is</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>G</mi><mi>e</mi></msub><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi mathvariant="double-struck">E</mi><mrow><mi>q</mi><mi>~</mi><msub><mi>D</mi><mi>e</mi></msub></mrow></msub><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><msub><mi>u</mi><mi>e</mi></msub><mo stretchy="false">(</mo><msub><mi>π</mi><mi>ϕ</mi></msub><mo stretchy="false">(</mo><mi>q</mi><mi>;</mi><msub><mi>z</mi><mi>e</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>−</mo><msub><mi>u</mi><mi>e</mi></msub><mo stretchy="false">(</mo><msub><mi>π</mi><mi>ϕ</mi></msub><mo stretchy="false">(</mo><mi>q</mi><mi>;</mi><msub><mi>z</mi><mn>0</mn></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mo>.</mo></mrow><annotation encoding="application/x-tex">G_e(B)=\mathbb E_{q\sim D_e}\left[u_e(\pi_\phi(q;z_e))-u_e(\pi_\phi(q;z_0))\right].</annotation></semantics></math></div>
+<p>This is a definition, not a guarantee. The benchmark can estimate it on fixed held-out environments. The total cost of serving <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> future tasks is</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>C</mi><mi>e</mi></msub><mo stretchy="false">(</mo><mi>N</mi><mo>,</mo><mi>B</mi><mo stretchy="false">)</mo><mo>=</mo><msubsup><mi>C</mi><mi>e</mi><mrow><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">d</mi></mrow></mrow></msubsup><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msubsup><mi>C</mi><mi>e</mi><mrow><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">k</mi></mrow></mrow></msubsup><mo stretchy="false">(</mo><msub><mi>q</mi><mi>i</mi></msub><mi>;</mi><msub><mi>z</mi><mi>e</mi></msub><mo stretchy="false">)</mo><mo>.</mo></mrow><annotation encoding="application/x-tex">C_e(N,B)=C_e^{\mathrm{onboard}}(B)+\sum_{i=1}^{N} C_e^{\mathrm{task}}(q_i;z_e).</annotation></semantics></math></div>
+<p>Report source training separately and charge all target sampling, probe generation, retrieval, profile processing, and extra task-time context. The primary operational comparison concerns quality at matched total serving cost; shared source training is not silently free. If adaptation only saves average task cost <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>Δ</mi><mi>c</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\Delta c&gt;0</annotation></semantics></math>, a simple break-even diagnostic is <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><mi>N</mi><mo>*</mo></msup><mo>=</mo><msup><mi>C</mi><mrow><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">d</mi></mrow></mrow></msup><mo>/</mo><mi>Δ</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">N^*=C^{\mathrm{onboard}}/\Delta c</annotation></semantics></math>. That expression is not applicable when quality differs; use quality–cost curves then.</p>
+</div></details>
+</section>
+
+<section id="method"><h2>3. Proposed method: learn which probes change useful decisions</h2>
+<p>The first implementation uses a fixed menu of search transformations and two small learned components: a router that chooses a transformation for a real query, and a selector that chooses the next experiment. This makes active selection testable without simultaneously changing a large language model, memory format, and retrieval backend.</p>
+<div class="flow" aria-label="Proposed target adaptation workflow">
+<div><span>1 · Generate</span><strong>Contrastive probes</strong><p>Two query forms aimed at the same sampled document.</p></div>
+<div><span>2 · Observe</span><strong>Search outcomes</strong><p>Target rank, result overlap, failures, and cost.</p></div>
+<div><span>3 · Update</span><strong>Environment profile</strong><p>Aggregate evidence about useful query choices.</p></div>
+<div><span>4 · Apply</span><strong>Future search procedure</strong><p>Route unseen queries using the frozen profile.</p></div>
+</div>
+<h3>3.1 A bounded search-action library</h3>
+<p>Start with four to six transformations: the original query; a concise semantic rewrite; identifier-preserving lexical terms; a decomposed subquery; and, when documented by the interface, field/filter use. Include a strong reasoning-based rewrite as a baseline action on reasoning-heavy data. Use the same frozen generator and action library for every router. A method must not gain an advantage merely because it receives a better rewriting prompt.</p>
+<p>Features can include query length, identifier/number presence, constraint count, entity density, and current search-state summaries. They must be computable at deployment. The initial router may be linear or a small MLP; model size is not the proposed novelty.</p>
+<h3>3.2 Contrastive document-rediscovery probes</h3>
+<p>Sample a document and generate an indirect query for it. Produce two transformations that isolate a plausible search choice—for example, preserving an identifier versus paraphrasing it. Run both against the same snapshot. Score whether and where the sampled document is retrieved, rather than asking an LLM to judge its own answer.</p>
+<p>Log reciprocal rank or a capped rank score, top-result overlap, empty-result rate, latency, and token costs. Avoid exact title copying and long quoted spans as the only probe family. Include easier probes as controls, but do not confuse rediscovery success with real-task relevance.</p>
+<p>For the clean first experiment, the generator reads only the sampled document; the updater and selector receive rank/overlap/cost statistics, not retrieved document text. This prevents probe-result passages from becoming a hidden answer-memory channel. Give the same observations to the primary selection baselines. Treat richer text observations as a separately labeled extension.</p>
+<p>These pairs are controlled comparisons of search actions for that synthetic task. They do not, by themselves, identify the effect of an index component or establish utility for real questions. Automatically generated descriptions can also be invalid; use fixed quality checks and audit a sample.</p>
+<h3>3.3 A profile with deliberately limited content</h3>
+<p>Use counts, means, variances, and success differences by query-feature bucket and action pair, plus documented schema features. Keep the profile within a fixed size. The main method stores no document text, document identifiers, answers, or entity-to-answer mappings in cross-task memory. A profile of aggregate statistics makes the source of transfer easier to inspect.</p>
+<p>The task router combines query features with the profile to select an action. Within a multi-step task, the executor may update ordinary search state, but the environment profile remains frozen. Free-form procedural memory is a strong comparison method and an optional extension; it should not obscure the first causal comparison.</p>
+<h3>3.4 Learn probe value from actual source-task improvement</h3>
+<p>On source environments, construct a task-by-action outcome cache using labeled source queries. Sample exploration histories, apply a candidate probe outcome to the profile, and recompute the router’s performance on separate source training tasks. This yields a target for the probe-value predictor:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>v</mi><mi>e</mi></msub><mo stretchy="false">(</mo><mi>p</mi><mo>,</mo><mi>H</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mover><mi>U</mi><mo>^</mo></mover><mi>e</mi></msub><mspace width="negativethinmathspace" /><mrow><mo stretchy="true" fence="true" form="prefix">(</mo><mi>U</mi><mo stretchy="false">(</mo><mi>H</mi><mo>∪</mo><mo stretchy="false">{</mo><mo stretchy="false">(</mo><mi>p</mi><mo>,</mo><msub><mi>o</mi><mi>p</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">}</mo><mo stretchy="false">)</mo><mo stretchy="true" fence="true" form="postfix">)</mo></mrow><mo>−</mo><msub><mover><mi>U</mi><mo>^</mo></mover><mi>e</mi></msub><mspace width="negativethinmathspace" /><mrow><mo stretchy="true" fence="true" form="prefix">(</mo><mi>U</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo><mo stretchy="true" fence="true" form="postfix">)</mo></mrow><mo>−</mo><mi>λ</mi><mi>c</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo>.</mo></mrow><annotation encoding="application/x-tex">v_e(p,H)=\widehat U_e\!\left(U(H\cup\{(p,o_p)\})\right)-\widehat U_e\!\left(U(H)\right)-\lambda c(p).</annotation></semantics></math></div>
+<p>Here <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mover><mi>U</mi><mo>^</mo></mover><mi>e</mi></msub></mrow><annotation encoding="application/x-tex">\widehat U_e</annotation></semantics></math> uses real source-task labels; <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>o</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">o_p</annotation></semantics></math> is observed only after executing the probe. Train a predictor <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msub><mi>g</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi>H</mi><mo>,</mo><mi>φ</mi><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g_\theta(H,\varphi(p))</annotation></semantics></math> using features available <em>before</em> the next target probe is run. During target adaptation it chooses the highest predicted useful probe, updates the profile, and stops when the budget is exhausted or predicted gains are too small. Select the stopping threshold on development environments.</p>
+<p>The initial source cache measures single-step evidence retrieval; it does not supply counterfactual multi-step task returns. In the first end-to-end test, use the learned choice for the first retrieval step and keep the executor’s subsequent behavior unchanged. Applying the router at every search round is a secondary experiment until suitable source search-state labels are collected.</p>
+<p>The first selector can imitate a one-step oracle teacher through regression or pairwise ranking. This is explicitly a <strong>myopic value estimate</strong>. Multi-step exploration RL is a possible extension only if the myopic pilot reveals a material planning limitation.</p>
+<details><summary>Implementation order and controls against hidden advantages</summary><div class="body">
+<ol>
+<li>Fix query transformations, features, profile representation, and the executor. Measure the best global action and a task-label oracle’s action-selection ceiling.</li>
+<li>Train a router on source environments with varied probe histories. Freeze it while generating probe-value labels so the label represents the effect of new evidence.</li>
+<li>Train a small value predictor against those source labels. Validate on held-out environments, not randomly split rows from the same corpus.</li>
+<li>Compare learned, random, fixed-coverage, uncertainty, and information-gain probe selection using the identical updater/router. This isolates selection.</li>
+<li>If the first pass works, alternate router and selector training in controlled rounds. Report each component’s training cost; do not introduce large-agent RL before the small-controller hypothesis is tested.</li>
+</ol>
+<p>At target time, candidate generation and document inspection are charged. An unselected probe cannot have its search outcome available to the selector. A precomputed target pool is permissible only with its construction cost included and identical access for comparisons. Cached source outcomes accelerate research; they do not make target evidence free.</p>
+</div></details>
+</section>
+
+<section id="novelty"><h2>4. Novelty boundary and required closest comparisons</h2>
+<p>The tighter formulation makes the project more testable, but it also exposes substantial prior art. We should position it as a candidate solution to a specific adaptation problem, not as the first agent that learns from experience.</p>
+<div class="table-wrap"><table><thead><tr><th>Closest work</th><th>Already established</th><th>What this proposal must add</th></tr></thead><tbody>
+<tr><td><a href="https://arxiv.org/abs/1611.02779">RL²</a>; <a href="https://arxiv.org/html/2008.02790">DREAM</a></td><td>Learning rapid adaptation through interaction. DREAM explicitly learns exploration that recovers task-relevant information rather than irrelevant environment detail.</td><td>An effective way to learn task-useful probes when target observations are synthetic retrieval outcomes and target task rewards are unavailable. Generic “decision-relevant exploration” is not new.</td></tr>
+<tr><td><a href="https://arxiv.org/html/2112.07577">GPL</a>; <a href="https://arxiv.org/abs/2202.05144">InPars</a>; <a href="https://arxiv.org/abs/2209.11755">Promptagator</a></td><td>Synthetic queries and pseudo-labels can adapt retrieval. Promptagator uses a few task examples, which differs from the proposed zero-target-label contract.</td><td>Learn which experiments reveal useful search behavior under bounded interaction with a fixed index. Compare against synthetic-data adaptation, rather than treating synthetic supervision itself as novel.</td></tr>
+<tr><td><a href="https://arxiv.org/html/2503.09516">Search-R1</a>; <a href="https://arxiv.org/html/2609.02253">APEx</a></td><td>Search-policy learning; procedural skills; online adaptation. APEx already adapts a planner on unlabeled test queries using judge-based rewards.</td><td>Pre-task environment adaptation without seeing the future questions, plus evidence that gains survive a profile that cannot store answers. This is a difference in contract and method to test, not proof of superiority.</td></tr>
+<tr><td><a href="https://arxiv.org/html/2606.26122">DocArena</a>; <a href="https://arxiv.org/html/2605.29307">GrepSeek</a>; <a href="https://arxiv.org/html/2608.29953">SearchWiki</a></td><td>Generated search-training environments, direct corpus interaction, and learned document navigation.</td><td>An active acquisition policy with a downstream utility target and honest amortization on unseen environments. New corpus tooling alone is insufficient.</td></tr>
+<tr><td><a href="https://arxiv.org/html/2608.07531v1">Search-G1 v1</a>; <a href="https://arxiv.org/html/2606.05263">CVT-RL</a></td><td>Evidence-dependent rewards, counterfactual interventions, and credit assignment.</td><td>Use interventions as controls. Do not present document replacement or counterfactual evidence credit as our invention.</td></tr>
+</tbody></table></div>
+<p><strong>Novelty gate:</strong> if a straightforward adaptation of uncertainty sampling, DREAM-style task-relevant representation learning, or synthetic-query adaptation matches the proposed controller, the method claim is weak. A convincing paper would need a new empirical explanation or a better algorithm, not a renamed baseline.</p>
+<p class="meta">Source scope: DREAM’s main objective, implementation, and principal result statements and GPL’s method were checked in full text for this proposal. The modern search-agent papers were read during the preceding review. RL², InPars, Promptagator, and BRIGHT received primary abstract/metadata checks in this pass; their implementation details still need a focused audit before reproducing baselines. Recent preprint results are not independently verified.</p>
+</section>
+
+<section id="hypotheses"><h2>5. Falsifiable hypotheses and the failure cases that matter</h2>
+<div class="table-wrap"><table><thead><tr><th>Hypothesis</th><th>Diagnostic</th><th>What would undermine it</th></tr></thead><tbody>
+<tr><td>H1 · There is something useful to learn about the environment.</td><td>Different natural environments favor different actions, and an oracle router improves real-task outcomes over the best universal strategy.</td><td>The same strategy wins nearly everywhere, or the oracle advantage is negligible.</td></tr>
+<tr><td>H2 · Probes contain transferable task-useful information.</td><td>Profiles predict action utility on unseen documents/queries better than interface descriptions and static source priors.</td><td>Probe success merely tracks lexical overlap or document popularity and fails to predict real-query performance.</td></tr>
+<tr><td>H3 · Deliberate selection is worth learning.</td><td>The learned selector beats random, fixed-coverage, and uncertainty baselines with an identical router and budget.</td><td>Random probes or a fixed balanced design recover the same benefit.</td></tr>
+<tr><td>H4 · The benefit is procedural and operational.</td><td>Gains survive disjoint documents/entities, profile transplantation controls, and comparison against spending the same cost during user queries.</td><td>Answer overlap, additional context, or extra total compute explains the effect; onboarding never pays back at a plausible workload.</td></tr>
+</tbody></table></div>
+<details><summary>A modest theory component, only if it explains the experiments</summary><div class="body">
+<p>There is no universal reason a self-generated probe should predict utility on an unknown future task distribution. Two environments/task distributions can produce indistinguishable probe observations but favor different actions. No selector restricted to those observations can always choose correctly.</p>
+<p>Conversely, in a simplified finite-action model, if a profile-based estimate approximates each action’s true mean task utility within <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math>, choosing the estimated best action incurs at most <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mn>2</mn><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">2\epsilon</annotation></semantics></math> selection regret. That is a standard observation, not an ICLR contribution by itself.</p>
+<p>A useful theoretical extension would characterize when the probe family identifies <em>action ordering</em>, rather than reconstructing every property of the environment, and relate this to measured transfer failure. Only pursue it if the empirical results expose a nontrivial boundary. Do not promise an unrestricted guarantee for future corpora.</p>
+</div></details>
+</section>
+
+<section id="evaluation"><h2>6. Evaluation design: enough separation to support the claim</h2>
+<h3>Corpus families are the main unit of transfer</h3>
+<p>Define a corpus family by shared underlying content/provenance. Wikipedia-derived QA datasets are not independent environments merely because their benchmark names differ. Group related collections before splitting. Use source families for learning, separate development families for all choices, and untouched target families for final reporting.</p>
+<p>A working full-study target is <strong>four source families, two development families, and three final target families</strong>, each with a small set of natural retrieval configurations. This is a planning target, not a claim that those datasets and caches are already ready. If the final target panel remains small, show all family results and make a bounded empirical claim; do not infer a universal success probability over future environments.</p>
+<div class="table-wrap"><table><thead><tr><th>Experiment block</th><th>Candidate data / settings</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Cheap retrieval pilot</td><td>Two manageable, distinct public collections such as SciFact and FiQA, with their full released corpora; sparse and dense search. They become pilot-only if used to refine the method.</td><td>Check oracle headroom and probe-to-task alignment before building a large training pipeline.</td></tr>
+<tr><td>Main retrieval transfer</td><td>Disjoint families drawn from <a href="https://arxiv.org/abs/2104.08663">BEIR</a>, technical/search collections, and <a href="https://arxiv.org/abs/2407.12883">BRIGHT</a>. Freeze actual dataset IDs, versions, and splits in a manifest after feasibility checks.</td><td>Evaluate learned selection on unseen corpora and query distributions. BRIGHT needs a strong reasoning-rewrite comparison.</td></tr>
+<tr><td>End-to-end agent test</td><td>At least two naturally distinct task/corpus families with answer and evidence annotations, using the same frozen executor before/after adaptation.</td><td>Show that improved retrieval produces useful task outcomes. A retrieval-only result does not establish better autonomous task solving.</td></tr>
+<tr><td>Controlled environment changes</td><td>On the same content: sparse/dense/hybrid search; defensible chunking or field configurations. Provide accurate documentation to all methods.</td><td>Separate corpus-content changes from search-behavior changes. Treat configurations of one corpus as correlated.</td></tr>
+</tbody></table></div>
+<p>Do not begin by manufacturing opaque backends with arbitrary hidden rules. Use controlled variants to explain a result that also appears under natural shifts. Keep the evaluation corpus intact when creating probe/test splits; deleting hard negatives or irrelevant documents can change the retrieval problem.</p>
+<h3>Prevent answer storage and invalid evaluation</h3>
+<ul>
+<li>Partition document or duplicate/entity groups into an exploration-seed pool and a held-out pool before running methods. The evaluator selects queries whose annotated support belongs to the held-out pool, using the same eligibility rule for every method. Leave both pools in the search index. Report how much of the original query set remains; the runtime selector never sees the query labels or inclusion decisions.</li>
+<li>Audit duplicate content and entity overlap. Include a stricter entity-disjoint slice when feasible, and label the change in task distribution rather than pretending all splits are interchangeable.</li>
+<li>Run a profile-swap experiment: transfer the profile between two corpus slices with the same search configuration, and between configurations with different behavior. Keep task content fixed where possible.</li>
+<li>Compare against no-search and oracle-evidence conditions. Verify that correct evidence exists in the chosen corpus snapshot before attributing failures to the agent.</li>
+<li>Use coherent fact changes as an optional supporting control, not the whole benchmark. Check answerability and retrieval difficulty after the transformation.</li>
+</ul>
+<p>Known-document probe scoring cannot establish that other documents are irrelevant. Keep that distinction explicit. Incomplete qrels also affect the evaluation of new query transformations; pool and audit a blinded sample of novel top results if missing judgments materially alter conclusions.</p>
+</section>
+
+<section id="baselines"><h2>7. Baselines that the paper must take seriously</h2>
+<div class="table-wrap"><table><thead><tr><th>Comparison</th><th>Fair implementation</th><th>Question it answers</th></tr></thead><tbody>
+<tr><td>No adaptation + accurate documentation</td><td>Same agent, action library, index, and task-time budget; include a strong global source-trained router.</td><td>Does onboarding add information beyond a capable starting system?</td></tr>
+<tr><td>Extra query-time compute</td><td>Spend the onboarding-equivalent cost on more rewrites, searches, or reranking while answering tasks.</td><td>Is preparation better than simply doing more work at inference?</td></tr>
+<tr><td>Random and fixed-coverage probes</td><td>Same candidate generator, observation fields, profile, router, and caps.</td><td>Does learning which probes to run matter?</td></tr>
+<tr><td>Uncertainty / information-gain selection</td><td>Use a defensible probabilistic action model with costs; tune it on the same development environments.</td><td>Does downstream probe-value learning beat standard active experimentation?</td></tr>
+<tr><td>Passive procedural memory</td><td>Use matched-cost interactions and generated rediscovery tasks; compare structured statistics with a fixed-prompt summary. Also test an APEx-inspired adaptation under the same target information contract.</td><td>Is the benefit already captured by ordinary experience summarization?</td></tr>
+<tr><td>Synthetic-query adaptation</td><td>Use synthetic labels to tune the same query-side router or adapter while holding the index fixed. Separately report GPL-style backend adaptation when index modification is allowed and all retraining/re-indexing cost is included.</td><td>Is active probing better than learning directly from generated data?</td></tr>
+<tr><td>Task-relevant meta-exploration</td><td>A DREAM-inspired source-supervised environment representation and exploration objective, with identical target access. Clearly label an adaptation if reproducing the original algorithm is not meaningful.</td><td>Is the proposed learning rule more than an application of established meta-RL?</td></tr>
+<tr><td>Oracles</td><td>Best action/profile/probe selection with source or target labels as appropriate; keep target-label oracles separate from eligible methods.</td><td>Is limited headroom, probe informativeness, routing, or selection the bottleneck?</td></tr>
+</tbody></table></div>
+<p>Separate the fixed-service track from the modifiable-backend track. We should neither handicap GPL by silently removing its essential component nor claim dominance based on a comparison that gives methods different capabilities. Few-shot target-label methods may be shown as additional references with that extra supervision labeled.</p>
+</section>
+
+<section id="metrics"><h2>8. Outcomes, uncertainty, and the main figures</h2>
+<p><strong>Primary retrieval endpoint:</strong> equal-family macro nDCG@10 on untouched target queries, comparing methods under a predeclared total serving-cost cap for a reference workload. Start with <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>N</mi><mo>=</mo><mn>50</mn></mrow><annotation encoding="application/x-tex">N=50</annotation></semantics></math> future tasks for planning, then show <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><mi>N</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>50</mn><mo>,</mo><mn>200</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">N\in\{1,10,50,200\}</annotation></semantics></math>. These values must be frozen before final results are inspected.</p>
+<p>Use development runs to select eligible budget configurations under that cap. Report actual costs and quality–cost curves for every method, including no adaptation. Do not conceal a cost overrun behind a nominal “same number of probes.” Sweep exploration budgets such as 0, 16, 64, and 256 tool operations, with a separate token ceiling; a paired probe consumes multiple operations. Count sampling and opening documents as well as searches.</p>
+<p><strong>Required secondary outcomes:</strong> task success with evidence on the end-to-end evaluation; evidence recall; selected-action regret relative to an oracle; invalid/degenerate probe rate; profile size; onboarding and serving costs separately; and sensitivity to task mix. Select one primary endpoint in the frozen protocol rather than declaring whichever metric improves to be the win.</p>
+<div class="table-wrap"><table><thead><tr><th>Figure</th><th>Intended message, if supported</th></tr></thead><tbody>
+<tr><td>1 · Quality versus total serving cost</td><td>Learned exploration improves the operating curve on held-out families after paying for onboarding; show each family as well as a macro view.</td></tr>
+<tr><td>2 · Value of deliberate exploration</td><td>At the same caps and with the same router, learned probes outperform random, fixed, and uncertainty-driven probes.</td></tr>
+<tr><td>3 · Transfer and content controls</td><td>Profile transplantation and disjoint-content evaluation locate what was learned.</td></tr>
+<tr><td>4 · When adaptation is useful</td><td>Relate gains to action-order variation and probe-to-task alignment; include low-benefit and failure cases.</td></tr>
+<tr><td>5 · End-to-end benefit and amortization</td><td>Retrieval gains translate into task outcomes, and the workload size needed to justify onboarding is visible.</td></tr>
+</tbody></table></div>
+<p>Use paired queries and seeds across methods. Treat shared profiles, configurations, and corpus families as clustered observations. Resample whole onboarding histories/profiles before their task outcomes; thousands of tasks sharing one profile are not thousands of independent adaptations. Show per-family effects. With only a few target families, intervals mainly describe the tested panel and should not be sold as broad population certification.</p>
+<p>Lock the primary comparator and protocol after the pilot, use development data for model/budget selection, and run the final test once per frozen configuration. Report disagreement between retrieval and answer metrics rather than averaging it away. Estimate the full-study query count from observed paired variance; a small pilot cannot establish a reliable three-percentage-point success gain.</p>
+</section>
+
+<section id="pilot"><h2>9. The smallest pilot that can change our mind</h2>
+<p><strong>First output:</strong> a short result ledger and three plots—action-selection headroom, probe-to-task alignment, and adaptation benefit versus cost. No large-agent training is needed to obtain them.</p>
+<ol>
+<li><strong>Verify the environment.</strong> Pin two small public corpus snapshots and two search configurations each. Audit document availability, probe/test separation, and a few answer/evidence examples. Preserve the full corpora.</li>
+<li><strong>Measure headroom.</strong> Evaluate the same small action library on real queries. Compare a global strategy, a global query-conditioned router, and a task-label oracle. If routing cannot help, active exploration cannot rescue this design.</li>
+<li><strong>Test proxy usefulness.</strong> Generate a bounded probe set; compare profile predictions with action utility on disjoint real queries. Include exact-overlap versus indirect probes and simple lexical/popularity controls.</li>
+<li><strong>Test active choice.</strong> Train a minimal source-only selector and compare it with random, fixed-coverage, and uncertainty selection using an identical router. Rotate pilot roles only for debugging and label these results exploratory.</li>
+<li><strong>Make the research decision.</strong> Inspect negative cases and total cost before expanding the corpus panel or changing the base model.</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>Gate</th><th>Proceed when</th><th>Stop or revise when</th></tr></thead><tbody>
+<tr><td>A · Headroom</td><td>The oracle has a practically meaningful advantage in more than one natural environment; a provisional screening target is 0.05 absolute nDCG@10.</td><td>One global strategy or the ordinary router is already near the ceiling.</td></tr>
+<tr><td>B · Transferable signal</td><td>Probe profiles help on unseen real queries and documents beyond descriptions, source priors, and overlap heuristics.</td><td>Only synthetic rediscovery improves, or content overlap explains the benefit.</td></tr>
+<tr><td>C · Active selection</td><td>Learned choice improves over strong passive/active baselines across pilot seeds at a useful effect size.</td><td>Fixed coverage or standard uncertainty sampling is equally good. Do not preserve a learned-selector story by weakening baselines.</td></tr>
+<tr><td>D · Operational value</td><td>The gain survives total-cost accounting and has a plausible workload at which onboarding is worthwhile.</td><td>Extra query-time compute dominates, or gains require impractical numbers of future tasks.</td></tr>
+</tbody></table></div>
+<p>The numerical headroom screen is a discussion default, not a significance threshold or promised result. Freeze practical effect targets with the protocol before confirmatory testing. A pilot with 100–200 questions per environment is for detecting large opportunities and gross confounds, not for certifying small effects.</p>
+</section>
+
+<section id="resources"><h2>10. Engineering plan and realistic cost</h2>
+<p>Create the effort under <code>papers/learning-to-explore-search-environments/</code>. Keep this HTML proposal as the discussion document. After the research contract is agreed, add versioned environment manifests, split definitions, action/probe specifications, cached source outcomes, cost logs, and a result ledger. Large indexes and model artifacts should remain external to Git.</p>
+<div class="table-wrap"><table><thead><tr><th>Stage</th><th>Concrete deliverable</th><th>Lift / dependency</th></tr></thead><tbody>
+<tr><td>Contract and smoke test</td><td>Working API, frozen action library, example probes, 20-task timing/cost sample, and audited splits.</td><td>Low to moderate. Dataset/index access must work before promising a large panel.</td></tr>
+<tr><td>Ceiling and signal pilot</td><td>Outcome cache, simple profiles, headroom/alignment plots, cost ledger.</td><td>Moderate. Retrieval and query generation dominate; use a fixed model and cache identical calls.</td></tr>
+<tr><td>Learned selection</td><td>Source-trained router and probe-value model; matched baseline results.</td><td>Moderate to high. Baseline parity and clean environment splits matter more than neural-model size.</td></tr>
+<tr><td>Main-track evidence</td><td>Untouched corpus families, transfer controls, end-to-end tasks, robustness, and reproducible results.</td><td>High. This is the substantial experimental lift rated 4/5 in the shortlist.</td></tr>
+</tbody></table></div>
+<p>For scale awareness, six methods × four pilot environments × 150 questions × three onboarding seeds already gives <strong>10,800 evaluated search episodes</strong>. A full primary grid of eight methods × nine target configurations × 300 questions × three seeds gives <strong>64,800 episodes</strong>, before extra budgets, agents, or ablations. These are illustrative arithmetic counts, not a committed run matrix. Several configurations share one corpus family.</p>
+<p>Measure per-episode tokens, calls, latency, and local GPU/API cost in the smoke test, then price the actual grid. Do not quote a dollar budget before those measurements. Prioritize oracle/signal tests and matched cached retrieval comparisons before expensive end-to-end rollouts. Source meta-training and document indexing need separate cost lines.</p>
+</section>
+
+<section id="iclr"><h2>11. ICLR 2027 main-track plan and manuscript outline</h2>
+<p>The <a href="https://iclr.cc/Conferences/2027/CallForPapers">official ICLR 2027 call</a>, checked September 9, lists <strong>September 18, 2026</strong> for abstracts and <strong>September 25, 2026</strong> for papers, both 23:59 Anywhere on Earth. That leaves nine and sixteen calendar days from this proposal. The topic fits meta-learning, self-supervised learning, and reinforcement learning, but the current project has no experimental evidence. A strong submission on this schedule is high risk.</p>
+<p><strong>Schedule the decision, not an assumed success.</strong> A useful near-term target is the environment smoke test and oracle/signal results by September 12–13, then an initial matched-baseline result by September 16. Reassess the submission before the abstract deadline. These dates depend on working infrastructure and available compute; they are not completion promises.</p>
+<p>If the central result is not clear, do not weaken the novelty claim, reuse development outcomes as final evidence, or omit the decisive baselines to meet the deadline. Keep pursuing the research at main-track quality and reconsider the submission date. The full evidence package may exceed this window.</p>
+<div class="table-wrap"><table><thead><tr><th>Manuscript section</th><th>What it must establish</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>The deployment problem, why real task improvement differs from synthetic probe success, and the exact contribution.</td></tr>
+<tr><td>Setting and related work</td><td>The source/target information boundary, cost contract, and distinctions from meta-RL, synthetic adaptation, and procedural memory.</td></tr>
+<tr><td>Method</td><td>Action library, profile, router, source utility labels, probe selector, and stopping. Enough detail to reproduce the decision rule.</td></tr>
+<tr><td>Main experiments</td><td>Quality/cost transfer on untouched environments with strong baselines; end-to-end utility.</td></tr>
+<tr><td>Analysis</td><td>Selection ablations, content controls, alignment/headroom, failures, and amortization.</td></tr>
+<tr><td>Limitations and conclusion</td><td>Corpus-sampling assumptions, task-distribution dependence, small environment panels, and boundaries of the self-improvement claim.</td></tr>
+</tbody></table></div>
+<details><summary>Prospective abstract for discussion — no result claims</summary><div class="body">
+<p>Search agents often encounter unfamiliar corpora and retrieval services whose useful query strategies differ from those seen during training. We study whether an agent can adapt before receiving its future tasks by conducting a bounded number of automatically verifiable search experiments. Our proposed method learns, on source environments, which contrastive document-rediscovery probes improve downstream retrieval decisions. At deployment it uses only corpus samples and search outcomes to update a compact environment profile, while keeping the search index and base agent fixed. The planned evaluation separates corpus families, prevents answer storage in the profile, and charges the complete cost of exploration and subsequent task solving. It tests whether learned probe selection improves quality and cost over strong static, passive, active-learning, and synthetic-adaptation baselines, and identifies when synthetic probe outcomes fail to transfer to real tasks.</p>
+</div></details>
+</section>
+
+<section id="discussion"><h2>12. Choices to refine together</h2>
+<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Recommended default</th><th>Consequence of changing it</th></tr></thead><tbody>
+<tr><td>What is the first method contribution?</td><td>Learning probe value for a fixed query router and executor.</td><td>Training the whole search agent at once raises compute and makes the source of improvement harder to identify.</td></tr>
+<tr><td>When does adaptation happen?</td><td>One onboarding phase before future queries arrive.</td><td>Adapting on actual unlabeled user queries is useful but closer to APEx/test-time adaptation and needs a different contract.</td></tr>
+<tr><td>What may the method change?</td><td>A small structured profile and action routing; fixed backend.</td><td>Index or retriever updates create a different comparison with GPL and continual retrieval methods.</td></tr>
+<tr><td>What is the initial task focus?</td><td>Evidence retrieval as the cheap diagnostic, followed by required end-to-end search-agent evidence.</td><td>A retrieval-only paper is simpler, but must narrow its claims about agents and self-improvement.</td></tr>
+<tr><td>What constitutes success?</td><td>Transfer beyond content overlap, active-selection benefit, and improved total-cost outcomes.</td><td>A small same-corpus gain or a polished new benchmark alone would not support the intended ICLR contribution.</td></tr>
+<tr><td>What controls the schedule?</td><td>The pilot decides whether ICLR 2027 is defensible; scientific quality remains the target.</td><td>A fixed September submission deadline may require more resources, and still cannot guarantee the necessary result.</td></tr>
+</tbody></table></div>
+<p><strong>Recommended next step after this discussion:</strong> implement the environment contract and action-selection ceiling, then test whether the probe signal predicts real-query improvement. Those two results decide whether the proposed learned selector has a research opportunity at all.</p>
+</section>
+
+<section id="references"><h2>Selected reading and provenance</h2>
+<p>This proposal builds on the preceding literature review and adds the meta-exploration and synthetic-adaptation comparisons needed for this specific direction. Source claims and proposed contributions are distinguished throughout. No cited experimental result was reproduced during drafting.</p>
+<ul>
+<li><a href="https://arxiv.org/html/2008.02790">DREAM: Decoupling Exploration and Exploitation for Meta-Reinforcement Learning without Sacrifices</a> — especially §4 and the main consistency statement; the closest conceptual warning against claiming task-relevant exploration as new.</li>
+<li><a href="https://arxiv.org/abs/1611.02779">RL²: Fast Reinforcement Learning via Slow Reinforcement Learning</a> — foundational adaptation-through-interaction framing.</li>
+<li><a href="https://arxiv.org/html/2112.07577">GPL: Generative Pseudo Labeling for Unsupervised Domain Adaptation of Dense Retrieval</a>; <a href="https://arxiv.org/abs/2202.05144">InPars</a>; <a href="https://arxiv.org/abs/2209.11755">Promptagator</a> — synthetic supervision and the distinction between unlabeled and few-shot adaptation.</li>
+<li><a href="https://arxiv.org/html/2503.09516">Search-R1</a>; <a href="https://arxiv.org/html/2609.02253">APEx</a> — search-policy learning and procedural/test-time adaptation.</li>
+<li><a href="https://arxiv.org/html/2606.26122">DocArena</a>; <a href="https://arxiv.org/html/2605.29307">GrepSeek</a>; <a href="https://arxiv.org/html/2608.29953">SearchWiki</a> — corpus-grounded task synthesis and corpus interaction.</li>
+<li><a href="https://arxiv.org/html/2608.07531v1">Search-G1 v1</a>; <a href="https://arxiv.org/html/2606.05263">CVT-RL</a> — evidence interventions and credit assignment.</li>
+<li><a href="https://arxiv.org/abs/2104.08663">BEIR</a>; <a href="https://arxiv.org/abs/2407.12883">BRIGHT</a> — candidate public evaluation families. Final versions and eligibility are not yet fixed.</li>
+<li><a href="https://arxiv.org/abs/2605.27881">Retrieval, Reward, and Training Protocols: What Matters in Training Search Agents?</a> — abstract checked; motivates a focused audit of corpus coverage and baseline parity before training.</li>
+<li><a href="https://iclr.cc/Conferences/2027/CallForPapers">ICLR 2027 Call for Papers</a> — deadlines and scope, checked September 9, 2026. Consult the linked author guidelines before manuscript submission.</li>
+</ul>
+</section>
+</main><aside><div class="label">Research proposal</div><nav aria-label="On this page">
+<a href="#claim">1 · Claim and paper bar</a><a href="#contract">2 · Information contract</a><a href="#method">3 · Concrete method</a><a href="#novelty">4 · Novelty boundary</a><a href="#hypotheses">5 · Falsifiable hypotheses</a><a href="#evaluation">6 · Transfer evaluation</a><a href="#baselines">7 · Required baselines</a><a href="#metrics">8 · Metrics and figures</a><a href="#pilot">9 · Decisive pilot</a><a href="#resources">10 · Engineering and cost</a><a href="#iclr">11 · ICLR plan and outline</a><a href="#discussion">12 · Discussion choices</a><a href="#references">Selected reading</a>
+</nav></aside></div></body></html>
