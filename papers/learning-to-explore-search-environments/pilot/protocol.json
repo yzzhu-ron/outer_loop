@@ -1,0 +1,189 @@
+{
+  "protocol_version": "0.1.0",
+  "frozen_on": "2026-09-09",
+  "evidence_status": "exploratory pilot; frozen before retrieval results are inspected",
+  "parent_proposal_commit": "a24a29a",
+  "purpose": "Screen action-selection headroom and whether passive numeric probe profiles predict real-query action utility; no learned probe selector in this pilot.",
+  "datasets": [
+    {
+      "name": "scifact",
+      "family": "scientific_claim_evidence",
+      "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip",
+      "archive_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165"
+    },
+    {
+      "name": "fiqa",
+      "family": "financial_question_answer_retrieval",
+      "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/fiqa.zip",
+      "archive_sha256": "32c7df99ed21252fdfb2cf3f5673502a8d245ee0c44c4a133570d92ce2b3ad02"
+    }
+  ],
+  "corpus": {
+    "preserve_full_released_corpus": true,
+    "document_unit": "released BEIR document",
+    "chunking": "none; model input truncation is reported separately",
+    "sampling_capability": "one exploration-seed document inspected when its probe is selected",
+    "profile_may_store_document_text_or_ids": false,
+    "full_corpus_statistics_outside_backend": false
+  },
+  "retrieval": {
+    "configurations": [
+      {
+        "name": "bm25",
+        "kind": "sparse",
+        "document_fields": ["title", "text"]
+      },
+      {
+        "name": "minilm",
+        "kind": "dense",
+        "model": "sentence-transformers/all-MiniLM-L6-v2",
+        "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+        "maximum_input_tokens": 256,
+        "normalize_embeddings": true,
+        "document_fields": ["title", "text"]
+      }
+    ],
+    "index_frozen_during_onboarding": true,
+    "known_backend_flag_available_to_all_routers": true,
+    "configuration_unit": "corpus configurations are correlated, not independent families"
+  },
+  "document_split": {
+    "seed": 20260909,
+    "exploration_fraction": 0.2,
+    "normalization": "NFKC, casefold, whitespace collapse; body text alone when nonempty, otherwise title",
+    "duplicate_group_hash": "SHA256('body\\0' + normalized_body), or SHA256('title\\0' + normalized_title)",
+    "assignment_hash": "SHA256(str(seed) + ':' + group_hash); first 64 bits divided by 2**64 < exploration_fraction",
+    "assignment_uses_qrels": false,
+    "group_fraction_is_probability_not_exact_quota": true,
+    "eligibility": "At least one positive judgment; every judged document exists in the full corpus; all positive support documents belong to the held-out pool.",
+    "negative_judgments_may_reference_exploration_pool": true,
+    "report_query_retention_and_missing_support": true,
+    "entity_disjointness_claimed": false
+  },
+  "query_selection": {
+    "seed": 20260909,
+    "rule": "run_pilot.select_ids sorts eligible query IDs by SHA256(json.dumps([salt, str(query_id)], sort_keys=True).encode()), with Python json.dumps default separators; salt is 'test-20260909' for target test and 'train-20260909' for source train. Take at most the requested count.",
+    "target_split": "test",
+    "target_queries_per_family": 150,
+    "source_split": "train",
+    "source_queries_per_family": 256,
+    "source_router_train_count": 192,
+    "source_calibration_count": 64,
+    "source_partition": "Router-training count is min(192, max(1, floor(0.75 * selected_source_query_count))); remaining selected source IDs calibrate the passive profile correction. With the full 256-query sample this is 192 training and 64 calibration queries.",
+    "source_train_calibration_query_ids_disjoint": true,
+    "source_train_calibration_support_documents_disjoint": false,
+    "same_query_ids_for_every_method_and_backend": true
+  },
+  "source_target_roles": {
+    "directions": [
+      {"source": "scifact", "target": "fiqa"},
+      {"source": "fiqa", "target": "scifact"}
+    ],
+    "role_rotation_for_exploratory_debugging_only": true,
+    "all_configurations_of_one_family_share_role": true,
+    "separate_development_family_available": false,
+    "hyperparameters": "Fixed defaults below; no target-label selection or optimization.",
+    "future_confirmatory_eligibility": "Both families are pilot-only after these results inform any method decision."
+  },
+  "actions": {
+    "ordered_names": ["original", "keywords", "identifier_terms", "lead_clause"],
+    "generator": "fixed deterministic lexical transformations; no LLM calls",
+    "same_library_for_all_methods": true,
+    "semantic_or_reasoning_rewrite_included": false,
+    "report_identical_action_and_empty_query_rates": true,
+    "implementation": "Frozen action definitions are in the pilot retrieval implementation and copied into the result manifest."
+  },
+  "probes": {
+    "families": ["exact_title", "body_terms"],
+    "family_interpretation": {
+      "exact_title": "lexical overlap/easy control; title-derived query with no fallback. An empty title produces an invalid probe, charges one inspection, and performs no searches or profile update.",
+      "body_terms": "lexical document-derived proxy, not a validated indirect semantic query"
+    },
+    "onboarding_seeds": [11, 23, 47],
+    "maximum_sampled_documents_per_seed": 64,
+    "sampling": "Sort exploration document IDs lexicographically, shuffle with Python random.Random(seed).shuffle, and take the first 64. Same document sample/order for all methods, backends, and probe families within a corpus and seed; inspect content only when a probe is selected.",
+    "candidate_pool_preinspection": false,
+    "contrastive_pair": "Cycle original versus keywords, identifier_terms, lead_clause.",
+    "searches_per_probe": 2,
+    "document_inspections_per_probe": 1,
+    "tool_operations_per_probe": 3,
+    "tool_operation_budgets": [0, 16, 64, 256],
+    "maximum_valid_probe_counts": [0, 5, 21, 64],
+    "invalid_probe_cost": "One sampled-document inspection; no search. Counts, reasons, and actual operations are reported.",
+    "maximum_actual_tool_operations": 192,
+    "budget_underspend_reported": true,
+    "synthetic_score": "Known-document reciprocal rank; other retrieved documents are not labeled irrelevant.",
+    "profile_observations": ["action-pair reciprocal-rank differences", "query-feature bucket", "counts"],
+    "retrieved_text_exposed_to_profile_or_selector": false,
+    "unselected_search_outcomes_exposed": false
+  },
+  "models": {
+    "source_router": {
+      "estimator": "multioutput Ridge",
+      "alpha": 10,
+      "inputs": "deployment-computable query features plus documented backend flag",
+      "target": "source router-training query nDCG@10 for each action",
+      "target_weights_frozen": true
+    },
+    "source_fixed_action": "Within each backend, choose highest mean nDCG@10 on the source router-training queries only.",
+    "profile": {
+      "statistics": "original-versus-action mean reciprocal-rank differences, globally and within query-feature bucket",
+      "query_bucket": "2 * int(token_count > 8) + int(any identifier-like token), using the engine's case-preserving surface tokenizer and fixed identifier predicate; four buckets numbered 0 through 3.",
+      "shrinkage": "n / (n + 3)",
+      "content": "numeric counts and differences only",
+      "frozen_during_target_task_evaluation": true
+    },
+    "passive_profile_correction": {
+      "estimator": "per-action Ridge",
+      "alpha": 10,
+      "fit_intercept": false,
+      "inputs": ["shrunk global action-original reciprocal-rank delta", "shrunk query-bucket action-original reciprocal-rank delta"],
+      "training_queries": "source-only calibration query IDs, disjoint from source router-training query IDs",
+      "training_histories": "source onboarding seeds and budgets, with the source router frozen",
+      "target": "real action-original nDCG difference minus frozen source-router prediction difference",
+      "application": "Add the frozen source-trained correction to the source router score at target time.",
+      "target_label_fitting": false
+    },
+    "probe_only": "Choose the action with maximum shrunk global probe reciprocal-rank difference; original action has zero delta.",
+    "learned_probe_selector": false
+  },
+  "comparators": {
+    "eligible": ["original", "source_fixed", "source_router", "probe_only", "passive_profile_correction", "rrf_extra_search"],
+    "target_label_oracles": ["target_best_fixed_action", "per_query_best_action"],
+    "rrf_extra_search": "Fuse original query results and the best non-original alternative chosen on source router-training queries; charge two searches per task.",
+    "rrf_is_matched_at_every_cost_point": false,
+    "oracle_outcomes_available_to_deployed_methods": false
+  },
+  "outcomes": {
+    "primary_diagnostic": "nDCG@10 on eligible held-out real queries, reported per family and backend plus equal-family macro",
+    "secondary": ["action-selection regret", "pairwise probe/task action-order agreement", "probe validity and degeneracy", "query retention", "profile size", "onboarding and serving operation counts and measured latency"],
+    "headroom_screen": 0.05,
+    "headroom_screen_interpretation": "Provisional descriptive oracle advantage, not a significance threshold; compare against source router and target-best fixed action.",
+    "uncertainty": "Paired queries and seeds; profile/history is an adaptation unit. No broad family-population claims from two pilot families.",
+    "gate_A": "Meaningful action-selection headroom in more than one natural environment.",
+    "gate_B": "Disjoint real-query benefit beyond source priors and lexical controls; correlation alone does not establish transfer.",
+    "gate_C": "Not tested: requires a learned selector and matched random, fixed, and uncertainty baselines after headroom/signal justify expansion.",
+    "gate_D": "Descriptive cost curves only until quality at matched total cost and stronger inference-time alternatives are established."
+  },
+  "cost": {
+    "reference_workload": 50,
+    "workloads": [1, 10, 50, 200],
+    "charge_sampling_and_every_selected_probe_search": true,
+    "charge_generation_and_profile_processing": true,
+    "llm_generation_tokens": 0,
+    "report_measured_cpu_latency": true,
+    "separate_offline_index_source_training_and_cache_costs": true,
+    "cached_outcomes_do_not_make_target_interactions_free": true,
+    "break_even": "Only compute onboarding_cost / per_task_cost_saving when quality is comparable and per-task cost saving is positive; otherwise show quality-cost curves."
+  },
+  "not_established": [
+    "learned active probe selection",
+    "strong semantic or reasoning rewrites",
+    "validated indirect semantic probes",
+    "entity-disjoint transfer or near-duplicate removal",
+    "end-to-end answer or autonomous-agent improvement",
+    "untouched confirmatory target families",
+    "population-level generalization",
+    "ICLR-level contribution or submission readiness"
+  ]
+}
