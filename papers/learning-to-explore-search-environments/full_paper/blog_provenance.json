@@ -1,7 +1,8 @@
 {
-  "template_sha256": "c547586bd457b24147a0129ef32ad046b9b0dea7c6c6fe8d5354b0bd75cb366e",
-  "builder_sha256": "5128378e2e67a893b295d0452ddc43c5e6e8fbdb7d56e9e33460c4a5367da7ca",
+  "template_sha256": "3a199ab8ccc356e08796edf701bdb4ef182f228e67e493adc1a52686952602c0",
+  "builder_sha256": "cbd85746e68862bab6d8511daa8d99dab48d3218085b2c943c16ec093e890205",
   "figure_manifest_sha256": "dfde3c42c432f0f603ec94b1608e4a1f2d8692b63f5efaa6c5918636884c78db",
-  "html_sha256": "7185dbdd37e35d27030346062134f43021280005700c896ed3b85e7bb1c94c37",
+  "intervention_figure_manifest_sha256": "74b9fc6b08b0b697f69fa7f46ab1a34b98bfd9db4b51884f7eb652db8ade901d",
+  "html_sha256": "2eddd4cabf10da0bfec89332d4e44362ea8082b9463739e2607b285dd8c0e7e0",
   "status": "Technical blog draft; no new-family confirmation or publication claim."
 }

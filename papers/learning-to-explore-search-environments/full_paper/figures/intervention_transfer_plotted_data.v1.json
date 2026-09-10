@@ -1,0 +1,640 @@
+{
+  "difference_reference": "Source-fixed160, selected from 128 training plus 32 calibration queries per source family.",
+  "families": {
+    "fiqa": {
+      "costs": {
+        "rrf_all": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            },
+            "100": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            },
+            "1000": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0,
+            "llm_calls": 0,
+            "logical_search_calls": 0,
+            "output_tokens": 0,
+            "sample_calls": 0,
+            "underlying_search_calls": 0
+          },
+          "serving_per_query": {
+            "input_tokens": 393.93333333333334,
+            "llm_calls": 1.0,
+            "logical_search_calls": 6.0,
+            "output_tokens": 124.31333333333333,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 12.0
+          }
+        },
+        "source_fixed_train_cal": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "100": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "1000": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0.0,
+            "llm_calls": 0.0,
+            "logical_search_calls": 0.0,
+            "output_tokens": 0.0,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 0.0
+          },
+          "serving_per_query": {
+            "input_tokens": 393.93333333333334,
+            "llm_calls": 1.0,
+            "logical_search_calls": 2.0,
+            "output_tokens": 124.31333333333333,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 4.0
+          }
+        },
+        "within": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "100": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "1000": {
+              "input_tokens": 393.93333333333334,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 124.31333333333333,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0.0,
+            "llm_calls": 0.0,
+            "logical_search_calls": 0.0,
+            "output_tokens": 0.0,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 0.0
+          },
+          "serving_per_query": {
+            "input_tokens": 393.93333333333334,
+            "llm_calls": 1.0,
+            "logical_search_calls": 2.0,
+            "output_tokens": 124.31333333333333,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 4.0
+          }
+        }
+      },
+      "eta": 0.0,
+      "label": "FiQA",
+      "means": {
+        "rrf_all": 0.3561858209607792,
+        "source_fixed_train_cal": 0.35211561175653383,
+        "within": 0.35211561175653383
+      },
+      "n_panels": 3,
+      "n_queries": 150,
+      "oracle_adaptation_headroom": 0.0005625449422460016,
+      "oracle_best_fixed_policy": [
+        "original",
+        "hyde"
+      ],
+      "oracle_mean": 0.35267815669877983,
+      "oracle_minus_source_fixed160_by_lambda": [
+        5.551115123125783e-17,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.003937814595722011
+      ],
+      "oracle_per_lambda_ndcg": [
+        0.2752433673640766,
+        0.29888891768356873,
+        0.29752128554541085,
+        0.39924513180799664,
+        0.40290628832352016,
+        0.40190838790843486,
+        0.393033718258451
+      ],
+      "source_fixed160_is_target_best_fixed": true,
+      "source_fixed160_ndcg_by_lambda": [
+        0.27524336736407656,
+        0.29888891768356873,
+        0.29752128554541085,
+        0.3992451318079967,
+        0.40290628832352016,
+        0.40190838790843486,
+        0.389095903662729
+      ],
+      "within_minus_source_fixed160_by_lambda": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "within_minus_source_fixed160_interval": {
+        "hi": 0.0,
+        "lo": 0.0,
+        "mean": 0.0
+      },
+      "within_ndcg_by_lambda": [
+        0.27524336736407656,
+        0.29888891768356873,
+        0.29752128554541085,
+        0.3992451318079967,
+        0.40290628832352016,
+        0.40190838790843486,
+        0.389095903662729
+      ]
+    },
+    "nfcorpus": {
+      "costs": {
+        "rrf_all": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 386.12307692307695,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 120.95384615384616,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            },
+            "100": {
+              "input_tokens": 386.12307692307695,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 120.95384615384616,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            },
+            "1000": {
+              "input_tokens": 386.12307692307695,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 120.95384615384616,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0,
+            "llm_calls": 0,
+            "logical_search_calls": 0,
+            "output_tokens": 0,
+            "sample_calls": 0,
+            "underlying_search_calls": 0
+          },
+          "serving_per_query": {
+            "input_tokens": 386.12307692307695,
+            "llm_calls": 1.0,
+            "logical_search_calls": 6.0,
+            "output_tokens": 120.95384615384616,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 12.0
+          }
+        },
+        "source_fixed_train_cal": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 386.12307692307695,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 120.95384615384616,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "100": {
+              "input_tokens": 386.12307692307695,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 120.95384615384616,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "1000": {
+              "input_tokens": 386.12307692307695,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 120.95384615384616,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0.0,
+            "llm_calls": 0.0,
+            "logical_search_calls": 0.0,
+            "output_tokens": 0.0,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 0.0
+          },
+          "serving_per_query": {
+            "input_tokens": 386.12307692307695,
+            "llm_calls": 1.0,
+            "logical_search_calls": 2.0,
+            "output_tokens": 120.95384615384616,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 4.0
+          }
+        },
+        "within": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 1287.069597069597,
+              "llm_calls": 2.552380952380952,
+              "logical_search_calls": 6.752380952380952,
+              "output_tokens": 294.8941391941392,
+              "sample_calls": 0.8,
+              "underlying_search_calls": 13.504761904761905
+            },
+            "100": {
+              "input_tokens": 459.66959706959705,
+              "llm_calls": 1.1123809523809522,
+              "logical_search_calls": 2.432380952380952,
+              "output_tokens": 133.16413919413918,
+              "sample_calls": 0.08,
+              "underlying_search_calls": 4.864761904761904
+            },
+            "1000": {
+              "input_tokens": 376.92959706959704,
+              "llm_calls": 0.9683809523809523,
+              "logical_search_calls": 2.000380952380952,
+              "output_tokens": 116.9911391941392,
+              "sample_calls": 0.008,
+              "underlying_search_calls": 4.000761904761904
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 9193.333333333334,
+            "llm_calls": 16.0,
+            "logical_search_calls": 48.0,
+            "output_tokens": 1797.0,
+            "sample_calls": 8.0,
+            "underlying_search_calls": 96.0
+          },
+          "serving_per_query": {
+            "input_tokens": 367.7362637362637,
+            "llm_calls": 0.9523809523809523,
+            "logical_search_calls": 1.9523809523809523,
+            "output_tokens": 115.1941391941392,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 3.9047619047619047
+          }
+        }
+      },
+      "eta": 1.0,
+      "label": "NFCorpus",
+      "means": {
+        "rrf_all": 0.26067865247150657,
+        "source_fixed_train_cal": 0.25746707254730045,
+        "within": 0.25678611959512593
+      },
+      "n_panels": 3,
+      "n_queries": 65,
+      "oracle_adaptation_headroom": 0.0030892128583684397,
+      "oracle_best_fixed_policy": [
+        "keywords",
+        "hyde"
+      ],
+      "oracle_mean": 0.2605562854056689,
+      "oracle_minus_source_fixed160_by_lambda": [
+        0.0,
+        0.0,
+        0.0,
+        0.006432475454064057,
+        0.006865857574118034,
+        0.0053836654793107674,
+        0.002942491501086414
+      ],
+      "oracle_per_lambda_ndcg": [
+        0.27041814853264323,
+        0.2734933117769027,
+        0.2737423810817835,
+        0.27546661395445515,
+        0.2455216838839898,
+        0.24403949178918252,
+        0.24121236682072528
+      ],
+      "source_fixed160_is_target_best_fixed": true,
+      "source_fixed160_ndcg_by_lambda": [
+        0.27041814853264323,
+        0.2734933117769027,
+        0.27374238108178356,
+        0.2690341385003911,
+        0.23865582630987175,
+        0.23865582630987175,
+        0.23826987531963886
+      ],
+      "within_minus_source_fixed160_by_lambda": [
+        -0.005426909925883239,
+        -0.0049561608312747585,
+        -0.004820906548449466,
+        0.006432475454064057,
+        0.003321592507205956,
+        -0.00011716829669058959,
+        0.0008004069758064669
+      ],
+      "within_minus_source_fixed160_interval": {
+        "hi": 0.0031201889701904747,
+        "lo": -0.005041476860120697,
+        "mean": -0.0006809529521745196
+      },
+      "within_ndcg_by_lambda": [
+        0.26499123860676,
+        0.26853715094562797,
+        0.2689214745333341,
+        0.27546661395445515,
+        0.2419774188170777,
+        0.23853865801318117,
+        0.23907028229544533
+      ]
+    },
+    "scifact": {
+      "costs": {
+        "rrf_all": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 400.7,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 138.99333333333334,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            },
+            "100": {
+              "input_tokens": 400.7,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 138.99333333333334,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            },
+            "1000": {
+              "input_tokens": 400.7,
+              "llm_calls": 1.0,
+              "logical_search_calls": 6.0,
+              "output_tokens": 138.99333333333334,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 12.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0,
+            "llm_calls": 0,
+            "logical_search_calls": 0,
+            "output_tokens": 0,
+            "sample_calls": 0,
+            "underlying_search_calls": 0
+          },
+          "serving_per_query": {
+            "input_tokens": 400.7,
+            "llm_calls": 1.0,
+            "logical_search_calls": 6.0,
+            "output_tokens": 138.99333333333334,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 12.0
+          }
+        },
+        "source_fixed_train_cal": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 400.7,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 138.99333333333334,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "100": {
+              "input_tokens": 400.7,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 138.99333333333334,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            },
+            "1000": {
+              "input_tokens": 400.7,
+              "llm_calls": 1.0,
+              "logical_search_calls": 2.0,
+              "output_tokens": 138.99333333333334,
+              "sample_calls": 0.0,
+              "underlying_search_calls": 4.0
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 0.0,
+            "llm_calls": 0.0,
+            "logical_search_calls": 0.0,
+            "output_tokens": 0.0,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 0.0
+          },
+          "serving_per_query": {
+            "input_tokens": 400.7,
+            "llm_calls": 1.0,
+            "logical_search_calls": 2.0,
+            "output_tokens": 138.99333333333334,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 4.0
+          }
+        },
+        "within": {
+          "amortized_per_query": {
+            "10": {
+              "input_tokens": 1199.3666666666668,
+              "llm_calls": 2.6,
+              "logical_search_calls": 6.8,
+              "output_tokens": 315.8933333333333,
+              "sample_calls": 0.8,
+              "underlying_search_calls": 13.6
+            },
+            "100": {
+              "input_tokens": 480.56666666666666,
+              "llm_calls": 1.16,
+              "logical_search_calls": 2.48,
+              "output_tokens": 156.68333333333334,
+              "sample_calls": 0.08,
+              "underlying_search_calls": 4.96
+            },
+            "1000": {
+              "input_tokens": 408.68666666666667,
+              "llm_calls": 1.016,
+              "logical_search_calls": 2.048,
+              "output_tokens": 140.76233333333334,
+              "sample_calls": 0.008,
+              "underlying_search_calls": 4.096
+            }
+          },
+          "onboarding_per_environment_panel": {
+            "input_tokens": 7986.666666666667,
+            "llm_calls": 16.0,
+            "logical_search_calls": 48.0,
+            "output_tokens": 1769.0,
+            "sample_calls": 8.0,
+            "underlying_search_calls": 96.0
+          },
+          "serving_per_query": {
+            "input_tokens": 400.7,
+            "llm_calls": 1.0,
+            "logical_search_calls": 2.0,
+            "output_tokens": 138.99333333333334,
+            "sample_calls": 0.0,
+            "underlying_search_calls": 4.0
+          }
+        }
+      },
+      "eta": 1.0,
+      "label": "SciFact",
+      "means": {
+        "rrf_all": 0.6832066382095854,
+        "source_fixed_train_cal": 0.6789030507730001,
+        "within": 0.6780406167698441
+      },
+      "n_panels": 3,
+      "n_queries": 150,
+      "oracle_adaptation_headroom": 0.003270668442886482,
+      "oracle_best_fixed_policy": [
+        "keywords",
+        "hyde"
+      ],
+      "oracle_mean": 0.6821737192158864,
+      "oracle_minus_source_fixed160_by_lambda": [
+        0.0,
+        0.0,
+        0.0,
+        0.007185139708052457,
+        0.007142736063123323,
+        0.002916508804332585,
+        0.005650294524697008
+      ],
+      "oracle_per_lambda_ndcg": [
+        0.6345145389086516,
+        0.6706053716108868,
+        0.6726551311761113,
+        0.7112634968720289,
+        0.7002323117820901,
+        0.6964685904140556,
+        0.6894765937473805
+      ],
+      "source_fixed160_is_target_best_fixed": true,
+      "source_fixed160_ndcg_by_lambda": [
+        0.6345145389086516,
+        0.6706053716108868,
+        0.6726551311761113,
+        0.7040783571639765,
+        0.6930895757189668,
+        0.693552081609723,
+        0.6838262992226835
+      ],
+      "within_minus_source_fixed160_by_lambda": [
+        -0.004918016414707904,
+        -0.0029377561539897235,
+        -0.0031282970313517566,
+        0.00479009313870149,
+        0.0007956040104188933,
+        -0.00045143975863326524,
+        -0.00018722581252905712
+      ],
+      "within_minus_source_fixed160_interval": {
+        "hi": 0.0060341107105866855,
+        "lo": -0.008767116335455008,
+        "mean": -0.0008624340031559027
+      },
+      "within_ndcg_by_lambda": [
+        0.6295965224939437,
+        0.6676676154568971,
+        0.6695268341447596,
+        0.708868450302678,
+        0.6938851797293857,
+        0.6931006418510898,
+        0.6836390734101544
+      ]
+    }
+  },
+  "lambda_grid": [
+    0,
+    0.125,
+    0.25,
+    0.5,
+    0.75,
+    0.875,
+    1
+  ],
+  "macro": {
+    "advancement_gate_passed": false,
+    "headroom_scope": "Finite-benchmark upper opportunity for choosing one global cap2 policy per setting over the fixed menu, not a future-population guarantee or a bound on query routing.",
+    "oracle_adaptation_headroom": 0.0023074754145003076,
+    "oracle_per_lambda": 0.4318027204401117,
+    "registered_advancement_gain_threshold": 0.005,
+    "rrf_all": 0.4333570372139571,
+    "source_fixed_train_cal": 0.4294952450256115,
+    "within": 0.42898078270716794,
+    "within_minus_source_fixed160_interval": {
+      "hi": 0.0021250328068576556,
+      "lo": -0.003510522988019106,
+      "mean": -0.0005144623184434741
+    }
+  },
+  "metric": "nDCG@10; equal query mean within family, then equal lambda/panel/family means.",
+  "oracle_definition": "Evaluator-only: best of the eleven cap2 policies for each family/lambda, averaged over the entire target query set; not per-query routing.",
+  "scope": "Three repeatedly explored development families; seven engineered hybrid settings within each family.",
+  "selection": "All registered families, weights, and target panels; no outcome-based omission. Presentation chosen after outcomes.",
+  "uncertainty": "2000 paired-query bootstrap replicates with seed20260910. Within each target corpus, resample query IDs once per replicate and reuse the same sample across every lambda,panel,policy,method. Keep the three families fixed and aggregate equally; do not bootstrap lambda rows as independent environments. Report three panel results separately; these intervals are conditional on fitted source models and finite panels."
+}

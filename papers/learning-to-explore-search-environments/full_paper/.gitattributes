@@ -5,3 +5,7 @@ searchprobe-blog.html linguist-generated=true
 **/results.v1/*.json linguist-generated=true
 fusion_frontier/results.json linguist-generated=true
 theory/channel_diagnostics.json linguist-generated=true
+intervention_transfer/inputs.v1.json linguist-generated=true
+intervention_transfer/decisions.v1.json linguist-generated=true
+intervention_transfer/test_labels.v1.json linguist-generated=true
+intervention_transfer/results.v1.json linguist-generated=true

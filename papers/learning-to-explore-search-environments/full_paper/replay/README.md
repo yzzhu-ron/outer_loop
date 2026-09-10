@@ -6,19 +6,19 @@ This is **analysis replay of saved outcomes**. It does not regenerate document r
 
 ## Start without a repository checkout
 
-Run in a new directory. Install the development package and download these two small replay files:
+Run in a new directory. Install the pinned package and download these two small replay files:
 
 ```sh
 python -m venv .venv
 . .venv/bin/activate
-python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@codex/searchprobe-full-paper#subdirectory=packages/searchprobe"
-replay_url=https://raw.githubusercontent.com/yzzhu-ron/outer_loop/codex/searchprobe-full-paper/papers/learning-to-explore-search-environments/full_paper/replay
+python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@99706427fd7d97af0b267d50aca9e1f1815e565d#subdirectory=packages/searchprobe"
+replay_url=https://raw.githubusercontent.com/yzzhu-ron/outer_loop/99706427fd7d97af0b267d50aca9e1f1815e565d/papers/learning-to-explore-search-environments/full_paper/replay
 curl -fsSLo replay.py "$replay_url/replay.py"
 curl -fsSLo evidence_manifest.json "$replay_url/evidence_manifest.json"
 python replay.py --download --evidence-dir evidence --output replay-report.json
 ```
 
-Git and access to this repository are required for installation. The development script/package URLs follow a branch; the evidence itself is pinned to an immutable commit and checked against SHA-256 hashes. There is no PyPI release. `--download` retrieves only the manifest's files from GitHub. It reuses files with matching hashes and refuses to replace differing files. Subsequent runs are offline:
+Git and access to this repository are required for installation. The script and package URLs are pinned to commit `9970642`; the earlier evidence is separately pinned to `e330622` and checked against SHA-256 hashes. There is no PyPI release. `--download` retrieves only the manifest's files from GitHub. It reuses files with matching hashes and refuses to replace differing files. Subsequent runs are offline:
 
 ```sh
 python replay.py --evidence-dir evidence --output replay-report.json

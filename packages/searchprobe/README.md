@@ -16,10 +16,10 @@ An optional, separate [`decision-audit`](DECISION_AUDIT.md) command accepts a de
 
 ## Try the installed examples
 
-The development branch includes editable examples in the wheel. With Python 3.10 or later and Git, install and run them without cloning the repository:
+This pinned revision includes editable examples in the wheel. With Python 3.10 or later and Git, install and run them without cloning the repository:
 
 ```sh
-python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@codex/searchprobe-full-paper#subdirectory=packages/searchprobe"
+python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@99706427fd7d97af0b267d50aca9e1f1815e565d#subdirectory=packages/searchprobe"
 searchprobe-demo --output-dir searchprobe-demo
 ```
 

@@ -1,0 +1,70 @@
+{
+  "additional_archived_single_action_ndcg_comparisons": 8450,
+  "maximum_absolute_ndcg_difference": 3.3306690738754696e-16,
+  "maximum_absolute_recall_difference": 0,
+  "maximum_archived_single_action_ndcg_difference": 3.3306690738754696e-16,
+  "metrics": [
+    "ndcg_at_10",
+    "recall_at_10"
+  ],
+  "policy_cells_per_metric": 20280,
+  "rows": [
+    {
+      "backend": "bm25",
+      "corpus": "fiqa",
+      "policy_metric_cells": {
+        "calibration": 384,
+        "test": 1800,
+        "train": 1536
+      }
+    },
+    {
+      "backend": "dense",
+      "corpus": "fiqa",
+      "policy_metric_cells": {
+        "calibration": 384,
+        "test": 1800,
+        "train": 1536
+      }
+    },
+    {
+      "backend": "bm25",
+      "corpus": "nfcorpus",
+      "policy_metric_cells": {
+        "calibration": 384,
+        "test": 780,
+        "train": 1536
+      }
+    },
+    {
+      "backend": "dense",
+      "corpus": "nfcorpus",
+      "policy_metric_cells": {
+        "calibration": 384,
+        "test": 780,
+        "train": 1536
+      }
+    },
+    {
+      "backend": "bm25",
+      "corpus": "scifact",
+      "policy_metric_cells": {
+        "calibration": 384,
+        "test": 1800,
+        "train": 1536
+      }
+    },
+    {
+      "backend": "dense",
+      "corpus": "scifact",
+      "policy_metric_cells": {
+        "calibration": 384,
+        "test": 1800,
+        "train": 1536
+      }
+    }
+  ],
+  "sources": "Original semantic endpoint action rankings and qrels; independent math.log2 nDCG, set recall, explicit RRF60 implementation; no new adapter/exporter scoring functions used.",
+  "status": "passed",
+  "total_metric_comparisons": 40560
+}

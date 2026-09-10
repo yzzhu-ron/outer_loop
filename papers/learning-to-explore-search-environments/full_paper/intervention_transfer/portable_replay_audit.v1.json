@@ -1,0 +1,14 @@
+{
+  "archived_decision_sha256": "8e4b581635c57cffa4d36488ff2c15f22d134f5e758dfd0ccc674b6692a6a486",
+  "archived_lock_created_at_utc": "2026-09-10T14:23:30.311107+00:00",
+  "copy_directory": "/var/folders/n_/2pzqf45s0wj6cv2rc4820vd40000gn/T/intervention-transfer-portable-047ogr6c",
+  "decision_comparison": "Exact JSON equality after excluding only prediction_lock_created_at_utc",
+  "evaluation_decisions": "Unchanged copied original lock; original test-label decision hash binding preserved",
+  "original_artifacts_unchanged": true,
+  "raw_cache_directory_exists": false,
+  "replayed_decision_sha256": "2543a7edf1dc840986fa10eac9c1b4718e83dc4ec57fc6b90a778914e5df691f",
+  "replayed_lock_created_at_utc": "2026-09-10T14:26:10.948135+00:00",
+  "results_byte_identical": true,
+  "results_sha256": "d69fde9c245bb1bb21fd90f4e21b39e7e2b50bd283df4a151257f0cc37d63294",
+  "status": "passed"
+}

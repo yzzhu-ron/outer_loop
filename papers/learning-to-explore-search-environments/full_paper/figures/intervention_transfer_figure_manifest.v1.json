@@ -1,0 +1,51 @@
+{
+  "alt_text": "Four-panel scientific figure of the sealed intervention-transfer development test. Three upper panels show nDCG@10 changes relative to the source-fixed160 cap2 policy at seven engineered dense-mixture weights from zero to one for FiQA, NFCorpus and SciFact. Each family reuses its 150, 65 or 150 test queries across all settings and three probe panels. The source-fixed160 choice is also the target-best single fixed cap2 policy in all three families. The evaluator-only per-setting oracle has mean adaptation headroom of 0.000562545, 0.003089213 and 0.003270668. The learned bridge ties fixed160 on FiQA, and its mean changes are minus 0.000680953 on NFCorpus and minus 0.000862434 on SciFact. The lower panel shows these means with the existing 95 percent paired-query bootstrap intervals and oracle headroom markers. Macro bridge quality is 0.428980783 versus fixed160 0.429495245; the paired difference is minus 0.000514462, interval [minus 0.003510523, plus 0.002125033]. The target-label per-setting cap2 oracle scores 0.431802720. RRF-all scores 0.433357037 at six wrapper and twelve component searches per query, versus at most two and four for the deployed cap2 methods. FiQA selects eta zero and incurs no onboarding; the other two families pay 48 wrapper searches, 96 component searches, 16 generation attempts and eight document samples per target panel. Serving uses at most one shared generation bundle per query; learned NFCorpus occasionally chooses an ungenerated singleton. The macro oracle headroom of 0.002307475 is a finite-benchmark upper opportunity for one global cap2 policy per setting, not a future-population guarantee or a bound on per-query routing. The seven settings are engineered configurations within three repeatedly explored development families, not seven independent new domains.",
+  "created_at_utc": "2026-09-10T14:30:33.159076+00:00",
+  "design_notes": [
+    "All families and lambda settings are shown; a common delta scale removes unrelated between-family levels.",
+    "The oracle uses target labels only for evaluation and is limited to one of eleven cap2 policies per setting, not per query.",
+    "Figure layout was selected after seeing registered outcomes; no new inference, retrieval or model selection is performed.",
+    "Intervals are taken unchanged from the registered evaluator; no lambda or panel bootstrap is added.",
+    "Near-zero negative oracle deltas below numerical precision are drawn as zero; absolute inputs retain their original values.",
+    "No prior figure manifest or frozen study artifact is modified."
+  ],
+  "figure": "intervention_transfer_v1",
+  "figures": {
+    "intervention": {
+      "alt_text": "Four-panel scientific figure of the sealed intervention-transfer development test. Three upper panels show nDCG@10 changes relative to the source-fixed160 cap2 policy at seven engineered dense-mixture weights from zero to one for FiQA, NFCorpus and SciFact. Each family reuses its 150, 65 or 150 test queries across all settings and three probe panels. The source-fixed160 choice is also the target-best single fixed cap2 policy in all three families. The evaluator-only per-setting oracle has mean adaptation headroom of 0.000562545, 0.003089213 and 0.003270668. The learned bridge ties fixed160 on FiQA, and its mean changes are minus 0.000680953 on NFCorpus and minus 0.000862434 on SciFact. The lower panel shows these means with the existing 95 percent paired-query bootstrap intervals and oracle headroom markers. Macro bridge quality is 0.428980783 versus fixed160 0.429495245; the paired difference is minus 0.000514462, interval [minus 0.003510523, plus 0.002125033]. The target-label per-setting cap2 oracle scores 0.431802720. RRF-all scores 0.433357037 at six wrapper and twelve component searches per query, versus at most two and four for the deployed cap2 methods. FiQA selects eta zero and incurs no onboarding; the other two families pay 48 wrapper searches, 96 component searches, 16 generation attempts and eight document samples per target panel. Serving uses at most one shared generation bundle per query; learned NFCorpus occasionally chooses an ungenerated singleton. The macro oracle headroom of 0.002307475 is a finite-benchmark upper opportunity for one global cap2 policy per setting, not a future-population guarantee or a bound on per-query routing. The seven settings are engineered configurations within three repeatedly explored development families, not seven independent new domains.",
+      "files": [
+        "intervention_transfer_v1.svg",
+        "intervention_transfer_v1.png"
+      ],
+      "label": "Intervention adaptation headroom",
+      "plotted_data": "intervention_transfer_plotted_data.v1.json",
+      "selection": "All registered families, weights, and target panels; no outcome-based omission. Presentation chosen after outcomes."
+    }
+  },
+  "files": [
+    "intervention_transfer_v1.svg",
+    "intervention_transfer_v1.png",
+    "intervention_transfer_plotted_data.v1.json"
+  ],
+  "input_sha256": {
+    "intervention_transfer/decisions.v1.json": "8e4b581635c57cffa4d36488ff2c15f22d134f5e758dfd0ccc674b6692a6a486",
+    "intervention_transfer/freeze.v1.json": "034f166b57fc4dee5f76bed08705f37ece5a574c14b70eb07c894a75c4c8b79c",
+    "intervention_transfer/inputs.v1.json": "2b9ab639ea19db17df3e0e71615729aeb75c1b600947e0fdd0bcd95afd3322eb",
+    "intervention_transfer/protocol.v1.json": "5e49916341d479c7a163366b195b0dd95d20fac67d28f8290560e759093bdbab",
+    "intervention_transfer/results.v1.json": "d69fde9c245bb1bb21fd90f4e21b39e7e2b50bd283df4a151257f0cc37d63294",
+    "intervention_transfer/test_labels.v1.json": "fb1eb568068081d277986047ee478b9a2d6c67cedb903527e69fcd9ace232c56"
+  },
+  "output_sha256": {
+    "intervention_transfer_plotted_data.v1.json": "1232b5cf9fd312d23d874a6d50ccb3aea4911653365dd31b18bbd22640aeb00f",
+    "intervention_transfer_v1.png": "c0071f2c691ba43c4509f3c4bc61f784b7dd2a9d2109540533096a12b4a1b973",
+    "intervention_transfer_v1.svg": "8f95ab300536fc0b656e68b3f27a5b53a5af643e7894ca470a9a59d440be69da"
+  },
+  "path_convention": {
+    "input_sha256": "relative to full_paper",
+    "output_sha256": "relative to figures"
+  },
+  "schema_version": 1,
+  "script": "intervention_transfer/make_figure.py",
+  "script_sha256": "b8b37c0d41cfe694667186a06a9190514f3c8e69b7b21c3dab4d8ea62e61b022",
+  "title": "Little adaptation headroom; no mean gain from the learned bridge"
+}

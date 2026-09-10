@@ -38,7 +38,7 @@ def validate():
         elif not (ROOT/unquote(parts.path)).exists():raise ValueError('Missing local link '+link)
     provenance=json.loads((ROOT/'blog_provenance.json').read_text())
     if provenance['html_sha256']!=sha(article):raise ValueError('Article hash drift')
-    for key,path in [('template_sha256',ROOT/'blog.template.html'),('builder_sha256',ROOT/'build_blog.py'),('figure_manifest_sha256',ROOT/'figures/publication_figure_manifest.v1.json')]:
+    for key,path in [('template_sha256',ROOT/'blog.template.html'),('builder_sha256',ROOT/'build_blog.py'),('figure_manifest_sha256',ROOT/'figures/publication_figure_manifest.v1.json'),('intervention_figure_manifest_sha256',ROOT/'figures/intervention_transfer_figure_manifest.v1.json')]:
         if provenance[key]!=sha(path):raise ValueError(key+' drift')
     visible=' '.join(doc.text)
     runs=json.loads((ROOT/'natural/results/runs.json').read_text())
@@ -49,5 +49,13 @@ def validate():
     rows=[r['ndcg'] for r in runs if r['condition']=='standard' and r['method']=='lookahead2' and r['budget']==64];expected.append(sum(rows)/len(rows))
     for value in expected:
         if f'{value:.4f}' not in visible:raise ValueError('Displayed primary metric missing')
+    intervention=json.loads((ROOT/'intervention_transfer/results.v1.json').read_text())
+    for method in ('within','source_fixed_train_cal','rrf_all'):
+        if f"{intervention['macro'][method]:.4f}" not in visible:
+            raise ValueError('Displayed intervention metric missing: '+method)
+    capacity=json.loads((ROOT/'theory/posthoc_intervention_headroom.v1.json').read_text())
+    for policy_class,value in capacity['macro']['values'].items():
+        if f'{value:.4f}' not in visible:
+            raise ValueError('Displayed posthoc capacity missing: '+policy_class)
     return {'unique_ids':len(doc.ids),'links':len(doc.links),'external_assets':len(doc.assets),'provenance':'verified','primary_displayed_metrics':'verified','approximate_word_count':len(visible.split())}
 if __name__=='__main__':print(json.dumps(validate(),indent=2))

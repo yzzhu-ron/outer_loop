@@ -1,0 +1,54 @@
+{
+  "commits": {
+    "16f668d": {
+      "committed_at": "2026-09-10T10:23:06-04:00",
+      "files_exact": [
+        "experiment.py",
+        "export_evidence.py",
+        "protocol.v1.json",
+        "test_experiment.py",
+        "freeze.v1.json"
+      ]
+    },
+    "b6b55ef": {
+      "committed_at": "2026-09-10T10:23:52-04:00",
+      "files_exact": [
+        "inputs.v1.json",
+        "decisions.v1.json"
+      ]
+    }
+  },
+  "endpoint_metric_audit": "endpoint_metric_audit.v1.json",
+  "frozen_artifact_sha256": {
+    "decisions.v1.json": "8e4b581635c57cffa4d36488ff2c15f22d134f5e758dfd0ccc674b6692a6a486",
+    "freeze.v1.json": "034f166b57fc4dee5f76bed08705f37ece5a574c14b70eb07c894a75c4c8b79c",
+    "inputs.v1.json": "2b9ab639ea19db17df3e0e71615729aeb75c1b600947e0fdd0bcd95afd3322eb",
+    "results.v1.json": "d69fde9c245bb1bb21fd90f4e21b39e7e2b50bd283df4a151257f0cc37d63294",
+    "test_labels.v1.json": "fb1eb568068081d277986047ee478b9a2d6c67cedb903527e69fcd9ace232c56"
+  },
+  "frozen_bytes_modified": false,
+  "frozen_implementation_files_verified": 8,
+  "frozen_source_files_verified": 13,
+  "independent_auditor": {
+    "costs_verified": [
+      "generation/token/sample attempts",
+      "wrapper/component searches",
+      "serving",
+      "onboarding",
+      "amortization"
+    ],
+    "decisions_verified": 1638,
+    "diagnostics_verified": [
+      "macro and per-family nDCG",
+      "paired query bootstrap",
+      "all response MSE diagnostics",
+      "advancement gates"
+    ],
+    "fixed160_prior": "Concatenate128train+32calibration queries within source corpus/lambda; average each source equally.",
+    "implementation": "Reconstructed arithmetic without importing experiment.py or export_evidence.py",
+    "input_probe_records_reconstructed": 959,
+    "paid_observations_verified": 6720
+  },
+  "portable_replay_audit": "portable_replay_audit.v1.json",
+  "status": "passed"
+}

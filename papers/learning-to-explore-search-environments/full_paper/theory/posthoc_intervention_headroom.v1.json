@@ -1,0 +1,691 @@
+{
+  "families": {
+    "fiqa": {
+      "best_bucket_policy_indices_by_lambda": [
+        [
+          7,
+          9,
+          9,
+          6,
+          0,
+          6,
+          2
+        ],
+        [
+          9,
+          1,
+          1,
+          8,
+          8,
+          8,
+          6
+        ],
+        [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          7,
+          5,
+          5,
+          0,
+          8
+        ]
+      ],
+      "best_fixed_global_policy_index": 7,
+      "best_global_policy_indices_by_lambda": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        6
+      ],
+      "bucket_counts": [
+        31,
+        20,
+        61,
+        38
+      ],
+      "calibrated_models": {
+        "pooled": {
+          "beta": [
+            0.0,
+            -0.02080476807953857,
+            0.09315830981517828,
+            0.0014392230438434448,
+            0.0013515203067244485,
+            -0.008375430921994012,
+            0.04599550043944274,
+            0.02089631841752697,
+            0.04568000105449696,
+            0.016246023516282817,
+            0.06473359770750428
+          ],
+          "calibration": [
+            {
+              "eta": 0.0,
+              "mean_ndcg": 0.4627306335681126
+            },
+            {
+              "eta": 0.5,
+              "mean_ndcg": 0.4627306335681126
+            },
+            {
+              "eta": 1.0,
+              "mean_ndcg": 0.45950409058257247
+            }
+          ],
+          "degenerate": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "eta": 0.0
+        },
+        "within": {
+          "beta": [
+            0.0,
+            -0.022205561925289514,
+            0.1719600061886287,
+            0.1731873738101093,
+            0.0006275370351267086,
+            -0.00248949739836714,
+            0.06759135928294034,
+            0.0448403460223351,
+            0.06267865057215247,
+            0.0405886061860074,
+            0.18073107800970423
+          ],
+          "calibration": [
+            {
+              "eta": 0.0,
+              "mean_ndcg": 0.4627306335681126
+            },
+            {
+              "eta": 0.5,
+              "mean_ndcg": 0.45708384375650907
+            },
+            {
+              "eta": 1.0,
+              "mean_ndcg": 0.4554806175409863
+            }
+          ],
+          "degenerate": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "eta": 0.0
+        }
+      },
+      "fixed160_matches_best_fixed_global": true,
+      "fixed160_ndcg": 0.35211561175653383,
+      "fixed160_policy_index": 7,
+      "gains": {
+        "lambda_bucket_over_fixed_bucket": 0.00505953966869882,
+        "lambda_bucket_over_fixed_global": 0.009034408099185487,
+        "lambda_bucket_over_lambda_global": 0.008471863156939485,
+        "lambda_global_over_fixed_global": 0.0005625449422460016,
+        "lambda_query_over_lambda_global": 0.12684139754270485
+      },
+      "mean_profile_aliases": {
+        "11": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.35267815669877983,
+          "repeated_mean_profile_groups": []
+        },
+        "23": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.35267815669877983,
+          "repeated_mean_profile_groups": [
+            {
+              "distinct_action_ranklist_states": 2,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                4,
+                5
+              ],
+              "within_alias_headroom": 0.0
+            }
+          ]
+        },
+        "47": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.35267815669877983,
+          "repeated_mean_profile_groups": [
+            {
+              "distinct_action_ranklist_states": 2,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                1,
+                2
+              ],
+              "within_alias_headroom": 0.0
+            }
+          ]
+        }
+      },
+      "query_count": 150,
+      "values": {
+        "best_fixed_four_bucket": 0.3560904801870205,
+        "best_fixed_global": 0.35211561175653383,
+        "best_fixed_per_query": 0.46487349446529797,
+        "best_per_lambda_four_bucket": 0.3611500198557193,
+        "best_per_lambda_global": 0.35267815669877983,
+        "best_per_lambda_per_query": 0.4795195542414847
+      }
+    },
+    "nfcorpus": {
+      "best_bucket_policy_indices_by_lambda": [
+        [
+          9,
+          9,
+          9,
+          7,
+          3,
+          3,
+          7
+        ],
+        [
+          1,
+          4,
+          4,
+          6,
+          6,
+          6,
+          2
+        ],
+        [
+          7,
+          1,
+          1,
+          7,
+          3,
+          3,
+          3
+        ],
+        null
+      ],
+      "best_fixed_global_policy_index": 9,
+      "best_global_policy_indices_by_lambda": [
+        9,
+        9,
+        9,
+        7,
+        3,
+        8,
+        7
+      ],
+      "bucket_counts": [
+        57,
+        4,
+        4,
+        0
+      ],
+      "calibrated_models": {
+        "pooled": {
+          "beta": [
+            0.0,
+            -0.012855171634802865,
+            -0.022796698367994635,
+            0.16765925866775166,
+            0.21911390372749634,
+            -0.011736549799030438,
+            0.015167015552748499,
+            0.12127631081348213,
+            -0.0128468486705035,
+            0.1053894845412827,
+            0.06239751019086424
+          ],
+          "calibration": [
+            {
+              "eta": 0.0,
+              "mean_ndcg": 0.4971547282653086
+            },
+            {
+              "eta": 0.5,
+              "mean_ndcg": 0.5020737727637709
+            },
+            {
+              "eta": 1.0,
+              "mean_ndcg": 0.4991761224345806
+            }
+          ],
+          "degenerate": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "eta": 0.5
+        },
+        "within": {
+          "beta": [
+            0.0,
+            -0.03697836882158091,
+            0.007700708644171785,
+            0.1396344873051538,
+            -0.0022674535150368135,
+            0.00673873307514299,
+            0.049559309785383754,
+            0.07217434988939946,
+            0.023412480640480012,
+            0.034325468823155965,
+            0.045397400371854704
+          ],
+          "calibration": [
+            {
+              "eta": 0.0,
+              "mean_ndcg": 0.4971547282653086
+            },
+            {
+              "eta": 0.5,
+              "mean_ndcg": 0.4971547282653086
+            },
+            {
+              "eta": 1.0,
+              "mean_ndcg": 0.4979483768736837
+            }
+          ],
+          "degenerate": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "eta": 1.0
+        }
+      },
+      "fixed160_matches_best_fixed_global": true,
+      "fixed160_ndcg": 0.25746707254730045,
+      "fixed160_policy_index": 9,
+      "gains": {
+        "lambda_bucket_over_fixed_bucket": 0.005187711094416181,
+        "lambda_bucket_over_fixed_global": 0.009477092344428673,
+        "lambda_bucket_over_lambda_global": 0.006387879486060177,
+        "lambda_global_over_fixed_global": 0.0030892128583684952,
+        "lambda_query_over_lambda_global": 0.04423849076178016
+      },
+      "mean_profile_aliases": {
+        "11": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.26055628540566894,
+          "repeated_mean_profile_groups": [
+            {
+              "distinct_action_ranklist_states": 2,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                1,
+                2
+              ],
+              "within_alias_headroom": 0.0
+            }
+          ]
+        },
+        "23": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.26055628540566894,
+          "repeated_mean_profile_groups": []
+        },
+        "47": {
+          "loss_from_mean_profile_grouping": 0.000227469627933931,
+          "profile_oracle": 0.26032881577773503,
+          "repeated_mean_profile_groups": [
+            {
+              "distinct_action_ranklist_states": 2,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                4,
+                5
+              ],
+              "within_alias_headroom": 0.0007961436977687586
+            }
+          ]
+        }
+      },
+      "query_count": 65,
+      "values": {
+        "best_fixed_four_bucket": 0.26175645379731294,
+        "best_fixed_global": 0.25746707254730045,
+        "best_fixed_per_query": 0.29884000899540236,
+        "best_per_lambda_four_bucket": 0.2669441648917291,
+        "best_per_lambda_global": 0.26055628540566894,
+        "best_per_lambda_per_query": 0.3047947761674491
+      }
+    },
+    "scifact": {
+      "best_bucket_policy_indices_by_lambda": [
+        [
+          0,
+          0,
+          0,
+          8,
+          2,
+          2,
+          10
+        ],
+        [
+          6,
+          1,
+          6,
+          8,
+          7,
+          7,
+          7
+        ],
+        [
+          10,
+          7,
+          7,
+          7,
+          10,
+          10,
+          10
+        ],
+        [
+          8,
+          9,
+          9,
+          9,
+          9,
+          9,
+          3
+        ]
+      ],
+      "best_fixed_global_policy_index": 9,
+      "best_global_policy_indices_by_lambda": [
+        9,
+        9,
+        9,
+        7,
+        10,
+        10,
+        10
+      ],
+      "bucket_counts": [
+        14,
+        21,
+        36,
+        79
+      ],
+      "calibrated_models": {
+        "pooled": {
+          "beta": [
+            0.0,
+            -0.01562826826575169,
+            -0.12274746998129114,
+            -0.05852944499673254,
+            0.10811038081525184,
+            -0.017004911124174436,
+            -0.004808037055233799,
+            0.023222590288840238,
+            -0.02434598501295952,
+            0.03541029344217477,
+            -0.031032283341161985
+          ],
+          "calibration": [
+            {
+              "eta": 0.0,
+              "mean_ndcg": 0.2605869122084506
+            },
+            {
+              "eta": 0.5,
+              "mean_ndcg": 0.2608822145128458
+            },
+            {
+              "eta": 1.0,
+              "mean_ndcg": 0.26437936570026105
+            }
+          ],
+          "degenerate": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "eta": 1.0
+        },
+        "within": {
+          "beta": [
+            0.0,
+            -0.029196891989350736,
+            -0.07060215401603548,
+            0.04136567416485285,
+            -0.0042301117445385445,
+            0.010355379420460891,
+            0.03475610750622382,
+            0.023233331600650876,
+            0.011439174683292403,
+            0.026369271457535547,
+            -0.043435317256643645
+          ],
+          "calibration": [
+            {
+              "eta": 0.0,
+              "mean_ndcg": 0.2605869122084506
+            },
+            {
+              "eta": 0.5,
+              "mean_ndcg": 0.2598994309783279
+            },
+            {
+              "eta": 1.0,
+              "mean_ndcg": 0.26295227262566195
+            }
+          ],
+          "degenerate": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "eta": 1.0
+        }
+      },
+      "fixed160_matches_best_fixed_global": true,
+      "fixed160_ndcg": 0.678903050773,
+      "fixed160_policy_index": 9,
+      "gains": {
+        "lambda_bucket_over_fixed_bucket": 0.00891306478617826,
+        "lambda_bucket_over_fixed_global": 0.01771266405680505,
+        "lambda_bucket_over_lambda_global": 0.014441995613918568,
+        "lambda_global_over_fixed_global": 0.003270668442886482,
+        "lambda_query_over_lambda_global": 0.11936137019115256
+      },
+      "mean_profile_aliases": {
+        "11": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.6821737192158862,
+          "repeated_mean_profile_groups": [
+            {
+              "distinct_action_ranklist_states": 2,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                4,
+                5
+              ],
+              "within_alias_headroom": 0.0
+            }
+          ]
+        },
+        "23": {
+          "loss_from_mean_profile_grouping": 0.0,
+          "profile_oracle": 0.6821737192158862,
+          "repeated_mean_profile_groups": []
+        },
+        "47": {
+          "loss_from_mean_profile_grouping": 0.0013632854985396695,
+          "profile_oracle": 0.6808104337173465,
+          "repeated_mean_profile_groups": [
+            {
+              "distinct_action_ranklist_states": 2,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                1,
+                2
+              ],
+              "within_alias_headroom": 0.0
+            },
+            {
+              "distinct_action_ranklist_states": 3,
+              "distinct_document_rr_states": 1,
+              "lambda_indices": [
+                3,
+                4,
+                5
+              ],
+              "within_alias_headroom": 0.0031809994965925625
+            }
+          ]
+        }
+      },
+      "query_count": 150,
+      "values": {
+        "best_fixed_four_bucket": 0.6877026500436265,
+        "best_fixed_global": 0.6789030507729997,
+        "best_fixed_per_query": 0.7930127976734503,
+        "best_per_lambda_four_bucket": 0.6966157148298048,
+        "best_per_lambda_global": 0.6821737192158862,
+        "best_per_lambda_per_query": 0.8015350894070388
+      }
+    }
+  },
+  "global_policy_gate_unattainable_on_observed_utilities": true,
+  "lambda_grid": [
+    0,
+    0.125,
+    0.25,
+    0.5,
+    0.75,
+    0.875,
+    1
+  ],
+  "macro": {
+    "gains": {
+      "lambda_bucket_over_fixed_bucket": 0.006386771849764421,
+      "lambda_bucket_over_fixed_global": 0.012074721500139737,
+      "lambda_bucket_over_lambda_global": 0.00976724608563941,
+      "lambda_global_over_fixed_global": 0.0023074754145003262,
+      "lambda_query_over_lambda_global": 0.0968137528318792
+    },
+    "values": {
+      "best_fixed_four_bucket": 0.4351831946759866,
+      "best_fixed_global": 0.42949524502561137,
+      "best_fixed_per_query": 0.5189087670447169,
+      "best_per_lambda_four_bucket": 0.44156996652575103,
+      "best_per_lambda_global": 0.43180272044011164,
+      "best_per_lambda_per_query": 0.5286164732719908
+    }
+  },
+  "oracle_selection": "Uses target test utilities for evaluation only. Representative ties use lowest index; empty buckets have no chosen policy.",
+  "policy_menu": [
+    [
+      "original"
+    ],
+    [
+      "keywords"
+    ],
+    [
+      "semantic"
+    ],
+    [
+      "hyde"
+    ],
+    [
+      "decomposed"
+    ],
+    [
+      "original",
+      "keywords"
+    ],
+    [
+      "original",
+      "semantic"
+    ],
+    [
+      "original",
+      "hyde"
+    ],
+    [
+      "keywords",
+      "semantic"
+    ],
+    [
+      "keywords",
+      "hyde"
+    ],
+    [
+      "semantic",
+      "hyde"
+    ]
+  ],
+  "query_buckets": "Existing label-free rule: 2*(surface token count>8)+any identifier-like token; verified from saved lexical features.",
+  "registered_macro_gain_gate": 0.005,
+  "scope": "Finite observed target utilities on three reused families and seven fixed lambda values; no future-population bound or learnability claim.",
+  "script_sha256": "60e65c03caa81daeded59e7713b4a7ad28ba3949d93abbb5534ebedc44a75062",
+  "source_sha256": {
+    "full_paper/intervention_transfer/decisions.v1.json": "8e4b581635c57cffa4d36488ff2c15f22d134f5e758dfd0ccc674b6692a6a486",
+    "full_paper/intervention_transfer/freeze.v1.json": "034f166b57fc4dee5f76bed08705f37ece5a574c14b70eb07c894a75c4c8b79c",
+    "full_paper/intervention_transfer/inputs.v1.json": "2b9ab639ea19db17df3e0e71615729aeb75c1b600947e0fdd0bcd95afd3322eb",
+    "full_paper/intervention_transfer/protocol.v1.json": "5e49916341d479c7a163366b195b0dd95d20fac67d28f8290560e759093bdbab",
+    "full_paper/intervention_transfer/results.v1.json": "d69fde9c245bb1bb21fd90f4e21b39e7e2b50bd283df4a151257f0cc37d63294",
+    "full_paper/intervention_transfer/test_labels.v1.json": "fb1eb568068081d277986047ee478b9a2d6c67cedb903527e69fcd9ace232c56",
+    "full_paper/query_transfer/evidence.json": "ada9ef5d28f2b121da8259740f09a8c8fb25c3643c1c43e3df808efc46c48822",
+    "full_paper/query_transfer/freeze.v1.json": "c79901afffb32a6ae06a7095448dc4b0c06f6a7ca5022273b3c7203c3ca1735a"
+  },
+  "stage": "POSTHOC EVALUATOR-ONLY; not a new registered result or deployable policy",
+  "weighting": "Equal families, equal lambdas, equal queries within family; bucket contributions weighted by observed query count."
+}

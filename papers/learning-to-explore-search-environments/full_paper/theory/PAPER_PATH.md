@@ -1,0 +1,21 @@
+# A falsifiable path from SearchProbe to a full paper
+
+**Proposed next study; not registered, collected, or evaluated.** The current negative results remain unchanged.
+
+Candidate claim: **bounded, automatically checkable document probes predict useful routing-policy changes on unseen search environments beyond query text and source labels alone.** Adaptive selection is a separate claim, conditional on a useful fixed panel. The contribution would be demonstrated search transfer under this deployment contract; DRD, EPIG, DREAM, and GoBOED already cover closely related exploration principles ([literature audit](LITERATURE.md)).
+
+**Collect decision-relevant variation.** Add three source domains—encyclopedic questions, argument retrieval, and entity lookup—to the existing three families. Reserve four further families before screening; lock decisions before releasing their task labels. Pin snapshots, partitions, and four backend configurations: two lexical normalization/field-weighting settings and two full-corpus dense/hybrid settings, retrieving genuine rankings. Retain the eleven cap-two policies and four existing query buckets. Require at least 40 training and 20 calibration queries for a fitted source bucket; otherwise tie it to the global fallback. Publish support counts and rejected configurations.
+
+**Screen on sources.** Measure backend adaptation over the best backend-independent contextual policy, within the actual allowed class including fallbacks. Weight configurations uniformly and queries by their observed distribution. Require **0.015 macro oracle headroom** plus **0.005 split-query adaptation gain**, positive in four of six sources: select policies on one query split, evaluate on another, then reverse splits. Same-label maxima are insufficient. Also require the known-backend/source-utility comparator to beat contextual no-probe selection by 0.005 in source leave-family validation. These admission criteria create margin above the target gate, without guaranteeing target headroom. Freeze the admitted operator distribution, policy, calibration, comparisons, and target gate before target evaluation.
+
+| Comparison | Fixed ingredients | What it tests |
+|---|---|---|
+| Contextual versus global no-probe policy | Source label budget, serving menu, calibration opportunity | Free query-context benefit |
+| Known-backend/source-utility versus contextual no-probe policy | Query buckets and source labels | Transferable source ordering; not a target oracle |
+| Fixed eight-document panel versus contextual no-probe policy | Conditional routing class and source label budget | Observable environment-information value |
+| Aligned response fit versus pooled and within-corpus utility/configuration shuffles | Panel and model class; refit and recalibrate every control | Transported backend-response mechanism |
+| Adaptive versus fixed and uniform-random acquisition | Router, candidate pool, hard resource caps | Probe-selection value; only after fixed-panel success |
+
+Retain fixed-policy cost frontiers and all-action fusion. Charge samples, attempted generations, tokens, wrapper and component searches. Start with eight documents and at most 48 wrapper searches; assess episode cost at 50 future queries, with 1/10/200-query sensitivity views. Adaptive selection must beat both acquisition controls. Evaluator-only same-corpus backend-profile swaps, with same-configuration seed-swap controls, test configuration dependence without selecting models.
+
+**Advance or redirect.** Proposed target gate: +0.005 macro nDCG over contextual no-probe selection, gains in three of four families, no loss worse than −0.005, and a useful total-cost operating point. Report family effects and uncertainty respecting shared queries, fits, and histories. Low source headroom redirects the operator/menu; known-backend failure redirects utility transport; known-backend success with panel failure isolates the observation/transfer bridge. Panel success without acquisition gains supports passive profiling. Query-context gains alone support a routing tool. Failure against the strong contextual baseline ends this bridge on the tested contract, rather than triggering another selector variation on the same targets.

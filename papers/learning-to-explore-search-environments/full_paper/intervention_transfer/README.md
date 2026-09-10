@@ -1,8 +1,14 @@
 # Source-only intervention utility transfer
 
-Implementation checkpoint only. No real interior-mixture outcomes, model fits,
-prediction locks, or target utility exports have been produced here. The original
-hybrid adapter and its frozen artifacts are unchanged.
+The completed study did not show an improvement: the centered bridge reached
+0.428981 nDCG@10 versus 0.429495 for the source-fixed policy using the same
+160 labeled questions per source family.
+The paired difference was −0.000514, with a conditional 95% interval spanning
+zero. The registered advancement gate failed. See [RESULTS.md](RESULTS.md) for
+the findings and independent audit; all frozen artifacts remain unchanged.
+Fixed160 already matched each target family's best fixed policy on this test set;
+even a perfect lambda-specific global choice could gain only 0.0023075 macro nDCG,
+below the registered .005 gate. This limits what the benchmark can establish.
 
 The registered test fits one scalar probe-to-utility slope per serving policy.
 Within-source centering estimates backend response while an equal-source residual
@@ -12,14 +18,15 @@ target relevance labels. The intercept's transfer is an explicit hypothesis.
 
 There are eleven policies under a cap of two wrapper searches: five single
 actions and six pairs of the four one-search actions. The primary centered model
-is compared with pooled slopes, source-fixed policies using128 and160 source
-labels, source utility given privileged lambda, and twenty complete within-source
-utility/lambda shuffles. A fixed-strength centered model remains a diagnostic.
+is compared with pooled slopes, source-fixed policies using 128 and 160 labeled
+questions per source family, source utility given privileged lambda, and twenty
+complete within-source utility/lambda shuffles. A fixed-strength centered model
+remains a diagnostic.
 The practical advancement gate must hold against both source-fixed baselines:
-at least+.005 macro nDCG, positive effects in at least two families, and no family
-loss exceeding.005. The full registration is in `protocol.v1.json`.
+at least +.005 macro nDCG, positive effects in at least two families, and no family
+loss exceeding .005. The full registration is in `protocol.v1.json`.
 
-Eight valid indirect-question bundles cost48 wrapper/96 underlying searches,
+Eight valid indirect-question bundles cost 48 wrapper/96 underlying searches,
 eight sample calls, and sixteen generation calls with their recorded token
 charges. Invalid attempts are retained and charged according to actual available
 groups. Eta-zero and fixed policies do no onboarding. Results report full cost
@@ -35,23 +42,27 @@ UTC timestamps record these stages. The evaluator then computes paired metrics,
 centered response error, action-specific intercept errors, and profile-alias
 diagnostics; those target-centered quantities never enter policy inference.
 
-All writers reject existing outputs. Freeze once before computing real interior
-outcomes; use new explicit output paths for later reanalysis. From this directory,
-with the existing pilot Python environment:
+All writers reject existing outputs. The code and prediction freezes were
+committed as `16f668d` and `b6b55ef`. To replay safely in a new copy without raw
+caches, run from this directory in a Python environment with NumPy installed.
+The reference versions are Python 3.14.0 and NumPy 2.5.3; no model downloads,
+SciPy, or scikit-learn are needed for this replay.
 
 ```sh
-../../pilot/.venv/bin/python -m unittest discover -s . -p 'test_experiment.py'
-../../pilot/.venv/bin/python experiment.py freeze
-../../pilot/.venv/bin/python export_evidence.py inputs
-../../pilot/.venv/bin/python experiment.py decide
-../../pilot/.venv/bin/python export_evidence.py test
-../../pilot/.venv/bin/python experiment.py evaluate
+python -m unittest discover -s . -p 'test_*.py'
+python replay_portable.py
 ```
 
-The export phases verify the actual selected raw cache directory against the
-frozen source hashes. Decision/evaluation replay needs only the tracked frozen
-implementation, `inputs.v1.json`, `decisions.v1.json`, and `test_labels.v1.json`;
-ignored raw caches are unnecessary. The inputs preserve each document's policy
+The replay helper keeps the regenerated lock's new timestamp, checks that every
+other decision field is identical, and evaluates the unchanged copied original
+lock against its hash-bound labels. Evaluation reproduces byte-identical results.
+It never rewrites frozen labels to accommodate a new timestamp.
+
+The original export phases verified the actual selected raw cache directory
+against the frozen source hashes. The helper requires the eight implementation
+files listed by the freeze plus five artifacts: `freeze.v1.json`, `inputs.v1.json`,
+`decisions.v1.json`, `test_labels.v1.json`, and `results.v1.json`. These are portable
+repository files; ignored raw caches are unnecessary. The inputs preserve each document's policy
 RR vector and all five paid action ranklists, enabling compression and alias
 audits without retrieval. The freeze includes the transitively imported keyword
 engine.

@@ -1,0 +1,213 @@
+{
+  "bucket_counts": {
+    "fiqa": {
+      "calibration": [
+        7,
+        1,
+        11,
+        13
+      ],
+      "train": [
+        32,
+        14,
+        52,
+        30
+      ]
+    },
+    "nfcorpus": {
+      "calibration": [
+        25,
+        4,
+        2,
+        1
+      ],
+      "train": [
+        108,
+        14,
+        3,
+        3
+      ]
+    },
+    "scifact": {
+      "calibration": [
+        1,
+        2,
+        7,
+        22
+      ],
+      "train": [
+        9,
+        15,
+        28,
+        76
+      ]
+    }
+  },
+  "folds": {
+    "fiqa": {
+      "calibration_gain_over_global": 0.0227163278271989,
+      "selected_eta": 1.0,
+      "source_calibration_grid": [
+        {
+          "eta": 0.0,
+          "per_source_calibration_ndcg": {
+            "nfcorpus": 0.22616281751125458,
+            "scifact": 0.6992984496249706
+          },
+          "policies_by_bucket": [
+            7,
+            7,
+            7,
+            7
+          ],
+          "source_calibration_ndcg": 0.46273063356811256
+        },
+        {
+          "eta": 0.5,
+          "per_source_calibration_ndcg": {
+            "nfcorpus": 0.22616281751125458,
+            "scifact": 0.6992984496249706
+          },
+          "policies_by_bucket": [
+            7,
+            7,
+            7,
+            7
+          ],
+          "source_calibration_ndcg": 0.46273063356811256
+        },
+        {
+          "eta": 1.0,
+          "per_source_calibration_ndcg": {
+            "nfcorpus": 0.21604629721942034,
+            "scifact": 0.7548476255712026
+          },
+          "policies_by_bucket": [
+            10,
+            7,
+            7,
+            8
+          ],
+          "source_calibration_ndcg": 0.48544696139531146
+        }
+      ],
+      "sources": [
+        "nfcorpus",
+        "scifact"
+      ]
+    },
+    "nfcorpus": {
+      "calibration_gain_over_global": 0.022057014884401482,
+      "selected_eta": 1.0,
+      "source_calibration_grid": [
+        {
+          "eta": 0.0,
+          "per_source_calibration_ndcg": {
+            "fiqa": 0.2950110069056467,
+            "scifact": 0.6992984496249706
+          },
+          "policies_by_bucket": [
+            7,
+            7,
+            7,
+            7
+          ],
+          "source_calibration_ndcg": 0.4971547282653086
+        },
+        {
+          "eta": 0.5,
+          "per_source_calibration_ndcg": {
+            "fiqa": 0.29393880817046164,
+            "scifact": 0.7166428969362241
+          },
+          "policies_by_bucket": [
+            7,
+            7,
+            0,
+            9
+          ],
+          "source_calibration_ndcg": 0.5052908525533428
+        },
+        {
+          "eta": 1.0,
+          "per_source_calibration_ndcg": {
+            "fiqa": 0.2860259416009381,
+            "scifact": 0.752397544698482
+          },
+          "policies_by_bucket": [
+            7,
+            7,
+            0,
+            8
+          ],
+          "source_calibration_ndcg": 0.5192117431497101
+        }
+      ],
+      "sources": [
+        "fiqa",
+        "scifact"
+      ]
+    },
+    "scifact": {
+      "calibration_gain_over_global": 0.0,
+      "selected_eta": 0.0,
+      "source_calibration_grid": [
+        {
+          "eta": 0.0,
+          "per_source_calibration_ndcg": {
+            "fiqa": 0.2950110069056467,
+            "nfcorpus": 0.22616281751125458
+          },
+          "policies_by_bucket": [
+            7,
+            7,
+            7,
+            7
+          ],
+          "source_calibration_ndcg": 0.26058691220845065
+        },
+        {
+          "eta": 0.5,
+          "per_source_calibration_ndcg": {
+            "fiqa": 0.2783158796191046,
+            "nfcorpus": 0.20245146769752648
+          },
+          "policies_by_bucket": [
+            0,
+            7,
+            7,
+            8
+          ],
+          "source_calibration_ndcg": 0.24038367365831553
+        },
+        {
+          "eta": 1.0,
+          "per_source_calibration_ndcg": {
+            "fiqa": 0.2979403794551732,
+            "nfcorpus": 0.18706539548252635
+          },
+          "policies_by_bucket": [
+            0,
+            10,
+            9,
+            8
+          ],
+          "source_calibration_ndcg": 0.2425028874688498
+        }
+      ],
+      "sources": [
+        "fiqa",
+        "nfcorpus"
+      ]
+    }
+  },
+  "limitations": "No target test scores enter any calculation. The monolithic query archive physically also contains prior endpoint scores; only train/cal query metadata is indexed. No new-family performance claim. Sparse source cells and source-calibration selection remain limitations.",
+  "policy_ties": "Lowest policy index; all11 policies within cap2. No probe-dependent term.",
+  "rule": "Train source global and four-bucket relative-to-original utility means from128 queries; average lambdas and source families equally. Shrink bucket gap to global with eta in[0,.5,1], choose on32 source calibration queries per family with uniform lambdas; ties prefer smaller eta.",
+  "script_sha256": "b65983732e1c14a75e3ca0ca8582a7baec59a05c33dde712bd73fea1e5bd2282",
+  "source_sha256": {
+    "full_paper/intervention_transfer/inputs.v1.json": "2b9ab639ea19db17df3e0e71615729aeb75c1b600947e0fdd0bcd95afd3322eb",
+    "full_paper/query_transfer/evidence.json": "ada9ef5d28f2b121da8259740f09a8c8fb25c3643c1c43e3df808efc46c48822"
+  },
+  "stage": "POSTHOC SOURCE-ONLY EXPLORATORY SUPPORT CHECK"
+}

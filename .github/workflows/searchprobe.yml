@@ -5,6 +5,7 @@ name: searchprobe
     paths:
       - "packages/searchprobe/**"
       - "papers/learning-to-explore-search-environments/full_paper/**"
+      - "papers/learning-to-explore-search-environments/pilot/engine.py"
       - "papers/learning-to-explore-search-environments/semantic_pilot/results/**"
       - "pyproject.toml"
       - ".github/workflows/searchprobe.yml"
@@ -12,6 +13,7 @@ name: searchprobe
     paths:
       - "packages/searchprobe/**"
       - "papers/learning-to-explore-search-environments/full_paper/**"
+      - "papers/learning-to-explore-search-environments/pilot/engine.py"
       - "papers/learning-to-explore-search-environments/semantic_pilot/results/**"
       - "pyproject.toml"
       - ".github/workflows/searchprobe.yml"
@@ -95,3 +97,11 @@ jobs:
           python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/theory -p 'test_channel_diagnostics.py' -v
           python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/query_transfer -p 'test_*.py' -v
           python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/interventions -p 'test_adapter.py' -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/intervention_transfer -p 'test_*.py' -v
+          python papers/learning-to-explore-search-environments/full_paper/intervention_transfer/replay_portable.py
+      - name: Reproduce post-hoc intervention audits
+        run: |
+          python papers/learning-to-explore-search-environments/full_paper/theory/posthoc_intervention_headroom.py --output "$RUNNER_TEMP/posthoc_intervention_headroom.v1.json"
+          cmp papers/learning-to-explore-search-environments/full_paper/theory/posthoc_intervention_headroom.v1.json "$RUNNER_TEMP/posthoc_intervention_headroom.v1.json"
+          python papers/learning-to-explore-search-environments/full_paper/theory/posthoc_context_support.py --output "$RUNNER_TEMP/posthoc_context_support.v1.json"
+          cmp papers/learning-to-explore-search-environments/full_paper/theory/posthoc_context_support.v1.json "$RUNNER_TEMP/posthoc_context_support.v1.json"
