@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-09-10T13:52:16.000693+00:00",
+  "status": "Frozen before this analysis, after RRF-all development result.",
+  "sha256": {
+    "experiment.py": "08ebdac658b57efafb7246b374e0d1afb6c60230c263cc836f9c9c2ccb0d87ec",
+    "protocol.json": "6c2015380b9401e45c817674907209991bd222ce03602ef75aeb275eaaa5bf34",
+    "evidence.json": "b0f02e88f8e9ccc74590577ab59abdaf83be06765a0d9beeea51d9bffe791872",
+    "test_frontier.py": "8e8654769ecf79d5d1c73dddc0f76d6e09b72bbdc10d84441227c21b4095ed99",
+    "../natural/experiment.py": "a53ba75887afea7ca586106f2beca3557f2892f995f668e55b06ac7f9a922387"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": "fusion-frontier-development-v1",
+  "status": "Exploratory after inspecting RRF-all in natural-v1. All three families were inspected before this experiment.",
+  "purpose": "Determine whether source-selected fixed fusion subsets offer a stronger quality/cost baseline than selecting individual rewrites. No probe acquisition or new-method claim.",
+  "subsets": "All31 nonempty subsets of original, keywords, semantic, HyDE, decomposed. Singleton keeps original ranked list; multisets fuse existing top10 lists at RRF k60 and truncate top10. This is truncated-list fusion; not full-depth RRF.",
+  "selection": "Select subset by equally averaged source-train mean nDCG, subject to per-query maximum retrieval calls1..6 and generation allowance false/true. Ties fewer searches, fewer actions, lexicographic IDs. Same-backend source2worlds and hidden-backend source4worlds both prespecified.",
+  "roles": "Leave one corpus family out. Only128 source train query IDs per world are used for subset selection. All choices made before evaluator reads target test utility. Existing test365 queries crossed with2backends, same cohorts as milestone.",
+  "cost": "Single query per original/keywords/semantic/HyDE;2 queries for decomposed. A semantic generation response supplies all three semantic variants, so maximum selected generation/token charge, not sum. Zero onboarding. Offline source evaluation cost inherited, not included in serving frontier.",
+  "primary": "Equal-family macro quality and measured logical search/token/LLM calls for all source-selected budgets; no target choice of a best operating point. All31 target subset scores labeled posthoc evaluator only, never used by policy.",
+  "next_model_gate": "Use source-selected fusion as a mandatory baseline in further acquisition experiments. Learning a better selector is meaningful only with a utility model/action menu capable of competing with this frontier."
+}
