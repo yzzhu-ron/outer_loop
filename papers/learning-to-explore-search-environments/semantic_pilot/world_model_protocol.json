@@ -1,0 +1,47 @@
+{
+  "version": "0.1.0",
+  "status": "Exploratory follow-up specified after the original semantic pilot's negative responsiveness result, before evaluating this new router on target outcomes.",
+  "purpose": "Test whether a posterior over source corpus worlds can change useful search decisions when the original linear profile calibrator cannot. This is a single responsiveness intervention, not a hyperparameter search or a confirmatory result.",
+  "settings": {
+    "world_count": 2,
+    "task_bucket_pseudocount": 8,
+    "probe_cell_pseudocount": 4,
+    "noise_variance_floor": 0.01,
+    "gauss_hermite_points": 12,
+    "methods": ["random", "fixed", "information_gain", "decision_value"],
+    "pair_budgets": [0, 4, 8, 16, 32],
+    "pool_seeds": [11, 23, 47],
+    "future_task_counts": [1, 10, 50, 200],
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 20260910
+  },
+  "source_fitting": {
+    "folds": "Hold out one complete corpus, including both backends. For each known backend, the two remaining source corpora are the two possible worlds, with prior (1/2,1/2).",
+    "task_labels": "Only each source corpus's 128 router-training queries are used. Source calibration, selector-utility and test labels are not used for this follow-up model; the target corpus supplies no fitting labels or features.",
+    "task_utilities": "For source world w and bucket b, U[w,b,a] = (sum of source-training nDCG@10 for action a in bucket b + 8 * source world's global training mean for a) / (bucket_count + 8). Empty buckets therefore use that world's global training means. Actions remain original, keywords, semantic, HyDE and decomposition.",
+    "task_mix": "Average the two source-training bucket-frequency vectors with equal world weight. This fixed four-bucket mix is used by decision acquisition, without future target queries.",
+    "probe_deduplication": "Within each source world, deduplicate candidate IDs across the three overlapping seed pools. Repeated IDs must have identical cell metadata and RR delta. Each unique candidate contributes once.",
+    "probe_mean": "Cell axes are family, alternative action, query bucket. In world w, mu[w,c] = (sum of unique RR deltas in cell c + 4 * that world's family/action mean delta) / (cell_count + 4). A missing family/action mean is 0. Empty cells therefore fall back to family/action means; counts and fallback cells are saved explicitly.",
+    "probe_variance": "For each cell c, pool within-source residual sums of squares about each world's RAW cell sample mean: variance_raw[c] = sum_w sum_i (delta[w,c,i] - raw_mean[w,c])^2 / sum_w max(n[w,c]-1,0). If the denominator is zero, variance_raw is 0. The common two-world likelihood variance is max(variance_raw,0.01). No target observations are used to fit these means or variances."
+  },
+  "onboarding": {
+    "likelihood": "A selected cell's RR delta has Gaussian surrogate likelihood N(mu[w,c], variance[c]) in world w. Normalize log posterior weights with log-sum-exp. The Gaussian has unbounded support even though realized RR contrasts lie in [-1,1]; it is an uncalibrated working likelihood, not a valid generative confidence model.",
+    "visibility": "Selectors receive the fitted source model, candidate family/action/bucket/cost/opaque ID, and selected observations only. Candidate text, target tasks, target query features, qrels and unselected outcomes are excluded from the selection interface. Candidate eight-feature vectors may be present in inherited records but are not read.",
+    "selectors": "Random uses the inherited SHA256 target|pool_seed seed. Fixed coverage uses the original family/bucket/action count ordering and opaque ID tie break. Model-based selectors choose maximum nonnegative acquisition per logical search call and use the same seeded random priority for ties. All selectors continue to the fixed budget even when estimated gain is zero.",
+    "information_gain": "Integrate KL(posterior_after || current_posterior) under the current mixture of two Gaussian outcomes, using 12-point Gauss-Hermite for each component and normalized Hermite weights. This is expected information gain; natural logarithms give nats.",
+    "decision_value": "First choose each bucket's current posterior-optimal action. At each quadrature outcome, compute the source-task-mix-weighted difference between posterior-optimal utility and the posterior utility of those current actions. Integrate this nonnegative improvement. Under exact integration this equals E[V(posterior_after)]-V(current); the rewritten integrand avoids false value when finite quadrature fails to preserve the posterior mean. This is myopic source-model value, not estimated target utility.",
+    "numerics": "Use fixed 12-point quadrature, log-space posterior normalization, and clamp tiny negative pointwise numerical KL/improvement values to zero. Quadrature remains an approximation; no quadrature order is selected from target performance.",
+    "routing": "After onboarding, route each future query by its inherited bucket, maximizing posterior-weighted source-world action utility. Ties use the original action ordering. Query text/features/labels are never used during onboarding.",
+    "extrapolation": "The posterior is a GLOBAL corpus-world weight. Evidence in supported cells can change decisions in buckets without matched probes through the assumed shared world. Such extrapolation, source utility shrinkage and missing probe cells are exposed in model metadata. In the original run, valid probe candidates were observed only in buckets 2 and 3.",
+    "binary_limitation": "With two worlds and a common Gaussian variance per cell, equal-cost probes are Blackwell ordered by absolute mean separation divided by standard deviation. Exact IG and Bayes decision value prefer the same most informative equal-cost channel. Differences in this experiment can arise from two-versus-three search costs, ties or quadrature approximation; this model cannot demonstrate a separate nuisance-world dimension."
+  },
+  "evaluation": {
+    "cohort": "Reuse every original semantic task cohort, candidate pool, unavailable action and cached outcome. Preserve the original code, models and result files. Write only results/world_model_followup/.",
+    "primary": "Per-corpus/backend nDCG@10 change from this model's own zero-budget prior router. Also compare against its own random selector and the original frozen semantic source router, separating a different zero-budget policy from probe-induced adaptation.",
+    "secondary": "Recall@10, action-change fractions, posterior traces, source-model predicted decision value, source-only responsive action sets, and complete logical resource ledgers.",
+    "costs": "Reuse frozen cost arithmetic: every positive budget pays full pool document inspection and question/rewrite generation, including unselected and invalid candidates. Selected pairs pay their full logical costs; generated serving actions pay the full shared response. Zero budget pays no onboarding cost. Source fitting is offline; serving latency remains unmeasured.",
+    "uncertainty": "2000 paired query/shared-seed bootstrap draws with seed 20260910, separately per corpus/backend, method and budget, against own zero-budget, own random and original frozen router. These descriptive intervals condition on the selected queries and three shared seed pools; no family-population inference, multiple-testing correction or confirmatory p-values.",
+    "provenance": "Save complete source model arrays and source-only fit-input hashes, new code/protocol hashes, frozen learning/main-protocol hashes, canonical retrieval-record hashes, original paired-outcome hash, runtime versions and output hashes. Verify original records against the frozen analysis metadata before evaluation.",
+    "limitations": "Only two observed source corpora approximate target variation. Source means are estimated, corpus worlds need not cover the target, correlated probes violate conditional independence, Gaussian likelihoods are uncalibrated, bucket matching is coarse and uneven, and all three corpus families remain exploratory. A gain supports this intervention on these tasks, not a general adaptation or novelty claim."
+  }
+}
