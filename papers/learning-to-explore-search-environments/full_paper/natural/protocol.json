@@ -1,0 +1,46 @@
+{
+  "version": "natural-development-v1",
+  "status": "Exploratory. All three families and their original test outcomes were previously inspected. This freeze prevents undisclosed within-run edits; it does not turn them into confirmation data.",
+  "question": "Do finite non-Blackwell-ordered source channels and two-step decision value improve acquisition on existing real retrieval traces?",
+  "changed_assumption": "Backend identity is hidden from every selector and router, unlike the milestone's known-backend experiment. Each held-out family has four source worlds: the other two corpora crossed with BM25/dense. No claim of direct superiority over the known-backend setup.",
+  "model": "Uniform prior over four worlds. For each world, fit a five-outcome ordinal RR-difference distribution in eight family/action channels from deduplicated source probes; Dirichlet pseudocount 0.5 per outcome. Bucket action utility uses only source train rows, shrunk with 8 pseudo-queries to that world's global mean. Source-average bucket frequencies weight acquisition. Missing short-probe coverage remains an extrapolation limitation.",
+  "independence_limit": "Likelihood factorization is uncalibrated. Select at most one contrast per equal family/bucket/query-feature group to reduce shared-original correlations; groups may merge coincident feature vectors. Cross-question and cross-document dependence remains. Tempered likelihood power 0.25 is a prespecified sensitivity check.",
+  "lookahead_limit": "Receding two-step planning scores expected terminal source utility, divided by first-probe search cost. It plans at channel level and may optimistically assume a second channel remains available after removing the selected question group. It is a heuristic, not exact finite-pool optimal planning.",
+  "methods": [
+    "random",
+    "coverage",
+    "information_gain",
+    "decision_entropy",
+    "myopic_value",
+    "lookahead2"
+  ],
+  "comparators": [
+    "same-model zero-budget query-bucket router",
+    "source-best fixed action",
+    "all five fixed actions",
+    "RRF over all five action rankings",
+    "target-best fixed oracle",
+    "per-query oracle"
+  ],
+  "controls": [
+    "cyclically rotate source utility matrices relative to source likelihoods",
+    "likelihood power 0.25"
+  ],
+  "costs": "Matched maximum search-call budgets. Every positive budget charges all pool sampling and generation plus actually selected retrieval calls. Serving costs reported separately. Fixed original/keywords use one search and no LLM. Semantic/HyDE use one search and one shared-format generation. Decomposed uses two searches and one generation. RRF all-actions uses six search calls and the same one generation, not three generations. Offline source training/retrieval cost is separate and inherited from milestone.",
+  "statistics": "Paired query/seed resampling, descriptive 95% intervals within each environment. Three families are not enough for a population-level significance claim. Report all conditions/budgets; no cherry-picked primary win.",
+  "fresh_family_gate": "Advance this particular acquisition model to untouched families only if development shows a positive macro improvement over both random and IG, action changes in at least two families, and gains surviving strong fixed/RRF comparisons. Otherwise diagnose before consuming fresh targets. This is an engineering gate, not a statistical publication threshold.",
+  "settings": {
+    "utility_shrinkage": 8,
+    "dirichlet_per_outcome": 0.5,
+    "likelihood_power": 1.0,
+    "search_call_budgets": [
+      0,
+      8,
+      16,
+      32,
+      64
+    ],
+    "bootstrap_draws": 2000
+  },
+  "primary_development_comparison": "standard lookahead2 at 64 maximum search calls; equal mean across three families and both backends, vs standard random and information_gain at64. All other budgets/conditions descriptive."
+}

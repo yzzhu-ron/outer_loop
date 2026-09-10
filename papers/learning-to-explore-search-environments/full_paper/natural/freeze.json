@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-09-10T13:43:57.312329+00:00",
+  "status": "Code/protocol/data frozen before running this new analysis; input outcomes already seen in milestone.",
+  "sha256": {
+    "experiment.py": "a53ba75887afea7ca586106f2beca3557f2892f995f668e55b06ac7f9a922387",
+    "protocol.json": "3cb9e9b083a42c338d1a40854bcf9fdb95ab4e2beae95c7daae8b78f7bf76646",
+    "evidence.json": "6911bc600ad7934591eec1e99ab76836ac899158172b15865f08a1b8d485f4d4",
+    "export_evidence.py": "386d9a458d4587c5a37a9ead297caeb58731724ad97a63092c99c825b7e35180",
+    "test_experiment.py": "cadd0d2784595aa4a1fb55033db587d38cd9954379ea886210ecf0c2fbcc5b25"
+  }
+}
