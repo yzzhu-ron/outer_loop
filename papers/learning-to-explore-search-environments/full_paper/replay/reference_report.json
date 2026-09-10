@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "status": "replayed",
+  "milestone_commit": "e3306228a485037c662a313e591f17128e8f8ae0",
+  "manifest_sha256": "656bef40f0b4bb4f5ee3db6070973b40150f717b84c26b4d1d3a6db5a7adc487",
+  "input_files_verified": 34,
+  "calculation_code_sha256": {
+    "replay.py": "b57a9a23c71315cef2f386bed38a6a92649add6e45eb1884d7e08d46fd35bef6",
+    "searchprobe.decisions.py": "e348d77ad3f1868e5424503efa94f51e36110880bc0beafd370440e6abd57c9b",
+    "searchprobe.responsiveness.py": "f83289156cfcc5c3907d51d5bc63be5b7220d6a40fc12afdd16df5bb1e264942"
+  },
+  "scope": "Analysis replay of recorded per-action/per-query outcomes and supplied finite-model certificates. This is not retrieval or training regeneration.",
+  "uses_recorded_target_outcomes": true,
+  "uses_target_outcomes_for_fitting_or_selection": false,
+  "counts": {
+    "environments": 6,
+    "query_backend_rows": 730,
+    "main_run_rows_recomputed": 450,
+    "followup_run_rows_recomputed": 360,
+    "followup_baseline_rows_recomputed": 18,
+    "paired_contrast_means_recomputed": 600,
+    "response_certificates_recomputed": 6,
+    "source_decision_certificates_recomputed": 6
+  },
+  "environments": [
+    {
+      "environment": "fiqa_bm25",
+      "query_backend_rows": 150,
+      "original_query_ndcg": 0.2525141579028998,
+      "frozen_router_ndcg": 0.2525141579028998,
+      "best_fixed_ndcg": 0.2525141579028998,
+      "per_query_oracle_ndcg": 0.36917426192365166,
+      "oracle_headroom_over_best_fixed": 0.11666010402075183,
+      "original_learned_B32_delta": 0.0,
+      "followup_prior_ndcg": 0.23978653908293807,
+      "followup_decision_B32_ndcg": 0.23128133693078542,
+      "followup_decision_B32_delta_vs_prior": -0.008505202152152641,
+      "followup_decision_B32_delta_vs_random": -0.002835067384050871
+    },
+    {
+      "environment": "fiqa_dense",
+      "query_backend_rows": 150,
+      "original_query_ndcg": 0.3921141942640467,
+      "frozen_router_ndcg": 0.332527731174083,
+      "best_fixed_ndcg": 0.3921141942640467,
+      "per_query_oracle_ndcg": 0.53026104076484,
+      "oracle_headroom_over_best_fixed": 0.13814684650079334,
+      "original_learned_B32_delta": 0.0,
+      "followup_prior_ndcg": 0.3250366862359049,
+      "followup_decision_B32_ndcg": 0.332527731174083,
+      "followup_decision_B32_delta_vs_prior": 0.007491044938178093,
+      "followup_decision_B32_delta_vs_random": 0.0
+    },
+    {
+      "environment": "nfcorpus_bm25",
+      "query_backend_rows": 65,
+      "original_query_ndcg": 0.24510579949889152,
+      "frozen_router_ndcg": 0.24510579949889152,
+      "best_fixed_ndcg": 0.2484703451357258,
+      "per_query_oracle_ndcg": 0.2989869760868586,
+      "oracle_headroom_over_best_fixed": 0.05051663095113279,
+      "original_learned_B32_delta": 0.0,
+      "followup_prior_ndcg": 0.24510579949889152,
+      "followup_decision_B32_ndcg": 0.24547577941325946,
+      "followup_decision_B32_delta_vs_prior": 0.000369979914367935,
+      "followup_decision_B32_delta_vs_random": -0.00045074125929750464
+    },
+    {
+      "environment": "nfcorpus_dense",
+      "query_backend_rows": 65,
+      "original_query_ndcg": 0.23478611324488538,
+      "frozen_router_ndcg": 0.23478611324488538,
+      "best_fixed_ndcg": 0.23478611324488538,
+      "per_query_oracle_ndcg": 0.2967821611485425,
+      "oracle_headroom_over_best_fixed": 0.06199604790365712,
+      "original_learned_B32_delta": 0.0,
+      "followup_prior_ndcg": 0.2258018366359337,
+      "followup_decision_B32_ndcg": 0.2355971275078259,
+      "followup_decision_B32_delta_vs_prior": 0.00979529087189221,
+      "followup_decision_B32_delta_vs_random": 0.0078444243186295
+    },
+    {
+      "environment": "scifact_bm25",
+      "query_backend_rows": 150,
+      "original_query_ndcg": 0.6061398767848605,
+      "frozen_router_ndcg": 0.6061398767848605,
+      "best_fixed_ndcg": 0.6209204636764345,
+      "per_query_oracle_ndcg": 0.7705356156267112,
+      "oracle_headroom_over_best_fixed": 0.14961515195027675,
+      "original_learned_B32_delta": 0.0,
+      "followup_prior_ndcg": 0.6229513009306721,
+      "followup_decision_B32_ndcg": 0.611173045658828,
+      "followup_decision_B32_delta_vs_prior": -0.011778255271844063,
+      "followup_decision_B32_delta_vs_random": 0.0
+    },
+    {
+      "environment": "scifact_dense",
+      "query_backend_rows": 150,
+      "original_query_ndcg": 0.6435738713255216,
+      "frozen_router_ndcg": 0.6435738713255216,
+      "best_fixed_ndcg": 0.6794626814674809,
+      "per_query_oracle_ndcg": 0.7891990650232485,
+      "oracle_headroom_over_best_fixed": 0.10973638355576765,
+      "original_learned_B32_delta": 0.0,
+      "followup_prior_ndcg": 0.6376234707584271,
+      "followup_decision_B32_ndcg": 0.679462681467481,
+      "followup_decision_B32_delta_vs_prior": 0.04183921070905394,
+      "followup_decision_B32_delta_vs_random": 0.009372424890484288
+    }
+  ],
+  "certificates": [
+    {
+      "environment": "fiqa_bm25",
+      "certified_unchanged": 150,
+      "rows": 150,
+      "source_decision_radius_exact": "33617484914753528404974864632599/47905888253836164800000000000000000"
+    },
+    {
+      "environment": "fiqa_dense",
+      "certified_unchanged": 150,
+      "rows": 150,
+      "source_decision_radius_exact": "0"
+    },
+    {
+      "environment": "nfcorpus_bm25",
+      "certified_unchanged": 65,
+      "rows": 65,
+      "source_decision_radius_exact": "0"
+    },
+    {
+      "environment": "nfcorpus_dense",
+      "certified_unchanged": 65,
+      "rows": 65,
+      "source_decision_radius_exact": "34435266013768589763154751119002189/2041290899208897020800000000000000000"
+    },
+    {
+      "environment": "scifact_bm25",
+      "certified_unchanged": 150,
+      "rows": 150,
+      "source_decision_radius_exact": "56193988996328163429443408551093/74165775854790555200000000000000000"
+    },
+    {
+      "environment": "scifact_dense",
+      "certified_unchanged": 150,
+      "rows": 150,
+      "source_decision_radius_exact": "507512183218020252006696923274987/106538052727866154000000000000000000"
+    }
+  ],
+  "not_replayed": [
+    "Document retrieval or relevance-metric calculation from ranked documents/qrels.",
+    "LLM generation, source fitting, acquisition decisions, or posterior updates.",
+    "Bootstrap sampling and interval endpoints; stored endpoints are hash-checked and checked only for valid ordering/range.",
+    "Full deployment costs, wall time, or the original report builder; these require additional ignored caches or runtime context.",
+    "Whether declared score bounds cover all floating-point router errors, source-world coverage, or target generalization."
+  ],
+  "numerical_comparison": "Recorded float summaries checked with absolute tolerance 1e-12; means use math.fsum. SearchProbe certificate arithmetic is exact for supplied rational/decimal inputs."
+}

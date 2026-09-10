@@ -1,0 +1,2079 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What should a search agent learn before its first real question?</title>
+<style>
+  :root {
+    /* Warm paper palette — see design-system.md */
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --sky:      #6A8CAF;
+    --white:    #FFFFFF;
+    --gray-150: #F0EEE6;
+    --gray-300: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-700: #3D3D3A;
+    --danger:   #B04A3F;
+
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ivory:    #1A1A18;
+      --slate:    #F0EFE9;
+      --clay:     #E68A6A;
+      --oat:      #3A3530;
+      --olive:    #9CB077;
+      --sky:      #87A2C2;
+      --white:    #232220;
+      --gray-150: #2A2926;
+      --gray-300: #3A3935;
+      --gray-500: #8A8881;
+      --gray-700: #C8C6BF;
+      --danger:   #D97766;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ivory);
+    color: var(--gray-700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+
+  /* Two-column layout: prose + sticky aside.
+     Drop the aside and switch to a single column for short docs. */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 48px;
+  }
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; }
+    aside { order: 2; position: static; }
+  }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--slate);
+    margin: 40px 0 14px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--slate);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  .lead { max-width: 640px; font-size: 16px; }
+  .muted { color: var(--gray-500); }
+  em { font-style: italic; }
+  a { color: var(--clay); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--clay); }
+
+  code { font-family: var(--mono); font-size: 13px; background: var(--gray-150); padding: 0.125em 0.35em; border-radius: 4px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--slate); background: var(--white); border: 1.5px solid var(--gray-300); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* TL;DR card */
+  .tldr {
+    border: 1.5px solid var(--gray-300);
+    border-left: 3px solid var(--clay);
+    border-radius: 10px;
+    background: var(--white);
+    padding: 16px 18px;
+    margin: 8px 0 20px;
+  }
+  .tldr b { color: var(--slate); }
+
+  /* Demo / figure panel */
+  .panel {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 14px;
+    background: var(--white);
+    padding: 24px;
+    margin: 12px 0;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--oat);
+    background: rgba(227, 218, 204, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--clay); font-weight: 600; }
+
+  /* Dotted-underline term linked to glossary */
+  .term {
+    border-bottom: 1.5px dotted var(--clay);
+    cursor: help;
+    color: var(--slate);
+  }
+
+  /* Sticky aside (glossary or on-this-page) */
+  aside {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 18px 18px 8px;
+  }
+  aside .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  aside dl dt {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 0;
+  }
+  aside dl dd {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    margin: 2px 0 14px;
+  }
+  aside dl dt.hl, aside dl dt.hl + dd {
+    background: rgba(217, 119, 87, 0.10);
+    margin-left: -8px; margin-right: -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 4px;
+  }
+
+  /* Collapsible details */
+  details {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--slate);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    color: var(--clay);
+    font-family: var(--sans);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body { padding: 0 16px 16px; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 680px; font-size: 13.5px; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 500; }
+  td.good { color: var(--olive); }
+  td.bad  { color: var(--danger); }
+
+  html { scroll-behavior: smooth; }
+  .scientific-figure { margin: 24px 0; }
+  .scientific-figure svg { width: 100%; height: auto; background: #fff; display:block; }
+  .scientific-figure button { margin-bottom: 8px; }
+  dialog { border: 1px solid var(--gray-300); border-radius: 10px; padding: 18px; width: min(96vw, 1500px); max-height: 96vh; background: var(--white); color: var(--slate); }
+  dialog::backdrop { background: rgba(0,0,0,.6); }
+  dialog svg, dialog img { width: 100%; height:auto; background: #fff; }
+  .page { grid-template-columns: minmax(0, 760px) 220px; }
+  main { min-width: 0; }
+  h1 { font-size: clamp(32px, 4.2vw, 49px); max-width: 760px; }
+  .lead { font-size: 19px; line-height: 1.55; }
+  main p, main li { font-size: 16px; line-height: 1.8; }
+  main p { max-width: 710px; }
+  h2 { margin-top: 56px; font-size: 27px; }
+  a { color: var(--gray-700); text-decoration: underline; text-decoration-color: var(--clay); text-underline-offset: 3px; }
+  .eyebrow, .muted, th, aside .label { color: var(--gray-700); }
+  aside a { display: block; padding: 5px 0; font-size: 13px; }
+  .caption, main .caption { font-size: 13px; line-height: 1.65; }
+  .panel h3 { margin-top: 0; }
+  .controls { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 18px 0; }
+  .controls label { display: block; }
+  input { accent-color: var(--clay); }
+  input[type=range] { width: min(260px, 65vw); }
+  button, select { background: var(--white); color: var(--slate); font: inherit; border: 1px solid var(--gray-300); padding: 7px 11px; border-radius: 5px; }
+  :focus-visible { outline: 2px solid var(--slate); outline-offset: 4px; }
+  .table-wrap { overflow-x: auto; }
+  table { max-width: none; }
+  .bar { height: 9px; background: var(--gray-300); margin-top: 6px; width: 100%; }
+  .bar span { display: block; height: 100%; background: var(--clay); }
+  .finding { padding: 20px 0; border-top: 1px solid var(--gray-300); border-bottom: 1px solid var(--gray-300); margin: 26px 0; }
+  .finding strong { font-family: var(--serif); color: var(--slate); font-weight: 500; font-size: 24px; }
+  ul, ol { padding-left: 24px; margin: 14px 0; }
+  li { margin: 8px 0; }
+  footer { margin-top: 64px; border-top: 1px solid var(--gray-300); padding-top: 20px; }
+  @media (max-width: 960px) { .page { grid-template-columns: 1fr; } aside { position: static; order: 2; } }
+  @media (max-width: 560px) { body { padding: 28px 18px 64px; } .panel { padding: 16px; } th,td { padding: 8px 6px; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media print { aside, .controls, #copy-demo { display: none; } .page { display: block; } body { padding: 0; } details .body { display: block; } }
+
+</style>
+</head>
+<body>
+
+<div class="page"><main><article>
+<header>
+<div class="eyebrow">SearchProbe research notebook · Technical blog draft · 10 September 2026</div>
+<h1>What should a search agent learn before its first real question?</h1>
+<p class="lead">A new collection arrives. The agent can inspect a few documents and try a few searches. What should it ask now to make better decisions later?</p>
+<p>Consider an assistant searching an unfamiliar engineering archive. Exact product names may be essential. A paraphrase may uncover a concept described in different words. A generated hypothetical answer may help semantic search, or introduce a detail that sends it in the wrong direction. The assistant has several ways to search, and a small opportunity to learn which ones will work.</p>
+<div class="tldr"><b>The idea we are pursuing:</b> learn to choose small search experiments by their effect on future decisions. Our first system exposed an obstacle: it could collect evidence but could not change its mind. We now separate three questions: can observations distinguish useful behavior, can the controller act on them, and does the relationship survive a new collection? The last question remains open.</div>
+<p class="caption">This is a working account of an unfinished research program. The retrieval findings below are exploratory. The interactive example is a constructed mechanism test. Neither establishes a new state-of-the-art search method.</p>
+</header>
+
+<section id="contract"><h2>Learn the collection before the workload arrives</h2>
+<p>The setting is deliberately strict. During onboarding, the agent sees sampled documents and the results of searches it chooses to run. It does not see the future users’ questions or relevance labels. After onboarding, the retrieval system and controller weights stay frozen. A small profile of what happened during the probes is the only new state.</p>
+<p>A probe starts with a document we know exists. We generate a question from it, rewrite that question in a few ways, and ask whether each version retrieves the document. That gives us cheap feedback without a human relevance label. It is also an imperfect measurement: retrieving the document that inspired a question is easier than satisfying a real user’s need.</p>
+<p>The training problem is to connect these cheap observations to useful decisions on separate, real questions in source collections. The transfer problem is to carry that connection to a new collection. These are different problems. A probe generator can produce fluent questions and a controller can update its beliefs while the connection between the two remains wrong.</p>
+<details><summary>What counts as a fair comparison?</summary><div class="body">
+<p>Give random selection, coverage selection, information gain, and decision-based selection the same candidate pool, observation interface, router, and spending limit. Charge for sampling documents, generating and inspecting candidates, and executing selected searches. Compare against the router before onboarding and against strong fixed strategies. At serving time, count the generation and searches used by the chosen action. A gain over a weak starting policy is not enough.</p>
+</div></details></section>
+
+<section id="failure"><h2>A system that learned nothing because it could change nothing</h2>
+<p>We began with three BEIR collections: SciFact, FiQA, and NFCorpus. Each used BM25 and a frozen MiniLM dense retriever. For each real question, the available actions were the original query, keywords, a semantic rewrite, a hypothetical passage (HyDE), and a two-part decomposition.</p>
+<p>There was room to improve. On SciFact with dense retrieval, the original query scored 0.6436 nDCG@10; a hindsight oracle choosing the best action for each question scored 0.7892. That oracle is not a usable system. It tells us that the action set contains choices worth investigating. Here nDCG@10 measures the quality of the first ten results, from zero to one; higher is better.</p>
+<p>But every learned probe-selection reward was zero: 20,880 training labels. Across 450 evaluated method, seed, and budget combinations, onboarding changed no action. The first explanation might be that the probes contained no useful information. We checked the controller itself before accepting that explanation.</p>
+<div class="finding"><strong>For all 730 evaluated query/backend cases, the allowed probe updates were too small to change the winning action.</strong><p class="caption">This is a conditional certificate under the fitted score model and its declared update bounds, for histories of at most 32 probes. It does not prove that search probes are intrinsically useless.</p></div>
+<p>Imagine two actions whose scores differ by ten points, while the evidence can move their relative score by at most one. No clever probe selector can make that controller choose differently. Training a selector on the resulting zero rewards teaches it nothing about which evidence would matter to a more responsive controller.</p>
+<p>A separate intervention made the controller responsive. Its most favorable case gained 0.0418 nDCG over its own starting policy, but the interval included zero. It switched every SciFact/dense question to HyDE; always using HyDE achieved the same quality without onboarding. That result helped diagnose the mechanism, but did not establish an acquisition advantage.</p>
+<p class="caption">The three collections have all been inspected. They are development data now. NFCorpus also retains only 65 of 323 test questions under the support-document split, limiting what the result says about the full workload.</p>
+</section>
+
+<section id="joint"><h2>Evidence can matter only in combination</h2>
+<p>Fixing a controller that cannot respond is necessary. It does not make one-step learning sufficient. Sometimes one probe tells you how to interpret another probe. Looking only for an immediate improvement assigns the first probe a value of zero.</p>
+<p>Here is a deliberately small example. Two hidden switches, <em>r</em> and <em>s</em>, determine whether an action works: it succeeds when the switches differ. Either switch alone leaves you guessing. Observe both and you know the answer. A separate shortcut guesses that answer correctly 75% of the time. The shortcut offers an immediate gain; either exact switch alone offers none.</p>
+<p>The workload also includes two other question types, each controlled by its own independent switch. A final probe reveals two bits about the environment that affect none of the decisions. This lets us distinguish three tempting objectives: learning about the environment, identifying all optimal decisions, and improving the decisions that occur most often.</p>
+<div class="panel" id="demo"><h3>Spend two probes</h3>
+<p class="caption">Constructed, known-model example. Every probe costs one unit. The table computes expectations over all hidden states and possible observations; it does not sample favorable runs.</p>
+<div class="controls"><div><label for="weight">Share of questions needing both switches: <output id="weight-label">75%</output></label><input id="weight" type="range" min="0" max="100" step="5" value="75"></div><div><label for="budget">Probe budget</label><select id="budget"><option value="1">1</option><option value="2" selected>2</option></select></div></div>
+<div class="table-wrap"><table><thead><tr><th>Selection rule</th><th>First probe</th><th>Expected accuracy</th></tr></thead><tbody id="demo-rows"></tbody></table></div>
+<p class="caption" id="demo-note" aria-live="polite"></p><button id="copy-demo" type="button">Copy this example</button><span id="copy-status" class="caption" aria-live="polite"></span>
+<noscript><p>At 75% joint-switch questions and a budget of two, the best plan observes both switches and reaches 87.5% expected accuracy. A greedy immediate-value plan reaches 75%. This is an engineered counterexample, not a retrieval benchmark.</p></noscript></div>
+<p>This is not a new value-of-information theorem. Its job is to expose a weakness in the learning signal we actually used. A system trained only on immediate policy improvement can overlook evidence whose benefit arrives after another experiment. A useful test suite should include that failure, alongside cases where simple fixed probing is already optimal.</p>
+<p>There is a second distinction. If one probe reveals which of two later probes is relevant, adapting the second choice can beat any fixed pair. The controlled experiment includes both cases: complementary evidence, where a good fixed pair can suffice, and a gate, where the first observation changes what to ask next. These should not be conflated.</p>
+<p>At a two-probe budget and a 75% share of the joint task, the exact gated experiment reaches 87.5% accuracy with an adaptive plan versus 75% with the best fixed set. But if the task mix changes without being announced, that source-optimal plan falls to 62.5%; telling it the changed mix restores 87.5%. Planning can solve the supplied model while preparing for the wrong workload. The full suite records 1,658 exact results across 38 conditions, including shuffled utility associations, channel noise, and tie-order sensitivities.</p>
+</section>
+
+<figure class="scientific-figure"><button type="button" data-enlarge="figure-controlled">Enlarge controlled mechanisms</button><div id="figure-controlled"><svg role="img" aria-label="Two horizontal bar charts compare seven methods at probe budget two and workload weight three quarters. In both constructed mechanisms, no probes score 0.5, information gain 0.5625, decision-region entropy 0.625, and myopic value 0.75. Two-step lookahead and full-horizon planning score 0.875 in both. The best source-fixed plan scores 0.875 for XOR and 0.75 for the gated mechanism. These are exact expected utilities, not empirical confidence intervals." xmlns:xlink="http://www.w3.org/1999/xlink" width="819.856172pt" height="389.592pt" viewBox="0 0 819.856172 389.592" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>make_publication_figures.py</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="controlled-figure_1">
+  <g id="controlled-patch_1">
+   <path d="M 0 389.592
+L 819.856172 389.592
+L 819.856172 -0
+L 0 -0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="controlled-axes_1">
+   <g id="controlled-patch_2">
+    <path d="M 218.34 314.352
+L 492.396338 314.352
+L 492.396338 81.072
+L 218.34 81.072
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="controlled-matplotlib.axis_1">
+    <g id="controlled-xtick_1">
+     <g id="controlled-line2d_1">
+      <path d="M 218.34 314.352
+L 218.34 81.072
+" clip-path="url(#controlled-ped33d2689b)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_2">
+      <defs>
+       <path id="controlled-mb6e2bffedc" d="M 0 0
+L 0 3
+" style="stroke: #a0a0a0; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="218.34" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_1">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="218.34" y="328.069773" transform="rotate(-0 218.34 328.069773)">0.00</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_2">
+     <g id="controlled-line2d_3">
+      <path d="M 286.854085 314.352
+L 286.854085 81.072
+" clip-path="url(#controlled-ped33d2689b)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_4">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="286.854085" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_2">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="286.854085" y="328.069773" transform="rotate(-0 286.854085 328.069773)">0.25</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_3">
+     <g id="controlled-line2d_5">
+      <path d="M 355.368169 314.352
+L 355.368169 81.072
+" clip-path="url(#controlled-ped33d2689b)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_6">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="355.368169" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_3">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="355.368169" y="328.069773" transform="rotate(-0 355.368169 328.069773)">0.50</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_4">
+     <g id="controlled-line2d_7">
+      <path d="M 423.882254 314.352
+L 423.882254 81.072
+" clip-path="url(#controlled-ped33d2689b)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_8">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="423.882254" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_4">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="423.882254" y="328.069773" transform="rotate(-0 423.882254 328.069773)">0.75</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_5">
+     <g id="controlled-line2d_9">
+      <path d="M 492.396338 314.352
+L 492.396338 81.072
+" clip-path="url(#controlled-ped33d2689b)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_10">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="492.396338" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_5">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="492.396338" y="328.069773" transform="rotate(-0 492.396338 328.069773)">1.00</text>
+     </g>
+    </g>
+    <g id="controlled-text_6">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="355.368169" y="342.330359" transform="rotate(-0 355.368169 342.330359)">Exact expected task utility</text>
+    </g>
+   </g>
+   <g id="controlled-matplotlib.axis_2">
+    <g id="controlled-ytick_1">
+     <g id="controlled-line2d_11">
+      <defs>
+       <path id="controlled-me92478200b" d="M 0 0
+L -3 0
+" style="stroke: #a0a0a0; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="102.469757" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_7">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="106.268976" transform="rotate(-0 211.84 106.268976)">No probes</text>
+     </g>
+    </g>
+    <g id="controlled-ytick_2">
+     <g id="controlled-line2d_12">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="134.217171" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_8">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="138.01639" transform="rotate(-0 211.84 138.01639)">Environment information gain</text>
+     </g>
+    </g>
+    <g id="controlled-ytick_3">
+     <g id="controlled-line2d_13">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="165.964586" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_9">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="169.763804" transform="rotate(-0 211.84 169.763804)">Decision-region entropy</text>
+     </g>
+    </g>
+    <g id="controlled-ytick_4">
+     <g id="controlled-line2d_14">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="197.712" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_10">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="201.511219" transform="rotate(-0 211.84 201.511219)">Myopic decision value</text>
+     </g>
+    </g>
+    <g id="controlled-ytick_5">
+     <g id="controlled-line2d_15">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="229.459414" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_11">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="233.258633" transform="rotate(-0 211.84 233.258633)">Best source-fixed probe plan</text>
+     </g>
+    </g>
+    <g id="controlled-ytick_6">
+     <g id="controlled-line2d_16">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="261.206829" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_12">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="265.006047" transform="rotate(-0 211.84 265.006047)">Two-step decision lookahead</text>
+     </g>
+    </g>
+    <g id="controlled-ytick_7">
+     <g id="controlled-line2d_17">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="218.34" y="292.954243" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_13">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="211.84" y="296.753462" transform="rotate(-0 211.84 296.753462)">Full-horizon decision planning</text>
+     </g>
+    </g>
+   </g>
+   <g id="controlled-line2d_18">
+    <path d="M 355.368169 314.352
+L 355.368169 81.072
+" clip-path="url(#controlled-ped33d2689b)" style="fill: none; stroke-dasharray: 2.4,2.4; stroke-dashoffset: 0; stroke: #666666; stroke-width: 0.8"/>
+   </g>
+   <g id="controlled-patch_3">
+    <path d="M 218.34 91.675636
+L 355.368169 91.675636
+L 355.368169 113.263878
+L 218.34 113.263878
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #a0a0a0"/>
+   </g>
+   <g id="controlled-patch_4">
+    <path d="M 218.34 123.423051
+L 372.49669 123.423051
+L 372.49669 145.011292
+L 218.34 145.011292
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #e69f00"/>
+   </g>
+   <g id="controlled-patch_5">
+    <path d="M 218.34 155.170465
+L 389.625211 155.170465
+L 389.625211 176.758707
+L 218.34 176.758707
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #b8924a"/>
+   </g>
+   <g id="controlled-patch_6">
+    <path d="M 218.34 186.917879
+L 423.882254 186.917879
+L 423.882254 208.506121
+L 218.34 208.506121
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #d55e00"/>
+   </g>
+   <g id="controlled-patch_7">
+    <path d="M 218.34 218.665293
+L 458.139296 218.665293
+L 458.139296 240.253535
+L 218.34 240.253535
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #009e73"/>
+   </g>
+   <g id="controlled-patch_8">
+    <path d="M 218.34 250.412708
+L 458.139296 250.412708
+L 458.139296 272.000949
+L 218.34 272.000949
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #0072b2"/>
+   </g>
+   <g id="controlled-patch_9">
+    <path d="M 218.34 282.160122
+L 458.139296 282.160122
+L 458.139296 303.748364
+L 218.34 303.748364
+z
+" clip-path="url(#controlled-ped33d2689b)" style="fill: #334d68"/>
+   </g>
+   <g id="controlled-patch_10">
+    <path d="M 218.34 314.352
+L 218.34 81.072
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="controlled-patch_11">
+    <path d="M 218.34 314.352
+L 492.396338 314.352
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="controlled-text_14">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="359.75307" y="105.067413" transform="rotate(-0 359.75307 105.067413)">0.5</text>
+   </g>
+   <g id="controlled-text_15">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="376.881592" y="136.814828" transform="rotate(-0 376.881592 136.814828)">0.5625</text>
+   </g>
+   <g id="controlled-text_16">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="394.010113" y="168.562242" transform="rotate(-0 394.010113 168.562242)">0.625</text>
+   </g>
+   <g id="controlled-text_17">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="428.267155" y="200.309656" transform="rotate(-0 428.267155 200.309656)">0.75</text>
+   </g>
+   <g id="controlled-text_18">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="462.524197" y="232.057071" transform="rotate(-0 462.524197 232.057071)">0.875</text>
+   </g>
+   <g id="controlled-text_19">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="462.524197" y="263.804485" transform="rotate(-0 462.524197 263.804485)">0.875</text>
+   </g>
+   <g id="controlled-text_20">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="462.524197" y="295.551899" transform="rotate(-0 462.524197 295.551899)">0.875</text>
+   </g>
+   <g id="controlled-text_21">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="218.34" y="67.072" transform="rotate(-0 218.34 67.072)">XOR · a fixed probe pair suffices</text>
+   </g>
+  </g>
+  <g id="controlled-axes_2">
+   <g id="controlled-patch_12">
+    <path d="M 528.023662 314.352
+L 802.08 314.352
+L 802.08 81.072
+L 528.023662 81.072
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="controlled-matplotlib.axis_3">
+    <g id="controlled-xtick_6">
+     <g id="controlled-line2d_19">
+      <path d="M 528.023662 314.352
+L 528.023662 81.072
+" clip-path="url(#controlled-pb79177b176)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_20">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="528.023662" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_22">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="528.023662" y="328.069773" transform="rotate(-0 528.023662 328.069773)">0.00</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_7">
+     <g id="controlled-line2d_21">
+      <path d="M 596.537746 314.352
+L 596.537746 81.072
+" clip-path="url(#controlled-pb79177b176)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_22">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="596.537746" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_23">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="596.537746" y="328.069773" transform="rotate(-0 596.537746 328.069773)">0.25</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_8">
+     <g id="controlled-line2d_23">
+      <path d="M 665.051831 314.352
+L 665.051831 81.072
+" clip-path="url(#controlled-pb79177b176)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_24">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="665.051831" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_24">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="665.051831" y="328.069773" transform="rotate(-0 665.051831 328.069773)">0.50</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_9">
+     <g id="controlled-line2d_25">
+      <path d="M 733.565915 314.352
+L 733.565915 81.072
+" clip-path="url(#controlled-pb79177b176)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_26">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="733.565915" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_25">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="733.565915" y="328.069773" transform="rotate(-0 733.565915 328.069773)">0.75</text>
+     </g>
+    </g>
+    <g id="controlled-xtick_10">
+     <g id="controlled-line2d_27">
+      <path d="M 802.08 314.352
+L 802.08 81.072
+" clip-path="url(#controlled-pb79177b176)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="controlled-line2d_28">
+      <g>
+       <use xlink:href="#controlled-mb6e2bffedc" x="802.08" y="314.352" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="controlled-text_26">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="802.08" y="328.069773" transform="rotate(-0 802.08 328.069773)">1.00</text>
+     </g>
+    </g>
+    <g id="controlled-text_27">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="665.051831" y="342.330359" transform="rotate(-0 665.051831 342.330359)">Exact expected task utility</text>
+    </g>
+   </g>
+   <g id="controlled-matplotlib.axis_4">
+    <g id="controlled-ytick_8">
+     <g id="controlled-line2d_29">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="102.469757" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="controlled-ytick_9">
+     <g id="controlled-line2d_30">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="134.217171" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="controlled-ytick_10">
+     <g id="controlled-line2d_31">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="165.964586" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="controlled-ytick_11">
+     <g id="controlled-line2d_32">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="197.712" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="controlled-ytick_12">
+     <g id="controlled-line2d_33">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="229.459414" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="controlled-ytick_13">
+     <g id="controlled-line2d_34">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="261.206829" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="controlled-ytick_14">
+     <g id="controlled-line2d_35">
+      <g>
+       <use xlink:href="#controlled-me92478200b" x="528.023662" y="292.954243" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="controlled-line2d_36">
+    <path d="M 665.051831 314.352
+L 665.051831 81.072
+" clip-path="url(#controlled-pb79177b176)" style="fill: none; stroke-dasharray: 2.4,2.4; stroke-dashoffset: 0; stroke: #666666; stroke-width: 0.8"/>
+   </g>
+   <g id="controlled-patch_13">
+    <path d="M 528.023662 91.675636
+L 665.051831 91.675636
+L 665.051831 113.263878
+L 528.023662 113.263878
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #a0a0a0"/>
+   </g>
+   <g id="controlled-patch_14">
+    <path d="M 528.023662 123.423051
+L 682.180352 123.423051
+L 682.180352 145.011292
+L 528.023662 145.011292
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #e69f00"/>
+   </g>
+   <g id="controlled-patch_15">
+    <path d="M 528.023662 155.170465
+L 699.308873 155.170465
+L 699.308873 176.758707
+L 528.023662 176.758707
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #b8924a"/>
+   </g>
+   <g id="controlled-patch_16">
+    <path d="M 528.023662 186.917879
+L 733.565915 186.917879
+L 733.565915 208.506121
+L 528.023662 208.506121
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #d55e00"/>
+   </g>
+   <g id="controlled-patch_17">
+    <path d="M 528.023662 218.665293
+L 733.565915 218.665293
+L 733.565915 240.253535
+L 528.023662 240.253535
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #009e73"/>
+   </g>
+   <g id="controlled-patch_18">
+    <path d="M 528.023662 250.412708
+L 767.822958 250.412708
+L 767.822958 272.000949
+L 528.023662 272.000949
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #0072b2"/>
+   </g>
+   <g id="controlled-patch_19">
+    <path d="M 528.023662 282.160122
+L 767.822958 282.160122
+L 767.822958 303.748364
+L 528.023662 303.748364
+z
+" clip-path="url(#controlled-pb79177b176)" style="fill: #334d68"/>
+   </g>
+   <g id="controlled-patch_20">
+    <path d="M 528.023662 314.352
+L 528.023662 81.072
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="controlled-patch_21">
+    <path d="M 528.023662 314.352
+L 802.08 314.352
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="controlled-text_28">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="669.436732" y="105.067413" transform="rotate(-0 669.436732 105.067413)">0.5</text>
+   </g>
+   <g id="controlled-text_29">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="686.565254" y="136.814828" transform="rotate(-0 686.565254 136.814828)">0.5625</text>
+   </g>
+   <g id="controlled-text_30">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="703.693775" y="168.562242" transform="rotate(-0 703.693775 168.562242)">0.625</text>
+   </g>
+   <g id="controlled-text_31">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="737.950817" y="200.309656" transform="rotate(-0 737.950817 200.309656)">0.75</text>
+   </g>
+   <g id="controlled-text_32">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="737.950817" y="232.057071" transform="rotate(-0 737.950817 232.057071)">0.75</text>
+   </g>
+   <g id="controlled-text_33">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="772.207859" y="263.804485" transform="rotate(-0 772.207859 263.804485)">0.875</text>
+   </g>
+   <g id="controlled-text_34">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="772.207859" y="295.551899" transform="rotate(-0 772.207859 295.551899)">0.875</text>
+   </g>
+   <g id="controlled-text_35">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="528.023662" y="67.072" transform="rotate(-0 528.023662 67.072)">Gated · the second probe is adaptive</text>
+   </g>
+  </g>
+  <g id="controlled-text_36">
+   <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="7.2" y="18.597656" transform="rotate(-0 7.2 18.597656)">Decision-relevant planning in two controlled mechanisms</text>
+  </g>
+  <g id="controlled-text_37">
+   <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="7.2" y="36.36" transform="rotate(-0 7.2 36.36)">Matched source/target workload weight = 0.75 · maximum probe budget = 2</text>
+  </g>
+  <g id="controlled-text_38">
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 368.526551)">Exact expectations from finite constructed worlds; no sampling intervals. The no-probe policy spends zero operations.</text>
+   <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 379.329012)">Lookahead equals the best fixed plan in XOR (0.875), and exceeds it in the gated mechanism (0.875 versus 0.750).</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="controlled-ped33d2689b">
+   <rect x="218.34" y="81.072" width="274.056338" height="233.28"/>
+  </clipPath>
+  <clipPath id="controlled-pb79177b176">
+   <rect x="528.023662" y="81.072" width="274.056338" height="233.28"/>
+  </clipPath>
+ </defs>
+</svg></div><figcaption class="caption">Exact constructed examples distinguish complementary evidence from an advantage that requires adapting the second probe.</figcaption></figure>
+<section id="natural"><h2>The difficult part is transferring what the probes mean</h2>
+<p>A toy with known hidden switches does not tell us which document-generated questions to ask in a new collection. We need to learn that relationship from source environments and test it where the answer is not already built into the generator.</p>
+<p>The next development experiment uses four source worlds at a time: two source collections crossed with BM25 and dense retrieval. It learns discrete distributions over probe outcomes and separate utilities for the five search actions. Unlike the earlier two-world Gaussian model, these channels need not all lie on a single information-quality scale. Backend identity is hidden from every selector in this experiment; this is an explicit change from the earlier setting.</p>
+<p>We compare random selection, fixed coverage, information gain, entropy over optimal source decisions, immediate decision value, and two-step lookahead. We also rotate the source utility matrices relative to the probe models and weaken the likelihood updates. The latter is an update-only sensitivity check: acquisition still plans with the original likelihood, so this does not constitute a calibrated uncertainty model. These controls ask whether the acquired evidence means what the model thinks it means, and whether excessive confidence is doing the work.</p>
+<details><summary>Inspect the six retrieval environments</summary><div class="body"><figure class="scientific-figure"><button type="button" data-enlarge="figure-natural">Enlarge natural retrieval and capacity</button><div id="figure-natural"><svg role="img" aria-label="A six-environment dot plot compares the source prior, original query, primary two-step lookahead at budget 64, all-action reciprocal-rank fusion, and a target-label router-capacity bracket. Lookahead minus prior: SciFact · BM25 -0.0231; SciFact · dense +0.0195; FiQA · BM25 +0.0034; FiQA · dense -0.0094; NFCorpus · BM25 -0.0018; NFCorpus · dense +0.0003. RRF exceeds lookahead in all six environments and exceeds the capacity upper bound in five; NFCorpus dense is the exception. The SciFact BM25 capacity bracket is 0.61846 to 0.62445; the other five brackets collapse to a verified value within numerical tolerance. The plots reuse 365 queries across two backends and report descriptive seed means, with no macro confidence interval." xmlns:xlink="http://www.w3.org/1999/xlink" width="783.142812pt" height="494.8056pt" viewBox="0 0 783.142812 494.8056" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>make_publication_figures.py</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="natural-figure_1">
+  <g id="natural-patch_1">
+   <path d="M 0 494.8056
+L 783.142812 494.8056
+L 783.142812 -0
+L 0 -0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="natural-axes_1">
+   <g id="natural-patch_2">
+    <path d="M 152.1 404.64
+L 711 404.64
+L 711 133.884
+L 152.1 133.884
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="natural-line2d_1">
+    <path d="M 152.1 156.447
+L 711 156.447
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #eeeeee; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="natural-line2d_2">
+    <path d="M 152.1 201.573
+L 711 201.573
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #eeeeee; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="natural-line2d_3">
+    <path d="M 152.1 246.699
+L 711 246.699
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #eeeeee; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="natural-line2d_4">
+    <path d="M 152.1 291.825
+L 711 291.825
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #eeeeee; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="natural-line2d_5">
+    <path d="M 152.1 336.951
+L 711 336.951
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #eeeeee; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="natural-line2d_6">
+    <path d="M 152.1 382.077
+L 711 382.077
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #eeeeee; stroke-width: 0.7; stroke-linecap: square"/>
+   </g>
+   <g id="natural-matplotlib.axis_1">
+    <g id="natural-xtick_1">
+     <g id="natural-line2d_7">
+      <path d="M 162.848077 404.64
+L 162.848077 133.884
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="natural-line2d_8">
+      <defs>
+       <path id="natural-mddf28ba8cc" d="M 0 0
+L 0 3
+" style="stroke: #a0a0a0; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#natural-mddf28ba8cc" x="162.848077" y="404.64" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="natural-text_1">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="162.848077" y="418.357773" transform="rotate(-0 162.848077 418.357773)">0.2</text>
+     </g>
+    </g>
+    <g id="natural-xtick_2">
+     <g id="natural-line2d_9">
+      <path d="M 270.328846 404.64
+L 270.328846 133.884
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="natural-line2d_10">
+      <g>
+       <use xlink:href="#natural-mddf28ba8cc" x="270.328846" y="404.64" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="natural-text_2">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="270.328846" y="418.357773" transform="rotate(-0 270.328846 418.357773)">0.3</text>
+     </g>
+    </g>
+    <g id="natural-xtick_3">
+     <g id="natural-line2d_11">
+      <path d="M 377.809615 404.64
+L 377.809615 133.884
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="natural-line2d_12">
+      <g>
+       <use xlink:href="#natural-mddf28ba8cc" x="377.809615" y="404.64" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="natural-text_3">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="377.809615" y="418.357773" transform="rotate(-0 377.809615 418.357773)">0.4</text>
+     </g>
+    </g>
+    <g id="natural-xtick_4">
+     <g id="natural-line2d_13">
+      <path d="M 485.290385 404.64
+L 485.290385 133.884
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="natural-line2d_14">
+      <g>
+       <use xlink:href="#natural-mddf28ba8cc" x="485.290385" y="404.64" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="natural-text_4">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="485.290385" y="418.357773" transform="rotate(-0 485.290385 418.357773)">0.5</text>
+     </g>
+    </g>
+    <g id="natural-xtick_5">
+     <g id="natural-line2d_15">
+      <path d="M 592.771154 404.64
+L 592.771154 133.884
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="natural-line2d_16">
+      <g>
+       <use xlink:href="#natural-mddf28ba8cc" x="592.771154" y="404.64" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="natural-text_5">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="592.771154" y="418.357773" transform="rotate(-0 592.771154 418.357773)">0.6</text>
+     </g>
+    </g>
+    <g id="natural-xtick_6">
+     <g id="natural-line2d_17">
+      <path d="M 700.251923 404.64
+L 700.251923 133.884
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="natural-line2d_18">
+      <g>
+       <use xlink:href="#natural-mddf28ba8cc" x="700.251923" y="404.64" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="natural-text_6">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="700.251923" y="418.357773" transform="rotate(-0 700.251923 418.357773)">0.7</text>
+     </g>
+    </g>
+    <g id="natural-text_7">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="431.55" y="432.618359" transform="rotate(-0 431.55 432.618359)">Task nDCG@10</text>
+    </g>
+   </g>
+   <g id="natural-matplotlib.axis_2">
+    <g id="natural-ytick_1">
+     <g id="natural-line2d_19"/>
+     <g id="natural-text_8">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(67.345313 154.74534)">SciFact · BM25</text>
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(80.74375 166.748074)">150 queries</text>
+     </g>
+    </g>
+    <g id="natural-ytick_2">
+     <g id="natural-line2d_20"/>
+     <g id="natural-text_9">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(65.357813 199.87134)">SciFact · dense</text>
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(80.74375 211.874074)">150 queries</text>
+     </g>
+    </g>
+    <g id="natural-ytick_3">
+     <g id="natural-line2d_21"/>
+     <g id="natural-text_10">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(79.8375 244.99734)">FiQA · BM25</text>
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(80.74375 257.000074)">150 queries</text>
+     </g>
+    </g>
+    <g id="natural-ytick_4">
+     <g id="natural-line2d_22"/>
+     <g id="natural-text_11">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(77.85 290.12334)">FiQA · dense</text>
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(80.74375 302.126074)">150 queries</text>
+     </g>
+    </g>
+    <g id="natural-ytick_5">
+     <g id="natural-line2d_23"/>
+     <g id="natural-text_12">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(54.010938 335.248949)">NFCorpus · BM25</text>
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(87.10625 347.251684)">65 queries</text>
+     </g>
+    </g>
+    <g id="natural-ytick_6">
+     <g id="natural-line2d_24"/>
+     <g id="natural-text_13">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(52.023438 380.37534)">NFCorpus · dense</text>
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(87.10625 392.378074)">65 queries</text>
+     </g>
+    </g>
+   </g>
+   <g id="natural-patch_3">
+    <path d="M 152.1 404.64
+L 711 404.64
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="natural-PathCollection_1">
+    <defs>
+     <path id="natural-mf0a7f0f552" d="M 0 2.915476
+C 0.773193 2.915476 1.514823 2.608283 2.061553 2.061553
+C 2.608283 1.514823 2.915476 0.773193 2.915476 0
+C 2.915476 -0.773193 2.608283 -1.514823 2.061553 -2.061553
+C 1.514823 -2.608283 0.773193 -2.915476 0 -2.915476
+C -0.773193 -2.915476 -1.514823 -2.608283 -2.061553 -2.061553
+C -2.608283 -1.514823 -2.915476 -0.773193 -2.915476 0
+C -2.915476 0.773193 -2.608283 1.514823 -2.061553 2.061553
+C -1.514823 2.608283 -0.773193 2.915476 0 2.915476
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-mf0a7f0f552" x="605.811095" y="167.7285" style="fill: #777777; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_2">
+    <defs>
+     <path id="natural-m736360275e" d="M -0 4.123106
+L 4.123106 0
+L 0 -4.123106
+L -4.123106 -0
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m736360275e" x="599.370341" y="162.08775" style="fill: #222222; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_3">
+    <defs>
+     <path id="natural-me102f66685" d="M 0 3.5
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874
+C 3.131218 1.81853 3.5 0.928211 3.5 0
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874
+C -1.81853 3.131218 -0.928211 3.5 0 3.5
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-me102f66685" x="581.006197" y="156.447" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_4">
+    <defs>
+     <path id="natural-m680b9a0d88" d="M 0 -2.915476
+L -2.915476 2.915476
+L 2.915476 2.915476
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m680b9a0d88" x="647.654676" y="150.80625" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-LineCollection_1">
+    <path d="M 612.612099 144.26298
+L 619.052853 144.26298
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 2"/>
+   </g>
+   <g id="natural-LineCollection_2">
+    <path d="M 612.612099 146.29365
+L 612.612099 142.23231
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+    <path d="M 619.052853 146.29365
+L 619.052853 142.23231
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+   </g>
+   <g id="natural-text_14">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="730.5615" y="159.044656" transform="rotate(-0 730.5615 159.044656)">-0.0231</text>
+   </g>
+   <g id="natural-PathCollection_5">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-mf0a7f0f552" x="633.20915" y="212.8545" style="fill: #777777; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_6">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m736360275e" x="639.604686" y="207.21375" style="fill: #222222; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_7">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-me102f66685" x="654.204558" y="201.573" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_8">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m680b9a0d88" x="685.851742" y="195.93225" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-LineCollection_3">
+    <path d="M 678.178255 189.38898
+L 678.178255 189.38898
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 2"/>
+   </g>
+   <g id="natural-LineCollection_4">
+    <path d="M 678.178255 191.41965
+L 678.178255 187.35831
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+    <path d="M 678.178255 191.41965
+L 678.178255 187.35831
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+   </g>
+   <g id="natural-text_15">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="730.5615" y="204.170656" transform="rotate(-0 730.5615 204.170656)">+0.0195</text>
+   </g>
+   <g id="natural-PathCollection_9">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-mf0a7f0f552" x="191.224037" y="257.9805" style="fill: #777777; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_10">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m736360275e" x="219.290698" y="252.33975" style="fill: #222222; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_11">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-me102f66685" x="194.913834" y="246.699" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_12">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m680b9a0d88" x="245.815763" y="241.05825" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-LineCollection_5">
+    <path d="M 224.485516 234.51498
+L 224.485516 234.51498
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 2"/>
+   </g>
+   <g id="natural-LineCollection_6">
+    <path d="M 224.485516 236.54565
+L 224.485516 232.48431
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+    <path d="M 224.485516 236.54565
+L 224.485516 232.48431
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+   </g>
+   <g id="natural-text_16">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="730.5615" y="249.296656" transform="rotate(-0 730.5615 249.296656)">+0.0034</text>
+   </g>
+   <g id="natural-PathCollection_13">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-mf0a7f0f552" x="323.359924" y="303.1065" style="fill: #777777; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_14">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m736360275e" x="369.333891" y="297.46575" style="fill: #222222; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_15">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-me102f66685" x="313.229592" y="291.825" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_16">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m680b9a0d88" x="388.069474" y="286.18425" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-LineCollection_7">
+    <path d="M 373.04691 279.64098
+L 373.04691 279.64098
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 2"/>
+   </g>
+   <g id="natural-LineCollection_8">
+    <path d="M 373.04691 281.67165
+L 373.04691 277.61031
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+    <path d="M 373.04691 281.67165
+L 373.04691 277.61031
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+   </g>
+   <g id="natural-text_17">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="730.5615" y="294.422656" transform="rotate(-0 730.5615 294.422656)">-0.0094</text>
+   </g>
+   <g id="natural-PathCollection_17">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-mf0a7f0f552" x="211.328137" y="348.2325" style="fill: #777777; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_18">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m736360275e" x="211.328137" y="342.59175" style="fill: #222222; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_19">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-me102f66685" x="209.430441" y="336.951" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_20">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m680b9a0d88" x="234.310247" y="331.31025" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-LineCollection_9">
+    <path d="M 213.974489 324.76698
+L 213.974489 324.76698
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 2"/>
+   </g>
+   <g id="natural-LineCollection_10">
+    <path d="M 213.974489 326.79765
+L 213.974489 322.73631
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+    <path d="M 213.974489 326.79765
+L 213.974489 322.73631
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+   </g>
+   <g id="natural-text_18">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="730.5615" y="339.548656" transform="rotate(-0 730.5615 339.548656)">-0.0018</text>
+   </g>
+   <g id="natural-PathCollection_21">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-mf0a7f0f552" x="200.236459" y="393.3585" style="fill: #777777; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_22">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m736360275e" x="200.236459" y="387.71775" style="fill: #222222; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_23">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-me102f66685" x="200.522718" y="382.077" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-PathCollection_24">
+    <g clip-path="url(#natural-pfd259f39b5)">
+     <use xlink:href="#natural-m680b9a0d88" x="201.737162" y="376.43625" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="natural-LineCollection_11">
+    <path d="M 207.498379 369.89298
+L 207.498379 369.89298
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 2"/>
+   </g>
+   <g id="natural-LineCollection_12">
+    <path d="M 207.498379 371.92365
+L 207.498379 367.86231
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+    <path d="M 207.498379 371.92365
+L 207.498379 367.86231
+" clip-path="url(#natural-pfd259f39b5)" style="fill: none; stroke: #d55e00; stroke-width: 1.8"/>
+   </g>
+   <g id="natural-text_19">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="730.5615" y="384.674656" transform="rotate(-0 730.5615 384.674656)">+0.0003</text>
+   </g>
+   <g id="natural-text_20">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="724.9725" y="123.05376" transform="rotate(-0 724.9725 123.05376)">Δ vs. prior</text>
+   </g>
+  </g>
+  <g id="natural-text_21">
+   <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="7.2" y="18.597656" transform="rotate(-0 7.2 18.597656)">Natural retrieval: probe acquisition and router capacity</text>
+  </g>
+  <g id="natural-text_22">
+   <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 463.759954)">Three development families × two backends: 365 family-specific queries, reused in 730 query–backend evaluations.</text>
+   <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 474.202332)">Lookahead averages three probe seeds. Orange brackets use target labels and floating LP bounds; they are not deployable policies.</text>
+   <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 484.644711)">Quality comparison only: onboarding and serving costs differ. Seeds and backends share queries; no macro confidence interval is shown.</text>
+  </g>
+  <g id="natural-legend_1">
+   <g id="natural-line2d_25">
+    <defs>
+     <path id="natural-m23d0632ca5" d="M 0 3
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132
+C 2.683901 1.55874 3 0.795609 3 0
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132
+C 1.55874 -2.683901 0.795609 -3 0 -3
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132
+C -2.683901 -1.55874 -3 -0.795609 -3 0
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132
+C -1.55874 2.683901 -0.795609 3 0 3
+z
+" style="stroke: #777777"/>
+    </defs>
+    <g>
+     <use xlink:href="#natural-m23d0632ca5" x="222.882383" y="51.935516" style="fill: #777777; stroke: #777777"/>
+    </g>
+   </g>
+   <g id="natural-text_23">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="239.982383" y="55.260516" transform="rotate(-0 239.982383 55.260516)">Source prior</text>
+   </g>
+   <g id="natural-line2d_26">
+    <defs>
+     <path id="natural-m033518b3b2" d="M -0 4.242641
+L 4.242641 0
+L 0 -4.242641
+L -4.242641 -0
+z
+" style="stroke: #222222; stroke-linejoin: miter"/>
+    </defs>
+    <g>
+     <use xlink:href="#natural-m033518b3b2" x="222.882383" y="66.186258" style="fill: #222222; stroke: #222222; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="natural-text_24">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="239.982383" y="69.511258" transform="rotate(-0 239.982383 69.511258)">Original query</text>
+   </g>
+   <g id="natural-line2d_27">
+    <defs>
+     <path id="natural-m33061fc08c" d="M 0 3
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132
+C 2.683901 1.55874 3 0.795609 3 0
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132
+C 1.55874 -2.683901 0.795609 -3 0 -3
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132
+C -2.683901 -1.55874 -3 -0.795609 -3 0
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132
+C -1.55874 2.683901 -0.795609 3 0 3
+z
+" style="stroke: #0072b2"/>
+    </defs>
+    <g>
+     <use xlink:href="#natural-m33061fc08c" x="222.882383" y="80.437" style="fill: #0072b2; stroke: #0072b2"/>
+    </g>
+   </g>
+   <g id="natural-text_25">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="239.982383" y="83.762" transform="rotate(-0 239.982383 83.762)">Lookahead, budget 64 · seed mean</text>
+   </g>
+   <g id="natural-line2d_28">
+    <defs>
+     <path id="natural-m13c0959cae" d="M 0 -3
+L -3 3
+L 3 3
+z
+" style="stroke: #009e73; stroke-linejoin: miter"/>
+    </defs>
+    <g>
+     <use xlink:href="#natural-m13c0959cae" x="436.629414" y="51.935516" style="fill: #009e73; stroke: #009e73; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="natural-text_26">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="453.729414" y="55.260516" transform="rotate(-0 453.729414 55.260516)">RRF, all five actions</text>
+   </g>
+   <g id="natural-line2d_29">
+    <path d="M 427.129414 66.186258
+L 436.629414 66.186258
+L 446.129414 66.186258
+" style="fill: none; stroke: #d55e00; stroke-width: 2; stroke-linecap: square"/>
+    <defs>
+     <path id="natural-m2a57fb1b04" d="M 0 3
+L 0 -3
+" style="stroke: #d55e00"/>
+    </defs>
+    <g>
+     <use xlink:href="#natural-m2a57fb1b04" x="436.629414" y="66.186258" style="fill: #d55e00; stroke: #d55e00"/>
+    </g>
+   </g>
+   <g id="natural-text_27">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="453.729414" y="69.511258" transform="rotate(-0 453.729414 69.511258)">Target-label capacity bracket · not a CI</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="natural-pfd259f39b5">
+   <rect x="152.1" y="133.884" width="558.9" height="270.756"/>
+  </clipPath>
+ </defs>
+</svg></div><figcaption class="caption">Development results in six correlated collection/backend settings. The capacity brackets use target labels and are not confidence intervals.</figcaption></figure></div></details>
+<div id="natural-result">
+<p><b>The richer acquisition model did not pass its development gate.</b> Across three collections and two backends, two-step selection scored 0.3824 nDCG@10 at its largest probe budget. It beat random selection (0.3782) and information gain (0.3805), but fell below its own no-probe policy (0.3842). We retain all 1,620 method/condition/seed/budget rows, including utility-rotation and update-tempering controls. A later audit verified that the fitted probe channels are incomparable, but every source world has a different optimal-action vector. As a result, entropy over those decision labels equals entropy over worlds exactly: those two curves are the same baseline in this model.</p>
+<div class="table-wrap"><table><caption class="caption">Equal collection/backend averages. These are descriptive development results, not six independent replications.</caption><thead><tr><th>Strategy</th><th>nDCG@10</th><th>Serving searches/question</th><th>Serving LLM calls/question</th></tr></thead><tbody>
+<tr><td>Original query</td><td>0.3957</td><td>1</td><td>0</td></tr>
+<tr><td>Source-world router, before probes</td><td>0.3842</td><td>1.04</td><td>0.16</td></tr>
+<tr><td>Two-step selection, largest budget</td><td>0.3824</td><td>1</td><td>0.37</td></tr>
+<tr><td>Source-selected two-search fusion</td><td>0.4094</td><td>2</td><td>1</td></tr>
+<tr><td>Fusion of all five actions</td><td>0.4212</td><td>6</td><td>1</td></tr>
+</tbody></table></div>
+<p class="caption">The two-step row also pays an average of 63.94 onboarding searches, 48 generation calls, and 16 document samples per onboarding episode. Fusion rows have no onboarding cost. Generation supplies the three semantic alternatives together, so all-action fusion pays one generation call rather than three. Token ledgers are retained in the downloadable evidence. No monetary or latency equivalence between a search and an LLM call is assumed.</p>
+<p>Fusion beat two-step selection on quality in all six environments, although it costs more to serve. That prompted a separate frozen baseline experiment: choose a fixed subset of actions using only source training queries. With backend identity hidden, the two-search version reached 0.4094 at one-third of all-action fusion’s search calls, but remained 0.0118 lower in quality. This is a useful baseline and an explicit tradeoff, not a new fusion algorithm or a proof of equal quality.</p>
+<p>We also gave the source-world router an unrealistic advantage: an evaluator could choose any source-world probability mixture using the target labels. Even its numerical optimistic capacity bound remained below all-action fusion in five environments. Those hypothetical probability mixtures need not be reachable through allowed probe histories. The restriction matters: this router can choose one of five actions using only four query buckets. Fusion is outside its menu. Even an oracle choosing the best single action for each bucket trails fusion in those five environments.</p>
+<p><b>Large action headroom is not necessarily reachable headroom.</b> A per-question oracle can exploit distinctions that a four-bucket router cannot express. Better probe selection cannot repair that gap. We therefore ran a separately frozen query-level transfer check, with backend identity known and source fitting restricted to the same backend. A source-calibrated choice among fixed, ridge, and nearest-neighbor models scored 0.3808, below the reconstructed original source router at 0.3858. The source-selected query router changed decisions in five folds, but its source-calibration gains did not reliably carry over. Capacity and transport both need attention; neither result rules out stronger query-aware methods.</p>
+</div>
+<p>Always using the original query, always using HyDE, and reciprocal-rank fusion across all actions are essential comparisons. A useful onboarding method must provide a better quality/cost tradeoff than a simple strategy a practitioner can deploy today.</p>
+</section>
+
+<figure class="scientific-figure"><button type="button" data-enlarge="figure-fusion">Enlarge fusion quality and serving searches</button><div id="figure-fusion"><svg role="img" aria-label="Two line charts show equal-family/backend mean retrieval quality against actual mean search calls per task, with backend identity known or hidden. With generation allowed and the six-call cap, known-backend source selection achieves 0.41402 nDCG with 4.333 mean searches; hidden-backend selection achieves 0.41285 with 4.667. All-action RRF achieves 0.42118 with six searches. Source selection without generation uses at most 1.333 mean searches and stays near 0.39 nDCG. Curves connect the recorded source-selected configurations, with no target Pareto filtering or macro confidence intervals. Generation and token costs are separate from the plotted search axis." xmlns:xlink="http://www.w3.org/1999/xlink" width="809.28pt" height="411.2568pt" viewBox="0 0 809.28 411.2568" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>make_publication_figures.py</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="fusion-figure_1">
+  <g id="fusion-patch_1">
+   <path d="M 0 411.2568
+L 809.28 411.2568
+L 809.28 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="fusion-axes_1">
+   <g id="fusion-patch_2">
+    <path d="M 56.88 319.104
+L 401.88 319.104
+L 401.88 126.216
+L 56.88 126.216
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="fusion-matplotlib.axis_1">
+    <g id="fusion-xtick_1">
+     <g id="fusion-line2d_1">
+      <defs>
+       <path id="fusion-m5f395177f2" d="M 0 0
+L 0 3
+" style="stroke: #a0a0a0; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="72.420541" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_1">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="72.420541" y="332.821773" transform="rotate(-0 72.420541 332.821773)">1</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_2">
+     <g id="fusion-line2d_2">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="134.582703" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_2">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="134.582703" y="332.821773" transform="rotate(-0 134.582703 332.821773)">2</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_3">
+     <g id="fusion-line2d_3">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="196.744865" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_3">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="196.744865" y="332.821773" transform="rotate(-0 196.744865 332.821773)">3</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_4">
+     <g id="fusion-line2d_4">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="258.907027" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_4">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="258.907027" y="332.821773" transform="rotate(-0 258.907027 332.821773)">4</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_5">
+     <g id="fusion-line2d_5">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="321.069189" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_5">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="321.069189" y="332.821773" transform="rotate(-0 321.069189 332.821773)">5</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_6">
+     <g id="fusion-line2d_6">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="383.231351" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_6">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="383.231351" y="332.821773" transform="rotate(-0 383.231351 332.821773)">6</text>
+     </g>
+    </g>
+    <g id="fusion-text_7">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="229.38" y="347.082359" transform="rotate(-0 229.38 347.082359)">Actual mean search calls per task</text>
+    </g>
+   </g>
+   <g id="fusion-matplotlib.axis_2">
+    <g id="fusion-ytick_1">
+     <g id="fusion-line2d_7">
+      <path d="M 56.88 315
+L 401.88 315
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_8">
+      <defs>
+       <path id="fusion-m2769998ec6" d="M 0 0
+L -3 0
+" style="stroke: #a0a0a0; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="56.88" y="315" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_8">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="50.38" y="318.798828" transform="rotate(-0 50.38 318.798828)">0.38</text>
+     </g>
+    </g>
+    <g id="fusion-ytick_2">
+     <g id="fusion-line2d_9">
+      <path d="M 56.88 273.96
+L 401.88 273.96
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_10">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="56.88" y="273.96" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_9">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="50.38" y="277.758828" transform="rotate(-0 50.38 277.758828)">0.39</text>
+     </g>
+    </g>
+    <g id="fusion-ytick_3">
+     <g id="fusion-line2d_11">
+      <path d="M 56.88 232.92
+L 401.88 232.92
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_12">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="56.88" y="232.92" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_10">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="50.38" y="236.718828" transform="rotate(-0 50.38 236.718828)">0.40</text>
+     </g>
+    </g>
+    <g id="fusion-ytick_4">
+     <g id="fusion-line2d_13">
+      <path d="M 56.88 191.88
+L 401.88 191.88
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_14">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="56.88" y="191.88" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_11">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="50.38" y="195.678828" transform="rotate(-0 50.38 195.678828)">0.41</text>
+     </g>
+    </g>
+    <g id="fusion-ytick_5">
+     <g id="fusion-line2d_15">
+      <path d="M 56.88 150.84
+L 401.88 150.84
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_16">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="56.88" y="150.84" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_12">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end" x="50.38" y="154.638828" transform="rotate(-0 50.38 154.638828)">0.42</text>
+     </g>
+    </g>
+    <g id="fusion-text_13">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="21.591914" y="222.66" transform="rotate(-90 21.591914 222.66)">Equal-family/backend macro nDCG@10</text>
+    </g>
+   </g>
+   <g id="fusion-line2d_17">
+    <path d="M 72.420541 291.301076
+L 124.222342 209.0075
+L 155.303423 208.3432
+L 238.186306 193.513347
+L 248.546667 188.89294
+L 279.627748 175.366537
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #0072b2; stroke-width: 1.7; stroke-linecap: square"/>
+    <defs>
+     <path id="fusion-m866e3e9d08" d="M 0 2.5
+C 0.663008 2.5 1.29895 2.236584 1.767767 1.767767
+C 2.236584 1.29895 2.5 0.663008 2.5 0
+C 2.5 -0.663008 2.236584 -1.29895 1.767767 -1.767767
+C 1.29895 -2.236584 0.663008 -2.5 0 -2.5
+C -0.663008 -2.5 -1.29895 -2.236584 -1.767767 -1.767767
+C -2.236584 -1.29895 -2.5 -0.663008 -2.5 0
+C -2.5 0.663008 -2.236584 1.29895 -1.767767 1.767767
+C -1.29895 2.236584 -0.663008 2.5 0 2.5
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#fusion-pf3f6061c17)">
+     <use xlink:href="#fusion-m866e3e9d08" x="72.420541" y="291.301076" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="124.222342" y="209.0075" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="155.303423" y="208.3432" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="238.186306" y="193.513347" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="248.546667" y="188.89294" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="279.627748" y="175.366537" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="fusion-line2d_18">
+    <path d="M 72.420541 274.273998
+L 82.780901 257.938593
+" clip-path="url(#fusion-pf3f6061c17)" style="fill: none; stroke: #d55e00; stroke-width: 1.7; stroke-linecap: square"/>
+    <defs>
+     <path id="fusion-m22a7411335" d="M -2.5 2.5
+L 2.5 2.5
+L 2.5 -2.5
+L -2.5 -2.5
+z
+" style="stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#fusion-pf3f6061c17)">
+     <use xlink:href="#fusion-m22a7411335" x="72.420541" y="274.273998" style="fill: #d55e00; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+     <use xlink:href="#fusion-m22a7411335" x="82.780901" y="257.938593" style="fill: #d55e00; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="fusion-patch_3">
+    <path d="M 56.88 319.104
+L 56.88 126.216
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="fusion-patch_4">
+    <path d="M 56.88 319.104
+L 401.88 319.104
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="fusion-text_14">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="72.420541" y="284.301076" transform="rotate(-0 72.420541 284.301076)">1</text>
+   </g>
+   <g id="fusion-text_15">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="124.222342" y="202.0075" transform="rotate(-0 124.222342 202.0075)">2</text>
+   </g>
+   <g id="fusion-text_16">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="155.303423" y="201.3432" transform="rotate(-0 155.303423 201.3432)">3</text>
+   </g>
+   <g id="fusion-text_17">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="238.186306" y="186.513347" transform="rotate(-0 238.186306 186.513347)">4</text>
+   </g>
+   <g id="fusion-text_18">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="248.546667" y="181.89294" transform="rotate(-0 248.546667 181.89294)">5</text>
+   </g>
+   <g id="fusion-text_19">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="279.627748" y="168.366537" transform="rotate(-0 279.627748 168.366537)">6</text>
+   </g>
+   <g id="fusion-text_20">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="56.88" y="113.216" transform="rotate(-0 56.88 113.216)">Backend identity known</text>
+   </g>
+   <g id="fusion-PathCollection_1">
+    <defs>
+     <path id="fusion-madd5fe97e4" d="M 0 -5.477226
+L -1.229714 -1.692556
+L -5.209151 -1.692556
+L -1.989719 0.646499
+L -3.219432 4.431169
+L -0 2.092114
+L 3.219432 4.431169
+L 1.989719 0.646499
+L 5.209151 -1.692556
+L 1.229714 -1.692556
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#fusion-pf3f6061c17)">
+     <use xlink:href="#fusion-madd5fe97e4" x="383.231351" y="146.000582" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+  </g>
+  <g id="fusion-axes_2">
+   <g id="fusion-patch_5">
+    <path d="M 457.08 319.104
+L 802.08 319.104
+L 802.08 126.216
+L 457.08 126.216
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="fusion-matplotlib.axis_3">
+    <g id="fusion-xtick_7">
+     <g id="fusion-line2d_19">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="472.620541" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_21">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="472.620541" y="332.821773" transform="rotate(-0 472.620541 332.821773)">1</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_8">
+     <g id="fusion-line2d_20">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="534.782703" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_22">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="534.782703" y="332.821773" transform="rotate(-0 534.782703 332.821773)">2</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_9">
+     <g id="fusion-line2d_21">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="596.944865" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_23">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="596.944865" y="332.821773" transform="rotate(-0 596.944865 332.821773)">3</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_10">
+     <g id="fusion-line2d_22">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="659.107027" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_24">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="659.107027" y="332.821773" transform="rotate(-0 659.107027 332.821773)">4</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_11">
+     <g id="fusion-line2d_23">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="721.269189" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_25">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="721.269189" y="332.821773" transform="rotate(-0 721.269189 332.821773)">5</text>
+     </g>
+    </g>
+    <g id="fusion-xtick_12">
+     <g id="fusion-line2d_24">
+      <g>
+       <use xlink:href="#fusion-m5f395177f2" x="783.431351" y="319.104" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="fusion-text_26">
+      <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: middle" x="783.431351" y="332.821773" transform="rotate(-0 783.431351 332.821773)">6</text>
+     </g>
+    </g>
+    <g id="fusion-text_27">
+     <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="629.58" y="347.082359" transform="rotate(-0 629.58 347.082359)">Actual mean search calls per task</text>
+    </g>
+   </g>
+   <g id="fusion-matplotlib.axis_4">
+    <g id="fusion-ytick_6">
+     <g id="fusion-line2d_25">
+      <path d="M 457.08 315
+L 802.08 315
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_26">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="457.08" y="315" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="fusion-ytick_7">
+     <g id="fusion-line2d_27">
+      <path d="M 457.08 273.96
+L 802.08 273.96
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_28">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="457.08" y="273.96" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="fusion-ytick_8">
+     <g id="fusion-line2d_29">
+      <path d="M 457.08 232.92
+L 802.08 232.92
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_30">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="457.08" y="232.92" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="fusion-ytick_9">
+     <g id="fusion-line2d_31">
+      <path d="M 457.08 191.88
+L 802.08 191.88
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_32">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="457.08" y="191.88" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="fusion-ytick_10">
+     <g id="fusion-line2d_33">
+      <path d="M 457.08 150.84
+L 802.08 150.84
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #e8e8e8; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="fusion-line2d_34">
+      <g>
+       <use xlink:href="#fusion-m2769998ec6" x="457.08" y="150.84" style="fill: #a0a0a0; stroke: #a0a0a0; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="fusion-line2d_35">
+    <path d="M 472.620541 250.543935
+L 534.782703 194.53942
+L 576.224144 202.616342
+L 617.665586 192.380519
+L 659.107027 183.453847
+L 700.548468 180.181734
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #0072b2; stroke-width: 1.7; stroke-linecap: square"/>
+    <g clip-path="url(#fusion-ped5e70c169)">
+     <use xlink:href="#fusion-m866e3e9d08" x="472.620541" y="250.543935" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="534.782703" y="194.53942" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="576.224144" y="202.616342" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="617.665586" y="192.380519" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="659.107027" y="183.453847" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+     <use xlink:href="#fusion-m866e3e9d08" x="700.548468" y="180.181734" style="fill: #0072b2; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="fusion-line2d_36">
+    <path d="M 472.620541 250.543935
+L 493.341261 256.721365
+" clip-path="url(#fusion-ped5e70c169)" style="fill: none; stroke: #d55e00; stroke-width: 1.7; stroke-linecap: square"/>
+    <g clip-path="url(#fusion-ped5e70c169)">
+     <use xlink:href="#fusion-m22a7411335" x="472.620541" y="250.543935" style="fill: #d55e00; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+     <use xlink:href="#fusion-m22a7411335" x="493.341261" y="256.721365" style="fill: #d55e00; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="fusion-patch_6">
+    <path d="M 457.08 319.104
+L 457.08 126.216
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="fusion-patch_7">
+    <path d="M 457.08 319.104
+L 802.08 319.104
+" style="fill: none; stroke: #b5b5b5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="fusion-text_28">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="472.620541" y="243.543935" transform="rotate(-0 472.620541 243.543935)">1</text>
+   </g>
+   <g id="fusion-text_29">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="534.782703" y="187.53942" transform="rotate(-0 534.782703 187.53942)">2</text>
+   </g>
+   <g id="fusion-text_30">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="576.224144" y="195.616342" transform="rotate(-0 576.224144 195.616342)">3</text>
+   </g>
+   <g id="fusion-text_31">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="617.665586" y="185.380519" transform="rotate(-0 617.665586 185.380519)">4</text>
+   </g>
+   <g id="fusion-text_32">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="659.107027" y="176.453847" transform="rotate(-0 659.107027 176.453847)">5</text>
+   </g>
+   <g id="fusion-text_33">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #0072b2" x="700.548468" y="173.181734" transform="rotate(-0 700.548468 173.181734)">6</text>
+   </g>
+   <g id="fusion-text_34">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="457.08" y="113.216" transform="rotate(-0 457.08 113.216)">Backend identity hidden</text>
+   </g>
+   <g id="fusion-PathCollection_2">
+    <g clip-path="url(#fusion-ped5e70c169)">
+     <use xlink:href="#fusion-madd5fe97e4" x="783.431351" y="146.000582" style="fill: #009e73; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+  </g>
+  <g id="fusion-text_35">
+   <text style="font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="7.2" y="18.597656" transform="rotate(-0 7.2 18.597656)">Source-selected fusion: quality versus serving searches</text>
+  </g>
+  <g id="fusion-text_36">
+   <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 380.211154)">Three development families × two correlated backends; equal means across six environments, not pooled-query means.</text>
+   <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 390.653532)">Blue point labels are allowed search caps 1–6; positions use actual mean calls. Lines connect measured source selections, not a target-selected frontier.</text>
+   <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(7.2 401.095911)">Search cost omits generation and tokens (reported in the manifest). These methods do not acquire probes; no macro confidence interval is shown.</text>
+  </g>
+  <g id="fusion-legend_1">
+   <g id="fusion-line2d_37">
+    <path d="M 306.539531 44.267516
+L 316.039531 44.267516
+L 325.539531 44.267516
+" style="fill: none; stroke: #0072b2; stroke-width: 1.5; stroke-linecap: square"/>
+    <defs>
+     <path id="fusion-m6d33bd32a4" d="M 0 3
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132
+C 2.683901 1.55874 3 0.795609 3 0
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132
+C 1.55874 -2.683901 0.795609 -3 0 -3
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132
+C -2.683901 -1.55874 -3 -0.795609 -3 0
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132
+C -1.55874 2.683901 -0.795609 3 0 3
+z
+" style="stroke: #0072b2"/>
+    </defs>
+    <g>
+     <use xlink:href="#fusion-m6d33bd32a4" x="316.039531" y="44.267516" style="fill: #0072b2; stroke: #0072b2"/>
+    </g>
+   </g>
+   <g id="fusion-text_37">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="333.139531" y="47.592516" transform="rotate(-0 333.139531 47.592516)">Source-selected subset · generation allowed</text>
+   </g>
+   <g id="fusion-line2d_38">
+    <path d="M 306.539531 58.518258
+L 316.039531 58.518258
+L 325.539531 58.518258
+" style="fill: none; stroke: #d55e00; stroke-width: 1.5; stroke-linecap: square"/>
+    <defs>
+     <path id="fusion-md338d0895d" d="M -3 3
+L 3 3
+L 3 -3
+L -3 -3
+z
+" style="stroke: #d55e00; stroke-linejoin: miter"/>
+    </defs>
+    <g>
+     <use xlink:href="#fusion-md338d0895d" x="316.039531" y="58.518258" style="fill: #d55e00; stroke: #d55e00; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="fusion-text_38">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="333.139531" y="61.843258" transform="rotate(-0 333.139531 61.843258)">Source-selected subset · no generation</text>
+   </g>
+   <g id="fusion-line2d_39">
+    <defs>
+     <path id="fusion-m1be2c42e5f" d="M 0 -5
+L -1.12257 -1.545085
+L -4.755283 -1.545085
+L -1.816356 0.59017
+L -2.938926 4.045085
+L -0 1.90983
+L 2.938926 4.045085
+L 1.816356 0.59017
+L 4.755283 -1.545085
+L 1.12257 -1.545085
+z
+" style="stroke: #009e73; stroke-linejoin: bevel"/>
+    </defs>
+    <g>
+     <use xlink:href="#fusion-m1be2c42e5f" x="316.039531" y="72.769" style="fill: #009e73; stroke: #009e73; stroke-linejoin: bevel"/>
+    </g>
+   </g>
+   <g id="fusion-text_39">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="333.139531" y="76.094" transform="rotate(-0 333.139531 76.094)">RRF over all five actions · six searches</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="fusion-pf3f6061c17">
+   <rect x="56.88" y="126.216" width="345" height="192.888"/>
+  </clipPath>
+  <clipPath id="fusion-ped5e70c169">
+   <rect x="457.08" y="126.216" width="345" height="192.888"/>
+  </clipPath>
+ </defs>
+</svg></div><figcaption class="caption">Source-selected fusion offers several quality/cost tradeoffs. The horizontal axis counts actual mean searches; generation costs remain separate.</figcaption></figure>
+<section id="novelty"><h2>What would make this a contribution?</h2>
+<p>The broad idea of acquiring information for a decision has a long history. Bayesian experimental design, active learning, and decision-region discovery already distinguish useful information from unnecessary identification. Javdani and colleagues’ <a href="https://arxiv.org/abs/1402.5886">decision-region discovery work</a> is particularly close. Renaming that idea for search would not be enough. More recently, <a href="https://arxiv.org/abs/2605.26093">GoBOED</a> directly optimizes robust downstream decision loss and studies cancellation of irrelevant dimensions. Our <a href="theory/LITERATURE.md">literature audit</a> treats these as substantive predecessors.</p>
+<p>Synthetic retrieval data and query rewriting are also established. <a href="https://arxiv.org/abs/2112.07577">GPL</a> adapts dense retrieval using generated queries and pseudo-labels. <a href="https://arxiv.org/abs/2212.10496">HyDE</a> retrieves through a hypothetical document. Our question concerns how a small, chosen set of observations can support later choices while the retrieval and controller weights remain fixed.</p>
+<p>The contribution we want to earn is a transferable way to identify <em>which behavioral distinctions are sufficient for good search decisions</em>, together with a reliable way to tell when the available probes cannot support that conclusion. To earn it, the method needs a useful mechanism beyond standard decision-region discovery, a result that explains when it works, and evidence on untouched collection families against strong alternatives.</p>
+<p>A workload can also change after onboarding. When the router sees each question’s type, the best response to that type may stay the same, while the best use of the earlier probe budget changes. We are examining that distinction explicitly. Robustness cannot be established by quietly allowing a model to inspect the future workload it was supposed to anticipate.</p>
+<p>We have not demonstrated recursive self-improvement. The current process improves experimental hypotheses and implementations between runs; the deployed learner does not improve its own learning rule. Keeping that distinction clear makes the research question easier to test.</p>
+</section>
+
+<section id="tool"><h2>A tool should be useful before its paper is finished</h2>
+<p>SearchProbe is the small, dependency-free package that came out of the diagnosis. It checks paired search logs for collisions, missing coverage, ties, and saturation. Given a source utility model, it can calculate conditional decision regret. Given a score model and justified update bounds, it can check whether the router could change its winning action.</p>
+<p>These checks are deliberately separate. A rank log cannot certify a learned utility model. A mathematically exact answer for a supplied model cannot certify transfer to a real collection.</p>
+<div id="reproduction"><p>The new package revision ships its examples. A fresh installation can run the three diagnostics without a repository checkout:</p>
+<pre><code>python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@codex/searchprobe-full-paper#subdirectory=packages/searchprobe"
+searchprobe-demo --output-dir editable-examples</code></pre>
+<p>A separate <a href="replay/README.md">CPU-only evidence replay</a> downloads 34 checksum-pinned files and recalculates 810 recorded run summaries, 600 paired-contrast means, and 12 conditional certificates. We tested an installed wheel outside the checkout, without NumPy, PyTorch, MLX, or model files. The replay checks analyses of saved outcomes; it does not regenerate retrieval, training, probe choices, costs, or bootstrap intervals. The evidence is pinned to the completed milestone; the package command above currently follows this development branch.</p></div>
+<p>The useful community artifact is a testable argument: a small example people can run, an explicit model contract, and evidence that can be checked without our local caches. Whether the eventual method deserves broad adoption will depend on those people finding it useful.</p>
+</section>
+
+<footer><p class="caption">Draft sources: <a href="../searchprobe-research-report.html">milestone research report</a>; <a href="natural/protocol.json">new retrieval protocol</a>; <a href="natural/freeze.json">input and code hashes</a>; <a href="controlled/RESULTS.md">controlled results</a>; <a href="fusion_frontier/protocol.json">fusion frontier protocol</a>; <a href="theory/THEORY.md">supporting theory and its limits</a>. Scientific claims and limitations are part of the draft, not hidden in a supplement. External links are references only; the article and demo work offline.</p></footer>
+</article></main><aside><div class="label">In this draft</div><nav aria-label="On this page"><a href="#contract">The onboarding contract</a><a href="#failure">A controller that cannot respond</a><a href="#joint">Evidence in combination</a><a href="#natural">Transfer to real search</a><a href="#novelty">The contribution to earn</a><a href="#tool">Run and inspect the evidence</a></nav><hr style="border:0;border-top:1px solid var(--gray-300);margin:16px 0"><p class="caption">Status: exploratory research. No publication or priority claim. Constructed examples and retrieval evidence are labeled separately.</p></aside></div>
+
+<dialog id="figure-dialog" aria-label="Enlarged research figure"><button type="button" id="close-figure">Close figure</button><div id="figure-content"></div></dialog>
+<script>
+const worlds=Array.from({length:64},(_,i)=>({d0:i&1,d1:(i>>1)&1,r:(i>>2)&1,s:(i>>3)&1,n:(i>>4)&3}));
+const probes=['nuisance','d0','d1','r','s','proxy'];
+const names={nuisance:'Two nuisance bits',d0:'First simple switch',d1:'Second simple switch',r:'Exact switch r',s:'Exact switch s',proxy:'75% shortcut'};
+function likelihood(w,p,y){ if(p==='nuisance')return +(w.n===y); if(p==='proxy')return ((w.r^w.s)===y)?.75:.25;return +(w[p]===y); }
+function branches(p,probe){const out=[];for(let y=0;y<(probe==='nuisance'?4:2);y++){const joint=p.map((mass,i)=>mass*likelihood(worlds[i],probe,y));const mass=joint.reduce((a,b)=>a+b,0);if(mass>1e-14)out.push([mass,joint.map(x=>x/mass)]);}return out;}
+function entropy(p){return -p.reduce((s,x)=>s+(x>0?x*Math.log2(x):0),0);}
+function decisionEntropy(p,weight){const m=Array(8).fill(0);worlds.forEach((w,i)=>m[(weight<1?w.d0+2*w.d1:0)+(weight>0?4*(w.r^w.s):0)]+=p[i]);return entropy(m);}
+function accuracy(p,w){const one=[0,0,0];worlds.forEach((s,i)=>{one[0]+=p[i]*s.d0;one[1]+=p[i]*s.d1;one[2]+=p[i]*(s.r^s.s);});return ((1-w)/2)*(Math.max(one[0],1-one[0])+Math.max(one[1],1-one[1]))+w*Math.max(one[2],1-one[2]);}
+function choose(p,left,budget,kind,w){let best=-Infinity,chosen=null;for(const q of left){const children=branches(p,q);let score;if(kind==='information')score=entropy(p)-children.reduce((s,[m,k])=>s+m*entropy(k),0);else if(kind==='labels')score=decisionEntropy(p,w)-children.reduce((s,[m,k])=>s+m*decisionEntropy(k,w),0);else score=children.reduce((s,[m,k])=>s+m*(kind==='plan'&&budget>1?run(k,left.filter(x=>x!==q),budget-1,kind,w).value:accuracy(k,w)),0)-accuracy(p,w);if(score>best+1e-12){best=score;chosen=q;}}return chosen;}
+function run(p,left,budget,kind,w){if(!budget)return {value:accuracy(p,w),first:'None'};const q=choose(p,left,budget,kind,w);const value=branches(p,q).reduce((s,[m,k])=>s+m*run(k,left.filter(x=>x!==q),budget-1,kind,w).value,0);return {value,first:names[q]};}
+function bestFixed(p,budget,w){let best={value:0,first:''};for(let i=0;i<probes.length;i++){const qs=budget===1?[null]:probes.slice(i+1);for(const q2 of qs){const q=probes[i];let val=branches(p,q).reduce((s,[m,k])=>s+m*(q2?branches(k,q2).reduce((a,[b,r])=>a+b*accuracy(r,w),0):accuracy(k,w)),0);if(val>best.value+1e-12)best={value:val,first:names[q]+(q2?' + '+names[q2]:'')};}}return best;}
+let displayed=[];
+function update(){const w=+document.getElementById('weight').value/100,b=+document.getElementById('budget').value,p=Array(64).fill(1/64);document.getElementById('weight-label').textContent=Math.round(100*w)+'%';displayed=[['No onboarding',{value:.5,first:'None'}],['Information about the world',run(p,probes,b,'information',w)],['Entropy of optimal decisions',run(p,probes,b,'labels',w)],['Immediate decision value',run(p,probes,b,'greedy',w)],['Best fixed probe set',bestFixed(p,b,w)],['Plan across the budget',run(p,probes,b,'plan',w)]];document.getElementById('demo-rows').innerHTML=displayed.map(([n,r])=>`<tr><td>${n}</td><td>${r.first}</td><td>${(r.value*100).toFixed(1)}%<div class="bar" aria-hidden="true"><span style="width:${r.value*100}%"></span></div></td></tr>`).join('');document.getElementById('demo-note').textContent=b===2?'A fixed pair can solve the complementary-switch case. Planning is valuable here, but adaptation of the second probe is not necessary. The separate gated experiment tests that stronger claim.':'With only one probe, learning either exact joint switch leaves its partner unknown. The useful choice depends on which question types occur most often.';}
+document.getElementById('weight').addEventListener('input',update);document.getElementById('budget').addEventListener('change',update);document.getElementById('copy-demo').addEventListener('click',async()=>{const text=`SearchProbe constructed example: joint-question share ${document.getElementById('weight').value}%, budget ${document.getElementById('budget').value}. `+displayed.map(([n,r])=>`${n}: ${(r.value*100).toFixed(1)}%`).join('; ');try{await navigator.clipboard.writeText(text);document.getElementById('copy-status').textContent=' Copied.';}catch{document.getElementById('copy-status').textContent=text;}});update();
+document.querySelectorAll('[data-enlarge]').forEach(button=>button.addEventListener('click',()=>{const source=document.getElementById(button.dataset.enlarge).querySelector('svg');const enlarged=new Image();enlarged.alt=source.getAttribute('aria-label');enlarged.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(source.outerHTML);document.getElementById('figure-content').replaceChildren(enlarged);document.getElementById('figure-dialog').showModal();}));document.getElementById('close-figure').addEventListener('click',()=>document.getElementById('figure-dialog').close());document.getElementById('figure-dialog').addEventListener('close',()=>{document.getElementById('figure-content').replaceChildren();});
+</script>
+
+</body>
+</html>

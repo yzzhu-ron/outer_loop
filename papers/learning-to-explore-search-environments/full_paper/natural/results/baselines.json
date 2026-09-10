@@ -1,0 +1,362 @@
+[
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "original",
+    "ndcg": 0.25251415790289977,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "keywords",
+    "ndcg": 0.24878108804726026,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "semantic",
+    "ndcg": 0.17139180061113862,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "hyde",
+    "ndcg": 0.1814464440107579,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "decomposed",
+    "ndcg": 0.1714005898477249,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "source_fixed",
+    "ndcg": 0.25251415790289977,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "source_query_bucket",
+    "ndcg": 0.22640096467682555,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "target_best_fixed_oracle",
+    "ndcg": 0.25251415790289977,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "query_oracle",
+    "ndcg": 0.36917426192365166,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_bm25",
+    "baseline": "rrf_all_actions",
+    "ndcg": 0.27719305200839794,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "original",
+    "ndcg": 0.3921141942640467,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "keywords",
+    "ndcg": 0.3574211195347706,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "semantic",
+    "ndcg": 0.35828482428237435,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "hyde",
+    "ndcg": 0.3325277311740831,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "decomposed",
+    "ndcg": 0.356139528645328,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "source_fixed",
+    "ndcg": 0.3921141942640467,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "source_query_bucket",
+    "ndcg": 0.349340061294591,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "target_best_fixed_oracle",
+    "ndcg": 0.3921141942640467,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "query_oracle",
+    "ndcg": 0.53026104076484,
+    "n": 150
+  },
+  {
+    "environment": "fiqa_dense",
+    "baseline": "rrf_all_actions",
+    "ndcg": 0.4095457623262388,
+    "n": 150
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "original",
+    "ndcg": 0.24510579949889155,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "keywords",
+    "ndcg": 0.2484703451357258,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "semantic",
+    "ndcg": 0.15727790403880704,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "hyde",
+    "ndcg": 0.21162101389728188,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "decomposed",
+    "ndcg": 0.2237023503846985,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "source_fixed",
+    "ndcg": 0.24510579949889155,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "source_query_bucket",
+    "ndcg": 0.24510579949889155,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "target_best_fixed_oracle",
+    "ndcg": 0.2484703451357258,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "query_oracle",
+    "ndcg": 0.2989869760868586,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_bm25",
+    "baseline": "rrf_all_actions",
+    "ndcg": 0.26648833174005415,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "original",
+    "ndcg": 0.2347861132448854,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "keywords",
+    "ndcg": 0.227978641739614,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "semantic",
+    "ndcg": 0.21807854558936424,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "hyde",
+    "ndcg": 0.23130365559441898,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "decomposed",
+    "ndcg": 0.21233937104887915,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "source_fixed",
+    "ndcg": 0.2347861132448854,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "source_query_bucket",
+    "ndcg": 0.2347861132448854,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "target_best_fixed_oracle",
+    "ndcg": 0.2347861132448854,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "query_oracle",
+    "ndcg": 0.2967821611485425,
+    "n": 65
+  },
+  {
+    "environment": "nfcorpus_dense",
+    "baseline": "rrf_all_actions",
+    "ndcg": 0.23618236589240288,
+    "n": 65
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "original",
+    "ndcg": 0.6061398767848605,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "keywords",
+    "ndcg": 0.6209204636764345,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "semantic",
+    "ndcg": 0.5852392355606109,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "hyde",
+    "ndcg": 0.5402823139258256,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "decomposed",
+    "ndcg": 0.5892461581891302,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "source_fixed",
+    "ndcg": 0.6061398767848605,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "source_query_bucket",
+    "ndcg": 0.6121323481584866,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "target_best_fixed_oracle",
+    "ndcg": 0.6209204636764345,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "query_oracle",
+    "ndcg": 0.7705356156267112,
+    "n": 150
+  },
+  {
+    "environment": "scifact_bm25",
+    "baseline": "rrf_all_actions",
+    "ndcg": 0.6510635741612127,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "original",
+    "ndcg": 0.6435738713255216,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "keywords",
+    "ndcg": 0.6474190955386393,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "semantic",
+    "ndcg": 0.6558562444295465,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "hyde",
+    "ndcg": 0.679462681467481,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "decomposed",
+    "ndcg": 0.6458003281840142,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "source_fixed",
+    "ndcg": 0.6435738713255216,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "source_query_bucket",
+    "ndcg": 0.6376234707584271,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "target_best_fixed_oracle",
+    "ndcg": 0.679462681467481,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "query_oracle",
+    "ndcg": 0.7891990650232485,
+    "n": 150
+  },
+  {
+    "environment": "scifact_dense",
+    "baseline": "rrf_all_actions",
+    "ndcg": 0.6866020857415376,
+    "n": 150
+  }
+]

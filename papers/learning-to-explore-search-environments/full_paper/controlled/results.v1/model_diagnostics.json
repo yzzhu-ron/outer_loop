@@ -1,0 +1,611 @@
+[
+  {
+    "all_probe_pairs_incomparable": true,
+    "bit_order": [
+      "d0",
+      "d1",
+      "r",
+      "s",
+      "n0",
+      "n1"
+    ],
+    "blackwell_pairs": [
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "d1",
+        "second_not_garbling_of_first": [
+          0,
+          16
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "r",
+        "second_not_garbling_of_first": [
+          0,
+          8
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "s",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "r",
+        "second_not_garbling_of_first": [
+          0,
+          8
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "s",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          0,
+          8
+        ],
+        "second": "s",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          0,
+          8
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          4,
+          8
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "s",
+        "first_not_garbling_of_second": [
+          0,
+          4
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "s",
+        "first_not_garbling_of_second": [
+          4,
+          8
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          8
+        ]
+      },
+      {
+        "first": "nuisance",
+        "first_not_garbling_of_second": [
+          0,
+          1
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      }
+    ],
+    "candidate_diagnostics_at_weight_3_4": [
+      {
+        "decision_region_information_bits": 1.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "1/16",
+          "float": 0.0625
+        },
+        "probe": "d0"
+      },
+      {
+        "decision_region_information_bits": 1.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "1/16",
+          "float": 0.0625
+        },
+        "probe": "d1"
+      },
+      {
+        "decision_region_information_bits": 0.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "0",
+          "float": 0.0
+        },
+        "probe": "r"
+      },
+      {
+        "decision_region_information_bits": 0.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "0",
+          "float": 0.0
+        },
+        "probe": "s"
+      },
+      {
+        "decision_region_information_bits": 0.0,
+        "environment_information_bits": 2.0,
+        "one_step_value": {
+          "exact": "0",
+          "float": 0.0
+        },
+        "probe": "nuisance"
+      },
+      {
+        "decision_region_information_bits": 0.18872187554086706,
+        "environment_information_bits": 0.1887218755408675,
+        "one_step_value": {
+          "exact": "3/16",
+          "float": 0.1875
+        },
+        "probe": "proxy"
+      }
+    ],
+    "prior_quality": {
+      "exact": "1/2",
+      "float": 0.5
+    },
+    "probe_order": [
+      "d0",
+      "d1",
+      "r",
+      "s",
+      "nuisance",
+      "proxy"
+    ],
+    "scenario": "xor",
+    "world_count": 64
+  },
+  {
+    "all_probe_pairs_incomparable": true,
+    "bit_order": [
+      "d0",
+      "d1",
+      "r",
+      "s",
+      "gate",
+      "n0",
+      "n1"
+    ],
+    "blackwell_pairs": [
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          64
+        ],
+        "second": "d1",
+        "second_not_garbling_of_first": [
+          0,
+          32
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          64
+        ],
+        "second": "r",
+        "second_not_garbling_of_first": [
+          0,
+          16
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          64
+        ],
+        "second": "s",
+        "second_not_garbling_of_first": [
+          0,
+          8
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          64
+        ],
+        "second": "gate",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          64
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "d0",
+        "first_not_garbling_of_second": [
+          0,
+          64
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          12
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "r",
+        "second_not_garbling_of_first": [
+          0,
+          16
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "s",
+        "second_not_garbling_of_first": [
+          0,
+          8
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "gate",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "d1",
+        "first_not_garbling_of_second": [
+          0,
+          32
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          12
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "s",
+        "second_not_garbling_of_first": [
+          0,
+          8
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "gate",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          0,
+          16
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "r",
+        "first_not_garbling_of_second": [
+          12,
+          16
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          12
+        ]
+      },
+      {
+        "first": "s",
+        "first_not_garbling_of_second": [
+          0,
+          8
+        ],
+        "second": "gate",
+        "second_not_garbling_of_first": [
+          0,
+          4
+        ]
+      },
+      {
+        "first": "s",
+        "first_not_garbling_of_second": [
+          0,
+          8
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "s",
+        "first_not_garbling_of_second": [
+          0,
+          8
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          8,
+          12
+        ]
+      },
+      {
+        "first": "gate",
+        "first_not_garbling_of_second": [
+          0,
+          4
+        ],
+        "second": "nuisance",
+        "second_not_garbling_of_first": [
+          0,
+          1
+        ]
+      },
+      {
+        "first": "gate",
+        "first_not_garbling_of_second": [
+          0,
+          4
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          4,
+          12
+        ]
+      },
+      {
+        "first": "nuisance",
+        "first_not_garbling_of_second": [
+          0,
+          1
+        ],
+        "second": "proxy",
+        "second_not_garbling_of_first": [
+          0,
+          12
+        ]
+      }
+    ],
+    "candidate_diagnostics_at_weight_3_4": [
+      {
+        "decision_region_information_bits": 1.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "1/16",
+          "float": 0.0625
+        },
+        "probe": "d0"
+      },
+      {
+        "decision_region_information_bits": 1.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "1/16",
+          "float": 0.0625
+        },
+        "probe": "d1"
+      },
+      {
+        "decision_region_information_bits": 0.18872187554086706,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "3/16",
+          "float": 0.1875
+        },
+        "probe": "r"
+      },
+      {
+        "decision_region_information_bits": 0.18872187554086706,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "3/16",
+          "float": 0.1875
+        },
+        "probe": "s"
+      },
+      {
+        "decision_region_information_bits": 0.0,
+        "environment_information_bits": 1.0,
+        "one_step_value": {
+          "exact": "0",
+          "float": 0.0
+        },
+        "probe": "gate"
+      },
+      {
+        "decision_region_information_bits": 0.0,
+        "environment_information_bits": 2.0,
+        "one_step_value": {
+          "exact": "0",
+          "float": 0.0
+        },
+        "probe": "nuisance"
+      },
+      {
+        "decision_region_information_bits": 0.18872187554086706,
+        "environment_information_bits": 0.1887218755408675,
+        "one_step_value": {
+          "exact": "3/16",
+          "float": 0.1875
+        },
+        "probe": "proxy"
+      }
+    ],
+    "prior_quality": {
+      "exact": "1/2",
+      "float": 0.5
+    },
+    "probe_order": [
+      "d0",
+      "d1",
+      "r",
+      "s",
+      "gate",
+      "nuisance",
+      "proxy"
+    ],
+    "scenario": "gated",
+    "world_count": 128
+  }
+]

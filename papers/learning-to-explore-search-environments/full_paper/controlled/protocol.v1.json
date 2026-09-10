@@ -1,0 +1,91 @@
+{
+  "version": "1.0.0",
+  "stage": "Constructed development experiment, not confirmation or retrieval evidence",
+  "date": "2026-09-10",
+  "purpose": "Test nuisance-information distraction, unequal task costs, complementary probes, adaptive advantage over source-optimal fixed designs, and fragility of an assumed observation-to-utility relationship.",
+  "relationship_to_existing_work": "Mechanisms instantiate established Bayesian decision theory and adaptive experimental-design failures. No claim to a new VOI theorem, entropy theorem, or empirical search efficacy.",
+  "freeze": {
+    "command": "python experiment.py --freeze",
+    "hashes": ["protocol.v1.json", "experiment.py", "test_experiment.py"],
+    "artifact": "freeze.v1.json",
+    "enforcement": "The run verifies identical hashes before evaluating the registered grids. A changed frozen design requires a versioned follow-up.",
+    "mechanical_testing": "Unit tests and independent analytical derivations precede the freeze; no grid outcomes are used to tune design choices."
+  },
+  "worlds": {
+    "prior": "All named latent bits independently Bernoulli(1/2)",
+    "xor": {"bits": ["d0", "d1", "r", "s", "n0", "n1"], "contexts": ["d0", "d1", "r XOR s"], "world_count": 64},
+    "gated": {"bits": ["d0", "d1", "r", "s", "gate", "n0", "n1"], "contexts": ["d0", "d1", "r if gate=0 else s"], "world_count": 128},
+    "actions": "All eight binary predictions for the three observable future task contexts; the downstream router chooses its full prediction vector after onboarding.",
+    "utility": "Expected correctness, context weights=((1-w)/2,(1-w)/2,w). Every world has an action with utility one.",
+    "task_weight_grid": ["0", "1/4", "1/2", "3/4", "1"],
+    "primary_illustrative_weight": "3/4",
+    "task_contexts_during_onboarding": "Absent. Only an explicitly supplied source/documented task-mix prior enters acquisition."
+  },
+  "probes": {
+    "xor_order": ["d0", "d1", "r", "s", "nuisance", "proxy"],
+    "gated_order": ["d0", "d1", "r", "s", "gate", "nuisance", "proxy"],
+    "direct": "Reveal the named latent bit noiselessly under the source model.",
+    "nuisance": "Reveal both n0 and n1; unit cost deliberately permits a richer nuisance outcome alphabet.",
+    "proxy": "Observe the third context's target bit with independent error probability 1/4.",
+    "repetition": "Each named probe can be chosen at most once.",
+    "cost": "One operation per selected probe; all methods use the same probe menu and observation law. This abstract unit cost is not an estimate of a retrieval call's resource use.",
+    "budgets": [0, 1, 2, 3, 4],
+    "incomparability": "For every probe pair, seek world-row equality/difference witnesses in both directions, which disprove Blackwell garbling both ways. Report any pair lacking a witness; do not equate entropy order with Blackwell order."
+  },
+  "methods": {
+    "no_probe": "Source-prior optimal router with zero operations.",
+    "source_fixed": "For each budget, enumerate every nonadaptive subset within the cap; choose the source-model optimal expected terminal utility. Break ties by fewer operations, then the frozen candidate order. Observe that subset and use the common source posterior router.",
+    "random": "Uniform selection without replacement until the cap; integrate exactly over selection randomness and observations.",
+    "environment_ig": "Greedy expected Shannon entropy reduction of the full source world posterior; stop below 1e-12.",
+    "decision_region_entropy": "Greedy expected entropy reduction of the source optimal-router label, masking zero-weight contexts. This relevance-aware entropy baseline does not weight mistakes by the positive task mixture and is not EC2.",
+    "decision_myopic": "Greedy one-step expected terminal utility improvement; stop when all gains are exactly zero.",
+    "decision_myopic_forced": "Same one-step criterion but spend the remaining cap even at zero gain, to distinguish stopping and planning failures.",
+    "decision_lookahead_2": "Receding horizon: solve exact two-step-or-remaining-budget decision value, execute the first probe, observe, and replan. STOP is available.",
+    "decision_full_horizon": "Exact adaptive dynamic programming under the supplied source model, with STOP. This is a model-based planning bound in matched conditions, not a learned retrieval algorithm.",
+    "channel_calibrated_dp": "Noise controls only: full-horizon DP with correct target error rates and the same known utilities/mix; no latent world or target task outcomes supplied. Separates channel degradation from likelihood misspecification.",
+    "world_oracle": "Privileged full latent-world knowledge; quality one, zero charged probes. Not an eligible operational comparator.",
+    "common_final_router": "Use source posterior expected correctness independently in each context; zero-weight contexts and posterior ties predict zero.",
+    "tie_rules": "Frozen canonical probe order in the primary panel; entropy tolerance 1e-12; full-horizon DP breaks equal utility by lower expected operations. A separately registered small sensitivity panel reverses and cyclically rotates candidate priorities without changing probe indexing or observation laws."
+  },
+  "controls": {
+    "probe_order_sensitivity": {
+      "priorities": ["canonical in primary panel", "reverse", "cyclic left rotation by three"],
+      "scenarios": ["xor", "gated"],
+      "task_weights": ["3/4", "1"],
+      "budgets": [1, 2, 3, 4],
+      "methods": ["environment_ig", "decision_region_entropy", "decision_myopic", "decision_myopic_forced"],
+      "interpretation": "Descriptive sensitivity of tie-dependent greedy policies, not selection of a favorable ordering. All priorities and outcomes are reported."
+    },
+    "source_utility_observation_shuffle": {
+      "seeds": [101, 211, 307, 401, 503],
+      "source_weight": "3/4",
+      "target_weight": "3/4",
+      "operation": "Permute complete source utility-label rows using Python Random(seed).shuffle, holding channel rows, true utility rows, and uniform world priors fixed. Preserves the source utility marginal distribution while disrupting assumed alignment. All methods share the same corrupted model.",
+      "interpretation": "Five fixed permutations are a negative-control panel, not a population hypothesis test. Report every permutation and its label hash."
+    },
+    "task_mix_shift": {
+      "source_weight": "3/4",
+      "target_weight": "1/4",
+      "hidden": "Planner/router retain source mix; actual evaluation uses target mix. No target query statistics are observed.",
+      "announced": "Supply target mix as documented side information before acquisition; otherwise same world and observations."
+    },
+    "channel_model_mismatch": {
+      "source_extra_noise": "0",
+      "target_extra_noise": ["1/10", "1/4", "1/2"],
+      "source_and_target_weight": "3/4",
+      "law": "Independently flip each direct/nuisance observation bit at the extra-noise rate. Compose proxy's base 1/4 error with that flip, so total proxy error=1/4+extra_noise/2.",
+      "comparator": "Also report channel_calibrated_dp at each budget.",
+      "limiting_check": "At target extra_noise=1/2 every probe is world-independent; every non-world-oracle policy must have exact expected quality 1/2."
+    }
+  },
+  "evaluation": {
+    "exhaustive": "Integrate all possible latent worlds, selected observations, and randomized probe choices; no sampled episodes or Monte Carlo standard errors.",
+    "arithmetic": "Fraction for probabilities, utilities, regret and cost. Entropy uses floating log2 of exact probabilities.",
+    "primary": "Expected terminal correctness and regret versus the full-world action oracle at every budget.",
+    "secondary": ["Expected actual operations", "Residual full-world entropy", "Initial selected-probe distribution", "Exact DP and evaluator state counts", "Runtime"],
+    "cache": "Memoize canonical sorted probe/outcome histories and remaining horizon. Clear model caches after each condition.",
+    "all_results": "Report every registered condition and method regardless direction, including zero gains and adverse controls.",
+    "outputs": ["results.v1/table.json", "results.v1/summary.json", "results.v1/model_diagnostics.json", "results.v1/condition_timings.json"],
+    "no_inference_claim": "These exact expectations characterize the specified finite constructions only. They do not estimate natural-environment performance, held-out generalization, or new theoretical novelty."
+  }
+}

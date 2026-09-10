@@ -1,0 +1,7 @@
+figures/*.svg -whitespace linguist-generated=true
+searchprobe-blog.html linguist-generated=true
+**/evidence.json linguist-generated=true
+**/results/*.json linguist-generated=true
+**/results.v1/*.json linguist-generated=true
+fusion_frontier/results.json linguist-generated=true
+theory/channel_diagnostics.json linguist-generated=true

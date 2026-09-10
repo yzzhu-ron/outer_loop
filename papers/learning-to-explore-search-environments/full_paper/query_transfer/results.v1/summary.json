@@ -1,0 +1,66 @@
+{
+  "all_existing_router_actions_reproduced": true,
+  "candidates_per_fold": 15,
+  "family_macro": [
+    {
+      "equal_family_backend_macro_ndcg": 0.3807605415986011,
+      "method": "source_selected_query"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.380778192755103,
+      "method": "source_selected_knn"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.3857745916551903,
+      "method": "reconstructed_existing_router"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.3857745916551903,
+      "method": "archived_existing_router"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.39570566883685093,
+      "method": "original"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.3857745916551903,
+      "method": "source_fixed"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.3627739733449748,
+      "method": "hyde"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.42117919531164066,
+      "method": "rrf_all_actions"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.40471132594857884,
+      "method": "target_best_fixed_oracle"
+    },
+    {
+      "equal_family_backend_macro_ndcg": 0.509156520095642,
+      "method": "per_query_action_oracle"
+    }
+  ],
+  "freeze": {
+    "frozen_at_utc": "2026-09-10T13:56:23.818051+00:00",
+    "sha256": {
+      "evidence.json": "ada9ef5d28f2b121da8259740f09a8c8fb25c3643c1c43e3df808efc46c48822",
+      "experiment.py": "1c6d67deaa92541123d0bea36c1ed0342431fbed61bf7092d107dd745ad33185",
+      "export_evidence.py": "fa100f4de20505c8b99ab9ac5619436d4b8fa56ab87dcbb31a8e2a6781d2b8a1",
+      "protocol.v1.json": "df02a9b71d421fe30882b4bb596999af3ed21299fd5a84de080245bc30529c7b",
+      "test_experiment.py": "41dc3e80fe06df8e6bfb3fb312be917b819cd25b4db8371ad3c7a7f9c5a1dc0e"
+    },
+    "stage": "Exploratory query-only transfer on previously inspected targets",
+    "version": "1.0.0"
+  },
+  "seconds": 0.1652477909810841,
+  "selection": "Source held-out-query calibration in known source corpora, not held-out-family validation",
+  "stage": "Exploratory; target families previously inspected",
+  "versions": {
+    "numpy": "2.5.3",
+    "scikit-learn": "1.9.0",
+    "scipy": "1.18.1"
+  }
+}

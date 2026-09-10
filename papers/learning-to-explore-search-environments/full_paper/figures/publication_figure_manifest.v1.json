@@ -1,0 +1,750 @@
+{
+  "created_utc": "2026-09-10T13:58:16.205729+00:00",
+  "status": "Descriptive development figures. No new retrieval, no target-selected figure slices, no population-level intervals.",
+  "script_sha256": "24647cc4d8a76825d6083832a7e26d283189c31c5176c83fef95a4ebe7ca7b68",
+  "input_sha256": {
+    "controlled/results.v1/table.json": "71f782711297a8e46d7c999dedecfffaa0ce6ba38c539a69bab5431722124f55",
+    "controlled/results.v1/summary.json": "1eea11a9e271327df5c9753a0383cc949d8cc4d794431098ee94fbf29892745f",
+    "controlled/protocol.v1.json": "3b78b6c007137cd64640b1c9037efc843cca5b9cf4608a6203fb6041ea466db3",
+    "controlled/freeze.v1.json": "0b0ddbd00d4f64c7b7765534084fd4fb72ae07aba31d7bc1780039a37642a5da",
+    "natural/results/runs.json": "7ec52dfb8e542c838fab181919a5d42eecefcbe99f34bf78ac971d4910899ed3",
+    "natural/results/baselines.json": "d70a50ed11e9ae1dc3dfd848961335527a35c0429b7cd6184514bb1ea7799f5b",
+    "natural/results/paired.json": "6ed8849c6e0b8ca9518a18fbee71b244e8633ccc81c803f6249ed8b21809ee6b",
+    "natural/results/metadata.json": "b0a0d98cc37c6bafa70e15beddbb6fd22246043f73cc8728b8ab81fe138d7a37",
+    "natural/protocol.json": "3cb9e9b083a42c338d1a40854bcf9fdb95ab4e2beae95c7daae8b78f7bf76646",
+    "natural/capacity_audit.json": "50f255584bcbafb030e44e5c1722d5da070a9a4daa43234d669a9ad4c1d4dc2c",
+    "fusion_frontier/results.json": "9e3190f4609f07e86dad6ac6ae3cc6ab431fb1ab341614b13e3ecfd61fce4ad1",
+    "fusion_frontier/protocol.json": "6c2015380b9401e45c817674907209991bd222ce03602ef75aeb275eaaa5bf34",
+    "query_transfer/protocol.v1.json": "df02a9b71d421fe30882b4bb596999af3ed21299fd5a84de080245bc30529c7b",
+    "query_transfer/freeze.v1.json": "c79901afffb32a6ae06a7095448dc4b0c06f6a7ca5022273b3c7203c3ca1735a",
+    "query_transfer/results.v1/summary.json": "88262f3b7f8746705320f29de1cba4fd8d22daca2b9a32c1e05f5ba83590b5a8",
+    "query_transfer/results.v1/primary_results.json": "212ac3d090faed45e77f034b307bd462bc7f8d3fcde4347ff2405ab7ef8cb508",
+    "query_transfer/results.v1/all_results.json": "eb50518e210a0b946a7276f8ace15a11e96fe99df444530f7e4658185c4238ca",
+    "query_transfer/results.v1/source_calibration_grid.json": "390bfb1f12348da65e9cd15aab8a727afcb4c178e0df258e99526edf1e1354a1",
+    "query_transfer/results.v1/conditional_intervals.json": "4630bf82d513cb029c168c012f6ee7325e30aa9b64083cfb2d6500ccc583fc89",
+    "query_transfer/results.v1/paired.json": "85d18820829f7abcb5484ef4fd6a63b8e1daa466d69f116ad1964e6482896afb",
+    "query_transfer/results.v1/selections.json": "78219adc428615014d548036563cc3f4d7f2e8f19ba6ebdde484f5a63d6d67f4",
+    "query_transfer/results.v1/reconstruction_audit.json": "9fb24bd47ec5c5815a0812aae044559e3cf5fb7ae546357cff551dcd02fafa08"
+  },
+  "counts": {
+    "controlled_total_result_rows": 1658,
+    "controlled_plotted_rows": 14,
+    "natural_total_run_rows": 1620,
+    "natural_baseline_rows": 60,
+    "natural_primary_run_rows": 18,
+    "capacity_audit_rows": 6,
+    "fusion_result_rows": 144,
+    "fusion_macro_cells": 24,
+    "development_families": 3,
+    "backends_per_family": 2,
+    "queries_by_family": {
+      "scifact": 150,
+      "fiqa": 150,
+      "nfcorpus": 65
+    },
+    "family_specific_query_identities": 365,
+    "query_backend_evaluations_per_method": 730
+  },
+  "figures": {
+    "Controlled mechanisms": {
+      "files": [
+        "controlled_mechanism_v1.svg",
+        "controlled_mechanism_v1.png"
+      ],
+      "alt_text": "Two horizontal bar charts compare seven methods at probe budget two and workload weight three quarters. In both constructed mechanisms, no probes score 0.5, information gain 0.5625, decision-region entropy 0.625, and myopic value 0.75. Two-step lookahead and full-horizon planning score 0.875 in both. The best source-fixed plan scores 0.875 for XOR and 0.75 for the gated mechanism. These are exact expected utilities, not empirical confidence intervals.",
+      "selection": "control=matched; budget=2; source_weight=target_weight=3/4; seven named methods; both scenarios",
+      "plotted_rows": [
+        {
+          "scenario": "xor",
+          "method": "no_probe",
+          "label": "No probes",
+          "utility": 0.5,
+          "utility_exact": "1/2",
+          "expected_operations": 0.0
+        },
+        {
+          "scenario": "xor",
+          "method": "environment_ig",
+          "label": "Environment information gain",
+          "utility": 0.5625,
+          "utility_exact": "9/16",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "xor",
+          "method": "decision_region_entropy",
+          "label": "Decision-region entropy",
+          "utility": 0.625,
+          "utility_exact": "5/8",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "xor",
+          "method": "decision_myopic",
+          "label": "Myopic decision value",
+          "utility": 0.75,
+          "utility_exact": "3/4",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "xor",
+          "method": "source_fixed",
+          "label": "Best source-fixed probe plan",
+          "utility": 0.875,
+          "utility_exact": "7/8",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "xor",
+          "method": "decision_lookahead_2",
+          "label": "Two-step decision lookahead",
+          "utility": 0.875,
+          "utility_exact": "7/8",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "xor",
+          "method": "decision_full_horizon",
+          "label": "Full-horizon decision planning",
+          "utility": 0.875,
+          "utility_exact": "7/8",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "gated",
+          "method": "no_probe",
+          "label": "No probes",
+          "utility": 0.5,
+          "utility_exact": "1/2",
+          "expected_operations": 0.0
+        },
+        {
+          "scenario": "gated",
+          "method": "environment_ig",
+          "label": "Environment information gain",
+          "utility": 0.5625,
+          "utility_exact": "9/16",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "gated",
+          "method": "decision_region_entropy",
+          "label": "Decision-region entropy",
+          "utility": 0.625,
+          "utility_exact": "5/8",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "gated",
+          "method": "decision_myopic",
+          "label": "Myopic decision value",
+          "utility": 0.75,
+          "utility_exact": "3/4",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "gated",
+          "method": "source_fixed",
+          "label": "Best source-fixed probe plan",
+          "utility": 0.75,
+          "utility_exact": "3/4",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "gated",
+          "method": "decision_lookahead_2",
+          "label": "Two-step decision lookahead",
+          "utility": 0.875,
+          "utility_exact": "7/8",
+          "expected_operations": 2.0
+        },
+        {
+          "scenario": "gated",
+          "method": "decision_full_horizon",
+          "label": "Full-horizon decision planning",
+          "utility": 0.875,
+          "utility_exact": "7/8",
+          "expected_operations": 2.0
+        }
+      ]
+    },
+    "Natural retrieval and capacity": {
+      "files": [
+        "natural_capacity_v1.svg",
+        "natural_capacity_v1.png"
+      ],
+      "alt_text": "A six-environment dot plot compares the source prior, original query, primary two-step lookahead at budget 64, all-action reciprocal-rank fusion, and a target-label router-capacity bracket. Lookahead minus prior: SciFact \u00b7 BM25 -0.0231; SciFact \u00b7 dense +0.0195; FiQA \u00b7 BM25 +0.0034; FiQA \u00b7 dense -0.0094; NFCorpus \u00b7 BM25 -0.0018; NFCorpus \u00b7 dense +0.0003. RRF exceeds lookahead in all six environments and exceeds the capacity upper bound in five; NFCorpus dense is the exception. The SciFact BM25 capacity bracket is 0.61846 to 0.62445; the other five brackets collapse to a verified value within numerical tolerance. The plots reuse 365 queries across two backends and report descriptive seed means, with no macro confidence interval.",
+      "selection": "all six environments; condition=standard; method=lookahead2; budget=64; seeds11,23,47",
+      "plotted_rows": [
+        {
+          "environment": "scifact_bm25",
+          "n_queries": 150,
+          "source_query_bucket": 0.6121323481584866,
+          "original": 0.6061398767848605,
+          "rrf_all_actions": 0.6510635741612127,
+          "lookahead64": 0.5890538961709301,
+          "lookahead_seed_values": {
+            "11": 0.5779943214269812,
+            "23": 0.611173045658828,
+            "47": 0.5779943214269812
+          },
+          "capacity_lower": 0.6184599953669109,
+          "capacity_upper": 0.6244524667405371
+        },
+        {
+          "environment": "scifact_dense",
+          "n_queries": 150,
+          "source_query_bucket": 0.6376234707584271,
+          "original": 0.6435738713255216,
+          "rrf_all_actions": 0.6866020857415376,
+          "lookahead64": 0.657157578005448,
+          "lookahead_seed_values": {
+            "11": 0.6654040441317547,
+            "23": 0.6406646457528348,
+            "47": 0.6654040441317547
+          },
+          "capacity_lower": 0.6794626814674809,
+          "capacity_upper": 0.6794626814674809
+        },
+        {
+          "environment": "fiqa_bm25",
+          "n_queries": 150,
+          "source_query_bucket": 0.22640096467682555,
+          "original": 0.25251415790289977,
+          "rrf_all_actions": 0.27719305200839794,
+          "lookahead64": 0.22983394822913442,
+          "lookahead_seed_values": {
+            "11": 0.23128133693078542,
+            "23": 0.22693917082583237,
+            "47": 0.23128133693078542
+          },
+          "capacity_lower": 0.257347411504101,
+          "capacity_upper": 0.257347411504101
+        },
+        {
+          "environment": "fiqa_dense",
+          "n_queries": 150,
+          "source_query_bucket": 0.349340061294591,
+          "original": 0.3921141942640467,
+          "rrf_all_actions": 0.4095457623262388,
+          "lookahead64": 0.3399148107236626,
+          "lookahead_seed_values": {
+            "11": 0.3546889698228216,
+            "23": 0.3325277311740831,
+            "47": 0.3325277311740831
+          },
+          "capacity_lower": 0.39556878344320134,
+          "capacity_upper": 0.39556878344320134
+        },
+        {
+          "environment": "nfcorpus_bm25",
+          "n_queries": 65,
+          "source_query_bucket": 0.24510579949889155,
+          "original": 0.24510579949889155,
+          "rrf_all_actions": 0.26648833174005415,
+          "lookahead64": 0.24334018480094824,
+          "lookahead_seed_values": {
+            "11": 0.24334018480094824,
+            "23": 0.24334018480094824,
+            "47": 0.24334018480094824
+          },
+          "capacity_lower": 0.24756796301988782,
+          "capacity_upper": 0.24756796301988782
+        },
+        {
+          "environment": "nfcorpus_dense",
+          "n_queries": 65,
+          "source_query_bucket": 0.2347861132448854,
+          "original": 0.2347861132448854,
+          "rrf_all_actions": 0.23618236589240288,
+          "lookahead64": 0.23505244851440135,
+          "lookahead_seed_values": {
+            "11": 0.23281176389606797,
+            "23": 0.23953381775106808,
+            "47": 0.23281176389606797
+          },
+          "capacity_lower": 0.2415425966400404,
+          "capacity_upper": 0.2415425966400404
+        }
+      ]
+    },
+    "Fusion quality and serving searches": {
+      "files": [
+        "fusion_frontier_v1.svg",
+        "fusion_frontier_v1.png"
+      ],
+      "alt_text": "Two line charts show equal-family/backend mean retrieval quality against actual mean search calls per task, with backend identity known or hidden. With generation allowed and the six-call cap, known-backend source selection achieves 0.41402 nDCG with 4.333 mean searches; hidden-backend selection achieves 0.41285 with 4.667. All-action RRF achieves 0.42118 with six searches. Source selection without generation uses at most 1.333 mean searches and stays near 0.39 nDCG. Curves connect the recorded source-selected configurations, with no target Pareto filtering or macro confidence intervals. Generation and token costs are separate from the plotted search axis.",
+      "selection": "all144 environment configurations; macro by backend_known,generation_allowed,maximum_search_calls",
+      "plotted_macro_cells": [
+        {
+          "backend_known": true,
+          "generation_allowed": false,
+          "maximum_search_calls": 1,
+          "actual_mean_search_calls": 1.0,
+          "macro_ndcg": 0.3899234897153049,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": false,
+          "maximum_search_calls": 2,
+          "actual_mean_search_calls": 1.1666666666666667,
+          "macro_ndcg": 0.39390385163391956,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": false,
+          "maximum_search_calls": 3,
+          "actual_mean_search_calls": 1.1666666666666667,
+          "macro_ndcg": 0.39390385163391956,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": false,
+          "maximum_search_calls": 4,
+          "actual_mean_search_calls": 1.1666666666666667,
+          "macro_ndcg": 0.39390385163391956,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": false,
+          "maximum_search_calls": 5,
+          "actual_mean_search_calls": 1.1666666666666667,
+          "macro_ndcg": 0.39390385163391956,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": false,
+          "maximum_search_calls": 6,
+          "actual_mean_search_calls": 1.1666666666666667,
+          "macro_ndcg": 0.39390385163391956,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": true,
+          "maximum_search_calls": 1,
+          "actual_mean_search_calls": 1.0,
+          "macro_ndcg": 0.3857745916551903,
+          "actual_mean_llm_calls": 0.16666666666666666,
+          "actual_mean_input_tokens": 65.65555555555555,
+          "actual_mean_output_tokens": 20.718888888888888,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": true,
+          "maximum_search_calls": 2,
+          "actual_mean_search_calls": 1.8333333333333333,
+          "macro_ndcg": 0.4058266325761754,
+          "actual_mean_llm_calls": 0.8333333333333334,
+          "actual_mean_input_tokens": 326.8021367521368,
+          "actual_mean_output_tokens": 104.92128205128205,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": true,
+          "maximum_search_calls": 3,
+          "actual_mean_search_calls": 2.3333333333333335,
+          "macro_ndcg": 0.40598849894252875,
+          "actual_mean_llm_calls": 0.8333333333333334,
+          "actual_mean_input_tokens": 326.8021367521368,
+          "actual_mean_output_tokens": 104.92128205128205,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": true,
+          "maximum_search_calls": 4,
+          "actual_mean_search_calls": 3.6666666666666665,
+          "macro_ndcg": 0.4096020110477293,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": true,
+          "maximum_search_calls": 5,
+          "actual_mean_search_calls": 3.8333333333333335,
+          "macro_ndcg": 0.41072784115325345,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": true,
+          "generation_allowed": true,
+          "maximum_search_calls": 6,
+          "actual_mean_search_calls": 4.333333333333333,
+          "macro_ndcg": 0.4140237483704839,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": false,
+          "maximum_search_calls": 1,
+          "actual_mean_search_calls": 1.0,
+          "macro_ndcg": 0.39570566883685093,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": false,
+          "maximum_search_calls": 2,
+          "actual_mean_search_calls": 1.3333333333333333,
+          "macro_ndcg": 0.3942004470861352,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": false,
+          "maximum_search_calls": 3,
+          "actual_mean_search_calls": 1.3333333333333333,
+          "macro_ndcg": 0.3942004470861352,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": false,
+          "maximum_search_calls": 4,
+          "actual_mean_search_calls": 1.3333333333333333,
+          "macro_ndcg": 0.3942004470861352,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": false,
+          "maximum_search_calls": 5,
+          "actual_mean_search_calls": 1.3333333333333333,
+          "macro_ndcg": 0.3942004470861352,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": false,
+          "maximum_search_calls": 6,
+          "actual_mean_search_calls": 1.3333333333333333,
+          "macro_ndcg": 0.3942004470861352,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": true,
+          "maximum_search_calls": 1,
+          "actual_mean_search_calls": 1.0,
+          "macro_ndcg": 0.39570566883685093,
+          "actual_mean_llm_calls": 0.0,
+          "actual_mean_input_tokens": 0.0,
+          "actual_mean_output_tokens": 0.0,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": true,
+          "maximum_search_calls": 2,
+          "actual_mean_search_calls": 2.0,
+          "macro_ndcg": 0.409351993236424,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": true,
+          "maximum_search_calls": 3,
+          "actual_mean_search_calls": 2.6666666666666665,
+          "macro_ndcg": 0.40738393230057535,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": true,
+          "maximum_search_calls": 4,
+          "actual_mean_search_calls": 3.3333333333333335,
+          "macro_ndcg": 0.4098780412542456,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": true,
+          "maximum_search_calls": 5,
+          "actual_mean_search_calls": 4.0,
+          "macro_ndcg": 0.4120531562551585,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        },
+        {
+          "backend_known": false,
+          "generation_allowed": true,
+          "maximum_search_calls": 6,
+          "actual_mean_search_calls": 4.666666666666667,
+          "macro_ndcg": 0.41285045475473875,
+          "actual_mean_llm_calls": 1.0,
+          "actual_mean_input_tokens": 393.5854700854701,
+          "actual_mean_output_tokens": 128.0868376068376,
+          "environments": 6
+        }
+      ],
+      "rrf_all_macro": 0.42117919531164066
+    }
+  },
+  "query_transfer": {
+    "stage": "Exploratory; target families previously inspected",
+    "selection": "Source held-out-query calibration in known source corpora, not held-out-family validation",
+    "backend_contract": "Backend identity is known; this differs from the natural acquisition experiment.",
+    "primary_rows": 60,
+    "all_result_rows": 150,
+    "source_calibration_rows": 90,
+    "conditional_interval_rows": 30,
+    "family_macro": [
+      {
+        "method": "archived_existing_router",
+        "macro_ndcg": 0.3857745916551903,
+        "mean_search_calls": 1.0,
+        "mean_llm_calls": 0.16666666666666666,
+        "mean_query_encoder_calls": 0.0
+      },
+      {
+        "method": "hyde",
+        "macro_ndcg": 0.36277397334497474,
+        "mean_search_calls": 1.0,
+        "mean_llm_calls": 1.0,
+        "mean_query_encoder_calls": 0.0
+      },
+      {
+        "method": "original",
+        "macro_ndcg": 0.39570566883685093,
+        "mean_search_calls": 1.0,
+        "mean_llm_calls": 0.0,
+        "mean_query_encoder_calls": 0.0
+      },
+      {
+        "method": "per_query_action_oracle",
+        "macro_ndcg": 0.509156520095642,
+        "mean_search_calls": null,
+        "mean_llm_calls": null,
+        "mean_query_encoder_calls": null
+      },
+      {
+        "method": "reconstructed_existing_router",
+        "macro_ndcg": 0.3857745916551903,
+        "mean_search_calls": 1.0,
+        "mean_llm_calls": 0.16666666666666666,
+        "mean_query_encoder_calls": 0.0
+      },
+      {
+        "method": "rrf_all_actions",
+        "macro_ndcg": 0.42117919531164066,
+        "mean_search_calls": 6.0,
+        "mean_llm_calls": 1.0,
+        "mean_query_encoder_calls": 0.0
+      },
+      {
+        "method": "source_fixed",
+        "macro_ndcg": 0.3857745916551903,
+        "mean_search_calls": 1.0,
+        "mean_llm_calls": 0.16666666666666666,
+        "mean_query_encoder_calls": 0.0
+      },
+      {
+        "method": "source_selected_knn",
+        "macro_ndcg": 0.380778192755103,
+        "mean_search_calls": 1.044957264957265,
+        "mean_llm_calls": 0.4576068376068376,
+        "mean_query_encoder_calls": 1.0
+      },
+      {
+        "method": "source_selected_query",
+        "macro_ndcg": 0.3807605415986011,
+        "mean_search_calls": 1.044957264957265,
+        "mean_llm_calls": 0.4576068376068376,
+        "mean_query_encoder_calls": 0.8333333333333334
+      },
+      {
+        "method": "target_best_fixed_oracle",
+        "macro_ndcg": 0.40471132594857884,
+        "mean_search_calls": null,
+        "mean_llm_calls": null,
+        "mean_query_encoder_calls": null
+      }
+    ],
+    "all_existing_router_actions_reproduced": true,
+    "reconstruction_audit": [
+      {
+        "action_match_fraction": 1.0,
+        "environment": "fiqa_bm25",
+        "model": "global_mean",
+        "ndcg_difference": 0.0
+      },
+      {
+        "action_match_fraction": 1.0,
+        "environment": "fiqa_dense",
+        "model": "global_mean",
+        "ndcg_difference": 0.0
+      },
+      {
+        "action_match_fraction": 1.0,
+        "environment": "nfcorpus_bm25",
+        "model": "global_mean",
+        "ndcg_difference": 0.0
+      },
+      {
+        "action_match_fraction": 1.0,
+        "environment": "nfcorpus_dense",
+        "model": "global_mean",
+        "ndcg_difference": 0.0
+      },
+      {
+        "action_match_fraction": 1.0,
+        "environment": "scifact_bm25",
+        "model": "global_mean",
+        "ndcg_difference": 0.0
+      },
+      {
+        "action_match_fraction": 1.0,
+        "environment": "scifact_dense",
+        "model": "global_mean",
+        "ndcg_difference": 0.0
+      }
+    ],
+    "selected_models": {
+      "fiqa_bm25": {
+        "fitting_and_selection_seconds": 0.014024624950252473,
+        "selected_models": {
+          "reconstructed_existing_router": "global_mean",
+          "source_selected_knn": "knn_k64_shrink0.5_balanced",
+          "source_selected_query": "global_mean"
+        },
+        "source_environments": [
+          "nfcorpus_bm25",
+          "scifact_bm25"
+        ]
+      },
+      "fiqa_dense": {
+        "fitting_and_selection_seconds": 0.011126750032417476,
+        "selected_models": {
+          "reconstructed_existing_router": "global_mean",
+          "source_selected_knn": "knn_k64_shrink0_balanced",
+          "source_selected_query": "knn_k64_shrink0_balanced"
+        },
+        "source_environments": [
+          "nfcorpus_dense",
+          "scifact_dense"
+        ]
+      },
+      "nfcorpus_bm25": {
+        "fitting_and_selection_seconds": 0.010788291925564408,
+        "selected_models": {
+          "reconstructed_existing_router": "global_mean",
+          "source_selected_knn": "knn_k16_shrink0.5_balanced",
+          "source_selected_query": "knn_k16_shrink0.5_balanced"
+        },
+        "source_environments": [
+          "fiqa_bm25",
+          "scifact_bm25"
+        ]
+      },
+      "nfcorpus_dense": {
+        "fitting_and_selection_seconds": 0.010700375074520707,
+        "selected_models": {
+          "reconstructed_existing_router": "global_mean",
+          "source_selected_knn": "knn_k16_shrink0_pooled",
+          "source_selected_query": "knn_k16_shrink0_pooled"
+        },
+        "source_environments": [
+          "fiqa_dense",
+          "scifact_dense"
+        ]
+      },
+      "scifact_bm25": {
+        "fitting_and_selection_seconds": 0.010046707931905985,
+        "selected_models": {
+          "reconstructed_existing_router": "global_mean",
+          "source_selected_knn": "knn_k16_shrink0_balanced",
+          "source_selected_query": "knn_k16_shrink0_balanced"
+        },
+        "source_environments": [
+          "fiqa_bm25",
+          "nfcorpus_bm25"
+        ]
+      },
+      "scifact_dense": {
+        "fitting_and_selection_seconds": 0.00972791702952236,
+        "selected_models": {
+          "reconstructed_existing_router": "global_mean",
+          "source_selected_knn": "knn_k16_shrink0_pooled",
+          "source_selected_query": "knn_k16_shrink0_pooled"
+        },
+        "source_environments": [
+          "fiqa_dense",
+          "nfcorpus_dense"
+        ]
+      }
+    },
+    "display_rule": "Reported as a separate development diagnostic; no additional figure or macro CI."
+  },
+  "output_sha256": {
+    "controlled_mechanism_v1.svg": "5af50cc9b228cd53ab5b5d234b6ed5c6efb26daa5d55d99f3b8909e889be0cd7",
+    "controlled_mechanism_v1.png": "fb96324dd443c82b98ccc0824cd3b092908e6adfe75bcaa0b6be2fd320014e3f",
+    "natural_capacity_v1.svg": "346fee0a2f082b5a94c879ea194825f9276067423462ef523187d25a7e9b71f0",
+    "natural_capacity_v1.png": "9e686313c72918f711b74821163bfa6a5dc37e53811800ce5542c8dce45c85d7",
+    "fusion_frontier_v1.svg": "78baf88088fc5bf5922687f86d3cf7f778934a5cc7e9d332bcac7d3d99e5e512",
+    "fusion_frontier_v1.png": "815af15bcd855c2520300a3d7ff60e6aa4366ad86a89b6b64ead13f09ecad852"
+  }
+}

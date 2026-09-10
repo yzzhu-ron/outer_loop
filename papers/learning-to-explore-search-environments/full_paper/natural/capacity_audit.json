@@ -1,0 +1,339 @@
+{
+  "status": "Post-hoc diagnostic after natural-development-v1 results. Not a deployable target-label-free policy.",
+  "numerical_limit": "Floating LP, tolerance1e-7 for feasibility; no claim of exact rational infeasibility certificate. Upper bounds allow arbitrary tie resolution, lower witnesses use deterministic argmax.",
+  "input_sha256": {
+    "evidence.json": "6911bc600ad7934591eec1e99ab76836ac899158172b15865f08a1b8d485f4d4",
+    "results/models.json": "5c6d51764e892395f16e4c861658a69d05523de4cd2bd9505b7a8dea2177cc9e",
+    "results/baselines.json": "d70a50ed11e9ae1dc3dfd848961335527a35c0429b7cd6184514bb1ea7799f5b",
+    "capacity_audit.py": "5251d102cc86e23e8115bfc6ca71adf994f363364383ce528db0c754d2e13581"
+  },
+  "rows": [
+    {
+      "relaxed_upper_bound": {
+        "ndcg": 0.257347411504101,
+        "relaxed_actions": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "max_constraint_residual": -0.00010321942163860065
+      },
+      "verified_witness_lower_bound": {
+        "ndcg": 0.257347411504101,
+        "actions": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "bracket_width": 0.0,
+      "target_bucket_oracle": 0.257347411504101,
+      "target_query_oracle": 0.36917426192365166,
+      "policies_examined": 1,
+      "solver_status_counts": {
+        "0": 1
+      },
+      "method": "Enumeration of all 5^4 bucket policies, sorted by evaluator utility, with floating LP feasibility and verified deterministic argmax witnesses.",
+      "environment": "fiqa_bm25",
+      "baselines": {
+        "original": 0.25251415790289977,
+        "keywords": 0.24878108804726026,
+        "semantic": 0.17139180061113862,
+        "hyde": 0.1814464440107579,
+        "decomposed": 0.1714005898477249,
+        "source_fixed": 0.25251415790289977,
+        "source_query_bucket": 0.22640096467682555,
+        "target_best_fixed_oracle": 0.25251415790289977,
+        "query_oracle": 0.36917426192365166,
+        "rrf_all_actions": 0.27719305200839794
+      }
+    },
+    {
+      "relaxed_upper_bound": {
+        "ndcg": 0.39556878344320134,
+        "relaxed_actions": [
+          2,
+          1,
+          0,
+          0
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          0.8642698349593333,
+          0.13573016504066665
+        ],
+        "max_constraint_residual": 0.0
+      },
+      "verified_witness_lower_bound": {
+        "ndcg": 0.39556878344320134,
+        "actions": [
+          2,
+          1,
+          0,
+          0
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          0.5672508911225977,
+          0.4327491088774022
+        ]
+      },
+      "bracket_width": 0.0,
+      "target_bucket_oracle": 0.39556878344320134,
+      "target_query_oracle": 0.53026104076484,
+      "policies_examined": 3,
+      "solver_status_counts": {
+        "0": 3
+      },
+      "method": "Enumeration of all 5^4 bucket policies, sorted by evaluator utility, with floating LP feasibility and verified deterministic argmax witnesses.",
+      "environment": "fiqa_dense",
+      "baselines": {
+        "original": 0.3921141942640467,
+        "keywords": 0.3574211195347706,
+        "semantic": 0.35828482428237435,
+        "hyde": 0.3325277311740831,
+        "decomposed": 0.356139528645328,
+        "source_fixed": 0.3921141942640467,
+        "source_query_bucket": 0.349340061294591,
+        "target_best_fixed_oracle": 0.3921141942640467,
+        "query_oracle": 0.53026104076484,
+        "rrf_all_actions": 0.4095457623262388
+      }
+    },
+    {
+      "relaxed_upper_bound": {
+        "ndcg": 0.24756796301988782,
+        "relaxed_actions": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "max_constraint_residual": -0.00010321942163860065
+      },
+      "verified_witness_lower_bound": {
+        "ndcg": 0.24756796301988782,
+        "actions": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "bracket_width": 0.0,
+      "target_bucket_oracle": 0.2484703451357258,
+      "target_query_oracle": 0.2989869760868586,
+      "policies_examined": 20,
+      "solver_status_counts": {
+        "2": 19,
+        "0": 1
+      },
+      "method": "Enumeration of all 5^4 bucket policies, sorted by evaluator utility, with floating LP feasibility and verified deterministic argmax witnesses.",
+      "environment": "nfcorpus_bm25",
+      "baselines": {
+        "original": 0.24510579949889155,
+        "keywords": 0.2484703451357258,
+        "semantic": 0.15727790403880704,
+        "hyde": 0.21162101389728188,
+        "decomposed": 0.2237023503846985,
+        "source_fixed": 0.24510579949889155,
+        "source_query_bucket": 0.24510579949889155,
+        "target_best_fixed_oracle": 0.2484703451357258,
+        "query_oracle": 0.2989869760868586,
+        "rrf_all_actions": 0.26648833174005415
+      }
+    },
+    {
+      "relaxed_upper_bound": {
+        "ndcg": 0.2415425966400404,
+        "relaxed_actions": [
+          3,
+          2,
+          0,
+          1
+        ],
+        "posterior": [
+          0.4325522390320628,
+          0.0,
+          0.0,
+          0.5674477609679373
+        ],
+        "max_constraint_residual": 0.0
+      },
+      "verified_witness_lower_bound": {
+        "ndcg": 0.2415425966400404,
+        "actions": [
+          3,
+          2,
+          0,
+          1
+        ],
+        "posterior": [
+          0.4325522390320628,
+          0.0,
+          0.0,
+          0.5674477609679373
+        ]
+      },
+      "bracket_width": 0.0,
+      "target_bucket_oracle": 0.24503563670955333,
+      "target_query_oracle": 0.2967821611485425,
+      "policies_examined": 30,
+      "solver_status_counts": {
+        "2": 29,
+        "0": 1
+      },
+      "method": "Enumeration of all 5^4 bucket policies, sorted by evaluator utility, with floating LP feasibility and verified deterministic argmax witnesses.",
+      "environment": "nfcorpus_dense",
+      "baselines": {
+        "original": 0.2347861132448854,
+        "keywords": 0.227978641739614,
+        "semantic": 0.21807854558936424,
+        "hyde": 0.23130365559441898,
+        "decomposed": 0.21233937104887915,
+        "source_fixed": 0.2347861132448854,
+        "source_query_bucket": 0.2347861132448854,
+        "target_best_fixed_oracle": 0.2347861132448854,
+        "query_oracle": 0.2967821611485425,
+        "rrf_all_actions": 0.23618236589240288
+      }
+    },
+    {
+      "relaxed_upper_bound": {
+        "ndcg": 0.6244524667405371,
+        "relaxed_actions": [
+          0,
+          2,
+          1,
+          1
+        ],
+        "posterior": [
+          0.2210714685785431,
+          0.09439274529437366,
+          0.6845357861270832,
+          0.0
+        ],
+        "max_constraint_residual": 6.505213034913027e-19
+      },
+      "verified_witness_lower_bound": {
+        "ndcg": 0.6184599953669109,
+        "actions": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "posterior": [
+          0.19040404993867063,
+          0.0,
+          0.3832455625299212,
+          0.42635038753140825
+        ]
+      },
+      "bracket_width": 0.00599247137362624,
+      "target_bucket_oracle": 0.6276047855513773,
+      "target_query_oracle": 0.7705356156267112,
+      "policies_examined": 38,
+      "solver_status_counts": {
+        "2": 35,
+        "0": 3
+      },
+      "method": "Enumeration of all 5^4 bucket policies, sorted by evaluator utility, with floating LP feasibility and verified deterministic argmax witnesses.",
+      "environment": "scifact_bm25",
+      "baselines": {
+        "original": 0.6061398767848605,
+        "keywords": 0.6209204636764345,
+        "semantic": 0.5852392355606109,
+        "hyde": 0.5402823139258256,
+        "decomposed": 0.5892461581891302,
+        "source_fixed": 0.6061398767848605,
+        "source_query_bucket": 0.6121323481584866,
+        "target_best_fixed_oracle": 0.6209204636764345,
+        "query_oracle": 0.7705356156267112,
+        "rrf_all_actions": 0.6510635741612127
+      }
+    },
+    {
+      "relaxed_upper_bound": {
+        "ndcg": 0.6794626814674809,
+        "relaxed_actions": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "max_constraint_residual": -0.0010328657263155572
+      },
+      "verified_witness_lower_bound": {
+        "ndcg": 0.6794626814674809,
+        "actions": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "posterior": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "bracket_width": 0.0,
+      "target_bucket_oracle": 0.6794626814674809,
+      "target_query_oracle": 0.7891990650232485,
+      "policies_examined": 1,
+      "solver_status_counts": {
+        "0": 1
+      },
+      "method": "Enumeration of all 5^4 bucket policies, sorted by evaluator utility, with floating LP feasibility and verified deterministic argmax witnesses.",
+      "environment": "scifact_dense",
+      "baselines": {
+        "original": 0.6435738713255216,
+        "keywords": 0.6474190955386393,
+        "semantic": 0.6558562444295465,
+        "hyde": 0.679462681467481,
+        "decomposed": 0.6458003281840142,
+        "source_fixed": 0.6435738713255216,
+        "source_query_bucket": 0.6376234707584271,
+        "target_best_fixed_oracle": 0.679462681467481,
+        "query_oracle": 0.7891990650232485,
+        "rrf_all_actions": 0.6866020857415376
+      }
+    }
+  ]
+}

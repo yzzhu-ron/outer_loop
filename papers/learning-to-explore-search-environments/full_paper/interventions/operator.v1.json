@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "status": "adapter_preparation_only_no_interior_outcomes",
+  "operator": "weighted_reciprocal_rank_fusion_of_frozen_top10_endpoint_lists",
+  "dense_weight_grid_proposed": [0, 0.125, 0.25, 0.5, 0.75, 0.875, 1],
+  "rrf_constant": 60,
+  "endpoint_cutoff": 10,
+  "output_cutoff": 10,
+  "maximum_raw_request_candidate_union": 20,
+  "absent_contribution": 0,
+  "zero_weight_support": "excluded",
+  "ties": "lexicographic_document_id",
+  "endpoint_behavior": "exact_original_list_including_empty_or_short",
+  "decomposed_order": ["weighted_endpoint_fusion_per_raw_subquery", "unweighted_rrf60_across_subquery_outputs", "top10"],
+  "default_execution_contract": "run_both_components_at_all_weights",
+  "cost_units": ["logical_search_calls", "underlying_search_calls"],
+  "costs_for_default_execution": {"single_raw_request": [1, 2], "two_subquery_action": [2, 4], "paired_original_vs_two_subquery_probe": [3, 6]},
+  "generation": "reuse_original_shared_generation_bundle_preserve_separate_setup_costs",
+  "cache_miss": "error_never_empty_result",
+  "provenance": "endpoint_audit.v1.json_contains_sha256_of_all_thirteen_input_files",
+  "policy_access": "selected_charged_responses_only_never_caches_or_weight",
+  "new_study_requires": [
+    "freeze_target_anchor_or_source_only_intercept_before_outcomes",
+    "never_center_target_features_using_unobserved_across_weight_mean",
+    "never_use_target_reference_utility_labels",
+    "hold_out_all_weights_of_each_target_family_together",
+    "preserve_paired_units_in_resampling",
+    "declare_full_ranklist_or_summary_observation_interface",
+    "report_distinct_states_and_truncated_support_limitations"
+  ]
+}

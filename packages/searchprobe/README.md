@@ -14,6 +14,19 @@ An optional, separate [`decision-audit`](DECISION_AUDIT.md) command accepts a de
 
 [`response-audit`](RESPONSE_AUDIT.md) checks whether declared score-correction bounds can change a router's choices. It reports exact conditional stability and an upper bound on absolute mean utility change for utilities in `[0,1]`. The caller must justify the bounds; the command reads no labels and provides no target-regret or generalization guarantee.
 
+## Try the installed examples
+
+The development branch includes editable examples in the wheel. With Python 3.10 or later and Git, install and run them without cloning the repository:
+
+```sh
+python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@codex/searchprobe-full-paper#subdirectory=packages/searchprobe"
+searchprobe-demo --output-dir searchprobe-demo
+```
+
+The demo makes no network or model calls. It writes three synthetic inputs, three computed reports, and a README with commands for editing and rerunning each input. Expect 5 valid probe pairs with 1 exact query collision, a source decision radius of `1/3`, and `1/3` of response rows certified unchanged. These are demonstrations, not research measurements. Use `searchprobe-demo response --output-dir response-example` to try only one command. Existing files are never overwritten; choose a new output directory when rerunning the demo.
+
+For a replay of **recorded research outcomes**, use the [portable CPU replay](../../papers/learning-to-explore-search-environments/full_paper/replay/README.md). It recalculates statistics and certificates from 34 committed files, without the ignored experiment caches, MLX, or a GPU. It does not regenerate retrieval, training, or bootstrap intervals.
+
 ## Run an audit
 
 From the repository root, install into your own virtual environment:
@@ -30,8 +43,8 @@ PYTHONPATH=packages/searchprobe/src python3 -m searchprobe audit \
   packages/searchprobe/examples/synthetic.jsonl --output /tmp/searchprobe-report.json
 ```
 
-For an installation pinned to a commit containing all three commands, without a
-manual checkout (requires Git and access to this repository):
+For an installation pinned to the earlier milestone's three diagnostic commands, without a
+manual checkout (requires Git and access to this repository; this older commit predates `searchprobe-demo`):
 
 ```sh
 python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@17c2680ca05f8abf9d6d11f354e20c20f28e576b#subdirectory=packages/searchprobe"

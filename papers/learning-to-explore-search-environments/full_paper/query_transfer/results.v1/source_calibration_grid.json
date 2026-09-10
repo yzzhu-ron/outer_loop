@@ -1,0 +1,1130 @@
+[
+  {
+    "kind": "fixed",
+    "name": "global_mean",
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "alpha": 10,
+    "kind": "ridge",
+    "name": "ridge_10",
+    "source_calibration_macro_ndcg": 0.3870885341367696,
+    "source_family_calibration_ndcg": [
+      0.17513468112673689,
+      0.5990423871468022
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "alpha": 100,
+    "kind": "ridge",
+    "name": "ridge_100",
+    "source_calibration_macro_ndcg": 0.40718303580072346,
+    "source_family_calibration_ndcg": [
+      0.1829937451815536,
+      0.6313723264198933
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.41035342703809685,
+    "source_family_calibration_ndcg": [
+      0.1599452468506509,
+      0.6607616072255428
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.3943334246210006,
+    "source_family_calibration_ndcg": [
+      0.16448574626199292,
+      0.6241811029800084
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.40659540984889164,
+    "source_family_calibration_ndcg": [
+      0.1598975141399976,
+      0.6532933055577856
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.39621074127706846,
+    "source_family_calibration_ndcg": [
+      0.1611068490018936,
+      0.6313146335522434
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.40128691026262453,
+    "source_family_calibration_ndcg": [
+      0.14627871434838596,
+      0.6562951061768632
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.41739893257422866,
+    "source_family_calibration_ndcg": [
+      0.14508640141138757,
+      0.6897114637370697
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.42844535546351653,
+    "source_family_calibration_ndcg": [
+      0.15973735678817946,
+      0.6971533541388536
+    ],
+    "target_environment": "fiqa_bm25"
+  },
+  {
+    "kind": "fixed",
+    "name": "global_mean",
+    "source_calibration_macro_ndcg": 0.46115983970746127,
+    "source_family_calibration_ndcg": [
+      0.2325480018924032,
+      0.6897716775225193
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "alpha": 10,
+    "kind": "ridge",
+    "name": "ridge_10",
+    "source_calibration_macro_ndcg": 0.43984953087824696,
+    "source_family_calibration_ndcg": [
+      0.2022524622759414,
+      0.6774465994805525
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "alpha": 100,
+    "kind": "ridge",
+    "name": "ridge_100",
+    "source_calibration_macro_ndcg": 0.45879164651661636,
+    "source_family_calibration_ndcg": [
+      0.22842795813028036,
+      0.6891553349029523
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.44764519550099535,
+    "source_family_calibration_ndcg": [
+      0.23128103159117908,
+      0.6640093594108116
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.47782779463676606,
+    "source_family_calibration_ndcg": [
+      0.24155846934140277,
+      0.7140971199321293
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.45872439639695367,
+    "source_family_calibration_ndcg": [
+      0.22807343420034476,
+      0.6893753585935626
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.47718496534736365,
+    "source_family_calibration_ndcg": [
+      0.24027281076259793,
+      0.7140971199321293
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4906219206072282,
+    "source_family_calibration_ndcg": [
+      0.23907419743786412,
+      0.7421696437765923
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4677424599545784,
+    "source_family_calibration_ndcg": [
+      0.20922674984096465,
+      0.7262581700681922
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.48896499441461805,
+    "source_family_calibration_ndcg": [
+      0.23907419743786412,
+      0.738855791391372
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.47939266410416126,
+    "source_family_calibration_ndcg": [
+      0.23907419743786412,
+      0.7197111307704585
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4882883428842645,
+    "source_family_calibration_ndcg": [
+      0.23907419743786412,
+      0.7375024883306649
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4855606217170434,
+    "source_family_calibration_ndcg": [
+      0.23321393325376444,
+      0.7379073101803224
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.4592536225261619,
+    "source_family_calibration_ndcg": [
+      0.2325480018924032,
+      0.6859592431599206
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.46115983970746127,
+    "source_family_calibration_ndcg": [
+      0.2325480018924032,
+      0.6897716775225193
+    ],
+    "target_environment": "fiqa_dense"
+  },
+  {
+    "kind": "fixed",
+    "name": "global_mean",
+    "source_calibration_macro_ndcg": 0.4363162698167604,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "alpha": 10,
+    "kind": "ridge",
+    "name": "ridge_10",
+    "source_calibration_macro_ndcg": 0.37328566719213524,
+    "source_family_calibration_ndcg": [
+      0.12242725917931571,
+      0.6241440752049547
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "alpha": 100,
+    "kind": "ridge",
+    "name": "ridge_100",
+    "source_calibration_macro_ndcg": 0.38262369458226597,
+    "source_family_calibration_ndcg": [
+      0.12335205612318462,
+      0.6418953330413473
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.42383916586466563,
+    "source_family_calibration_ndcg": [
+      0.21001002617154557,
+      0.6376683055577856
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4210621293743495,
+    "source_family_calibration_ndcg": [
+      0.1937330755667081,
+      0.6483911831819908
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.45059319508297657,
+    "source_family_calibration_ndcg": [
+      0.20319333572074666,
+      0.6979930544452065
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.4397288860170443,
+    "source_family_calibration_ndcg": [
+      0.18756833572074666,
+      0.6918894363133419
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4497354433270653,
+    "source_family_calibration_ndcg": [
+      0.1984219578052786,
+      0.701048928848852
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4441287698167604,
+    "source_family_calibration_ndcg": [
+      0.19110418549466723,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.4363162698167604,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.4363162698167604,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.44476536841554626,
+    "source_family_calibration_ndcg": [
+      0.19237738269223892,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.4367361199699369,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.6979930544452065
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.4363162698167604,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.4363162698167604,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.6971533541388536
+    ],
+    "target_environment": "nfcorpus_bm25"
+  },
+  {
+    "kind": "fixed",
+    "name": "global_mean",
+    "source_calibration_macro_ndcg": 0.5460365717220901,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.7317237902325868
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "alpha": 10,
+    "kind": "ridge",
+    "name": "ridge_10",
+    "source_calibration_macro_ndcg": 0.5301845448663041,
+    "source_family_calibration_ndcg": [
+      0.3384567647425032,
+      0.7219123249901048
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "alpha": 100,
+    "kind": "ridge",
+    "name": "ridge_100",
+    "source_calibration_macro_ndcg": 0.5349762748960583,
+    "source_family_calibration_ndcg": [
+      0.35707350062444576,
+      0.7128790491676706
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.509156661019793,
+    "source_family_calibration_ndcg": [
+      0.342633649798932,
+      0.675679672240654
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.554340118180584,
+    "source_family_calibration_ndcg": [
+      0.39458311642903876,
+      0.7140971199321293
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.5201527723118577,
+    "source_family_calibration_ndcg": [
+      0.37088378474237604,
+      0.6694217598813395
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.538479778456983,
+    "source_family_calibration_ndcg": [
+      0.39265791919013715,
+      0.6843016377238289
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.5182403507351097,
+    "source_family_calibration_ndcg": [
+      0.33658049287317215,
+      0.6999002085970472
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.5196691599049136,
+    "source_family_calibration_ndcg": [
+      0.3469332030159691,
+      0.6924051167938581
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.5453762333329186,
+    "source_family_calibration_ndcg": [
+      0.358752091844572,
+      0.7320003748212651
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.540269849121644,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.7201903450316949
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.541080544738928,
+    "source_family_calibration_ndcg": [
+      0.3594705750677031,
+      0.7226905144101529
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.534934228866621,
+    "source_family_calibration_ndcg": [
+      0.3738079956513868,
+      0.6960604620818553
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.5460365717220901,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.7317237902325868
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.5472627776432646,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.734176202074936
+    ],
+    "target_environment": "nfcorpus_dense"
+  },
+  {
+    "kind": "fixed",
+    "name": "global_mean",
+    "source_calibration_macro_ndcg": 0.16760827114142335,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.15973735678817946
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "alpha": 10,
+    "kind": "ridge",
+    "name": "ridge_10",
+    "source_calibration_macro_ndcg": 0.150129812865795,
+    "source_family_calibration_ndcg": [
+      0.14442589812953965,
+      0.15583372760205033
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "alpha": 100,
+    "kind": "ridge",
+    "name": "ridge_100",
+    "source_calibration_macro_ndcg": 0.1658625802793309,
+    "source_family_calibration_ndcg": [
+      0.15822253605881403,
+      0.17350262449984777
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.19198130549102832,
+    "source_family_calibration_ndcg": [
+      0.18428701935024816,
+      0.19967559163180848
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.17459121420401663,
+    "source_family_calibration_ndcg": [
+      0.1937330755667081,
+      0.15544935284132513
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.19143148779021502,
+    "source_family_calibration_ndcg": [
+      0.2155370193502482,
+      0.16732595623018187
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.1699466319924428,
+    "source_family_calibration_ndcg": [
+      0.18756833572074666,
+      0.152324928264139
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.16937619602838366,
+    "source_family_calibration_ndcg": [
+      0.19110418549466723,
+      0.14764820656210006
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.1761055172482804,
+    "source_family_calibration_ndcg": [
+      0.19110418549466723,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.1682930172482804,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.1682930172482804,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.17674211584706626,
+    "source_family_calibration_ndcg": [
+      0.19237738269223892,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.1682930172482804,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.1682930172482804,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.1682930172482804,
+    "source_family_calibration_ndcg": [
+      0.17547918549466723,
+      0.1611068490018936
+    ],
+    "target_environment": "scifact_bm25"
+  },
+  {
+    "kind": "fixed",
+    "name": "global_mean",
+    "source_calibration_macro_ndcg": 0.2917044830029611,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.22305961279432898
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "alpha": 10,
+    "kind": "ridge",
+    "name": "ridge_10",
+    "source_calibration_macro_ndcg": 0.2857071110367917,
+    "source_family_calibration_ndcg": [
+      0.3320658519301824,
+      0.23934837014340096
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "alpha": 100,
+    "kind": "ridge",
+    "name": "ridge_100",
+    "source_calibration_macro_ndcg": 0.2788835640231585,
+    "source_family_calibration_ndcg": [
+      0.3402173369110018,
+      0.21754979113531525
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.29999906902909723,
+    "source_family_calibration_ndcg": [
+      0.3657248495794572,
+      0.2342732884787373
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.31890703466492715,
+    "source_family_calibration_ndcg": [
+      0.39458311642903876,
+      0.24323095290081553
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": true,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.30731560585709006,
+    "source_family_calibration_ndcg": [
+      0.3915993532115932,
+      0.22303185850258694
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": false,
+    "k": 16,
+    "kind": "knn",
+    "name": "knn_k16_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.2873275894946003,
+    "source_family_calibration_ndcg": [
+      0.3422470694162166,
+      0.23240810957298402
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.2964851865557617,
+    "source_family_calibration_ndcg": [
+      0.3678403158342448,
+      0.22513005727727864
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.28418748092692325,
+    "source_family_calibration_ndcg": [
+      0.35846664821686103,
+      0.2099083136369855
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": true,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.2917044830029611,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.22305961279432898
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": false,
+    "k": 64,
+    "kind": "knn",
+    "name": "knn_k64_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.2917044830029611,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.22305961279432898
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_balanced",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.290763130505595,
+    "source_family_calibration_ndcg": [
+      0.35846664821686103,
+      0.22305961279432898
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0_pooled",
+    "shrinkage": 0.0,
+    "source_calibration_macro_ndcg": 0.2907718935500845,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.2211944338885757
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": true,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_balanced",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.2917044830029611,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.22305961279432898
+    ],
+    "target_environment": "scifact_dense"
+  },
+  {
+    "balanced": false,
+    "k": 128,
+    "kind": "knn",
+    "name": "knn_k128_shrink0.5_pooled",
+    "shrinkage": 0.5,
+    "source_calibration_macro_ndcg": 0.2917044830029611,
+    "source_family_calibration_ndcg": [
+      0.3603493532115932,
+      0.22305961279432898
+    ],
+    "target_environment": "scifact_dense"
+  }
+]

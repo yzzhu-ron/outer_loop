@@ -1,0 +1,24 @@
+{
+  "status": "Exploratory development on previously inspected families",
+  "freeze": {
+    "created_utc": "2026-09-10T13:43:57.312329+00:00",
+    "status": "Code/protocol/data frozen before running this new analysis; input outcomes already seen in milestone.",
+    "sha256": {
+      "experiment.py": "a53ba75887afea7ca586106f2beca3557f2892f995f668e55b06ac7f9a922387",
+      "protocol.json": "3cb9e9b083a42c338d1a40854bcf9fdb95ab4e2beae95c7daae8b78f7bf76646",
+      "evidence.json": "6911bc600ad7934591eec1e99ab76836ac899158172b15865f08a1b8d485f4d4",
+      "export_evidence.py": "386d9a458d4587c5a37a9ead297caeb58731724ad97a63092c99c825b7e35180",
+      "test_experiment.py": "cadd0d2784595aa4a1fb55033db587d38cd9954379ea886210ecf0c2fbcc5b25"
+    }
+  },
+  "seconds": 25.25467545806896,
+  "numpy": "2.5.3",
+  "python": "3.14.0",
+  "output_sha256": {
+    "baselines.json": "d70a50ed11e9ae1dc3dfd848961335527a35c0429b7cd6184514bb1ea7799f5b",
+    "intervals.json": "3188b5c00c27eceacfee29579a579fab0dadab3349e764bf50e6511cf58ccb25",
+    "models.json": "5c6d51764e892395f16e4c861658a69d05523de4cd2bd9505b7a8dea2177cc9e",
+    "paired.json": "6ed8849c6e0b8ca9518a18fbee71b244e8633ccc81c803f6249ed8b21809ee6b",
+    "runs.json": "7ec52dfb8e542c838fab181919a5d42eecefcbe99f34bf78ac971d4910899ed3"
+  }
+}

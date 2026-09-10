@@ -1,0 +1,74 @@
+{
+  "fiqa_bm25": {
+    "fitting_and_selection_seconds": 0.014024624950252473,
+    "selected_models": {
+      "reconstructed_existing_router": "global_mean",
+      "source_selected_knn": "knn_k64_shrink0.5_balanced",
+      "source_selected_query": "global_mean"
+    },
+    "source_environments": [
+      "nfcorpus_bm25",
+      "scifact_bm25"
+    ]
+  },
+  "fiqa_dense": {
+    "fitting_and_selection_seconds": 0.011126750032417476,
+    "selected_models": {
+      "reconstructed_existing_router": "global_mean",
+      "source_selected_knn": "knn_k64_shrink0_balanced",
+      "source_selected_query": "knn_k64_shrink0_balanced"
+    },
+    "source_environments": [
+      "nfcorpus_dense",
+      "scifact_dense"
+    ]
+  },
+  "nfcorpus_bm25": {
+    "fitting_and_selection_seconds": 0.010788291925564408,
+    "selected_models": {
+      "reconstructed_existing_router": "global_mean",
+      "source_selected_knn": "knn_k16_shrink0.5_balanced",
+      "source_selected_query": "knn_k16_shrink0.5_balanced"
+    },
+    "source_environments": [
+      "fiqa_bm25",
+      "scifact_bm25"
+    ]
+  },
+  "nfcorpus_dense": {
+    "fitting_and_selection_seconds": 0.010700375074520707,
+    "selected_models": {
+      "reconstructed_existing_router": "global_mean",
+      "source_selected_knn": "knn_k16_shrink0_pooled",
+      "source_selected_query": "knn_k16_shrink0_pooled"
+    },
+    "source_environments": [
+      "fiqa_dense",
+      "scifact_dense"
+    ]
+  },
+  "scifact_bm25": {
+    "fitting_and_selection_seconds": 0.010046707931905985,
+    "selected_models": {
+      "reconstructed_existing_router": "global_mean",
+      "source_selected_knn": "knn_k16_shrink0_balanced",
+      "source_selected_query": "knn_k16_shrink0_balanced"
+    },
+    "source_environments": [
+      "fiqa_bm25",
+      "nfcorpus_bm25"
+    ]
+  },
+  "scifact_dense": {
+    "fitting_and_selection_seconds": 0.00972791702952236,
+    "selected_models": {
+      "reconstructed_existing_router": "global_mean",
+      "source_selected_knn": "knn_k16_shrink0_pooled",
+      "source_selected_query": "knn_k16_shrink0_pooled"
+    },
+    "source_environments": [
+      "fiqa_dense",
+      "nfcorpus_dense"
+    ]
+  }
+}

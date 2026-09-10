@@ -1,5 +1,10 @@
 # Search environment exploration
 
+The continuation now has a [technical blog draft](full_paper/searchprobe-blog.html),
+[new full-paper experiments](full_paper/README.md), and a
+[portable CPU evidence replay](full_paper/replay/README.md).
+The earlier report and frozen experiments below are preserved.
+
 This track turns the [proposal](search-environment-exploration-proposal.html)
 into a semantic retrieval experiment, executable decision-theory examples, and
 an installable diagnostic tool.

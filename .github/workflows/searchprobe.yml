@@ -4,11 +4,15 @@ name: searchprobe
   push:
     paths:
       - "packages/searchprobe/**"
+      - "papers/learning-to-explore-search-environments/full_paper/**"
+      - "papers/learning-to-explore-search-environments/semantic_pilot/results/**"
       - "pyproject.toml"
       - ".github/workflows/searchprobe.yml"
   pull_request:
     paths:
       - "packages/searchprobe/**"
+      - "papers/learning-to-explore-search-environments/full_paper/**"
+      - "papers/learning-to-explore-search-environments/semantic_pilot/results/**"
       - "pyproject.toml"
       - ".github/workflows/searchprobe.yml"
   workflow_dispatch:
@@ -33,6 +37,14 @@ jobs:
         env:
           PYTHONPATH: packages/searchprobe/src
         run: python -m unittest discover -s packages/searchprobe/tests -v
+      - name: Test portable evidence replay and exact research examples
+        env:
+          PYTHONPATH: packages/searchprobe/src
+        run: |
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/replay/tests -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/theory -p 'test_workload_design.py' -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/controlled -p 'test_*.py' -v
+          python papers/learning-to-explore-search-environments/full_paper/validate_blog.py
       - name: Build and install a wheel
         if: matrix.python == '3.12'
         run: |
@@ -62,3 +74,24 @@ jobs:
           assert response["mean_utility_change_bound"]["absolute_upper_bound"]["exact"] == "2/3"
           assert response["bound_validity_verified"] is False
           PY
+      - name: Test installed examples and replay outside the checkout
+        if: matrix.python == '3.12'
+        run: python papers/learning-to-explore-search-environments/full_paper/replay/smoke_installed.py --python "$(command -v python)"
+
+  research:
+    name: Development analysis checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install analysis dependencies
+        run: python -m pip install numpy scipy scikit-learn
+      - name: Test source and target boundaries, costs, and numerical audits
+        run: |
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/natural -p 'test_*.py' -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/fusion_frontier -p 'test_*.py' -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/theory -p 'test_channel_diagnostics.py' -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/query_transfer -p 'test_*.py' -v
+          python -m unittest discover -s papers/learning-to-explore-search-environments/full_paper/interventions -p 'test_adapter.py' -v

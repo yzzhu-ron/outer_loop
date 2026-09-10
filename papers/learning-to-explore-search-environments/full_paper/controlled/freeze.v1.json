@@ -1,0 +1,10 @@
+{
+  "frozen_at_utc": "2026-09-10T13:46:30.131433+00:00",
+  "protocol_version": "1.0.0",
+  "sha256": {
+    "experiment.py": "3430bb239a654890998fdd7a63e1d3810164a62b00768efb24594aa6cac82501",
+    "protocol.v1.json": "3b78b6c007137cd64640b1c9037efc843cca5b9cf4608a6203fb6041ea466db3",
+    "test_experiment.py": "138b75c9143e24ff6c469bfa120aa4278610799c62c9c728f59841862fd33c1f"
+  },
+  "stage": "constructed development experiment"
+}

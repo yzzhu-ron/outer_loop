@@ -1,0 +1,38 @@
+[
+  {
+    "action_match_fraction": 1.0,
+    "environment": "fiqa_bm25",
+    "model": "global_mean",
+    "ndcg_difference": 0.0
+  },
+  {
+    "action_match_fraction": 1.0,
+    "environment": "fiqa_dense",
+    "model": "global_mean",
+    "ndcg_difference": 0.0
+  },
+  {
+    "action_match_fraction": 1.0,
+    "environment": "nfcorpus_bm25",
+    "model": "global_mean",
+    "ndcg_difference": 0.0
+  },
+  {
+    "action_match_fraction": 1.0,
+    "environment": "nfcorpus_dense",
+    "model": "global_mean",
+    "ndcg_difference": 0.0
+  },
+  {
+    "action_match_fraction": 1.0,
+    "environment": "scifact_bm25",
+    "model": "global_mean",
+    "ndcg_difference": 0.0
+  },
+  {
+    "action_match_fraction": 1.0,
+    "environment": "scifact_dense",
+    "model": "global_mean",
+    "ndcg_difference": 0.0
+  }
+]

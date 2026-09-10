@@ -1,0 +1,12 @@
+{
+  "frozen_at_utc": "2026-09-10T13:56:23.818051+00:00",
+  "sha256": {
+    "evidence.json": "ada9ef5d28f2b121da8259740f09a8c8fb25c3643c1c43e3df808efc46c48822",
+    "experiment.py": "1c6d67deaa92541123d0bea36c1ed0342431fbed61bf7092d107dd745ad33185",
+    "export_evidence.py": "fa100f4de20505c8b99ab9ac5619436d4b8fa56ab87dcbb31a8e2a6781d2b8a1",
+    "protocol.v1.json": "df02a9b71d421fe30882b4bb596999af3ed21299fd5a84de080245bc30529c7b",
+    "test_experiment.py": "41dc3e80fe06df8e6bfb3fb312be917b819cd25b4db8371ad3c7a7f9c5a1dc0e"
+  },
+  "stage": "Exploratory query-only transfer on previously inspected targets",
+  "version": "1.0.0"
+}

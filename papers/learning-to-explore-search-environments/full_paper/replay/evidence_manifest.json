@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/yzzhu-ron/outer_loop",
+  "commit": "e3306228a485037c662a313e591f17128e8f8ae0",
+  "scope": "Original merged semantic milestone only; this manifest pins analysis inputs, not ignored retrieval/training caches.",
+  "protocol_sha256": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+  "population": {
+    "query_counts": {
+      "scifact_bm25": 150,
+      "scifact_dense": 150,
+      "fiqa_bm25": 150,
+      "fiqa_dense": 150,
+      "nfcorpus_bm25": 65,
+      "nfcorpus_dense": 65
+    },
+    "actions": [
+      "original",
+      "keywords",
+      "semantic",
+      "hyde",
+      "decomposed"
+    ],
+    "seeds": [
+      11,
+      23,
+      47
+    ],
+    "budgets": [
+      0,
+      4,
+      8,
+      16,
+      32
+    ]
+  },
+  "files": {
+    "adaptation.csv": "bc8fd81e5a2ea64ed1c9f6fe0bf30fb551fe84b69207afc08aa705f13ab1cb58",
+    "headroom.csv": "96d1ff6d1bc622d8ed67c5ca0fa51bf5fae65822500a43832e1000fefa8faf99",
+    "paired_intervals.csv": "95c620e18a306903b38eb397f4aa2dcf2a51ddd6e15fbe9cd406192660273f11",
+    "paired_outcomes.json": "c903666243f1de29e13cfed682341202078fe73a2e5637c6fd5c11321e576041",
+    "response_audits.csv": "09046f5000fb93d38350c78b5e28a2aa6698230cbc9de3ade49117f699dd16e2",
+    "response_models/fiqa_bm25.audit.json": "4cc8aa630c0683ae3779bdce27a7e3ad5ca310b62dcbf867318ed04f252869b7",
+    "response_models/fiqa_bm25.model.json": "7b3fc24bd56e61e8d929b6dd9583c63640fb371cce9deb86ee09796976c0c4a0",
+    "response_models/fiqa_dense.audit.json": "ce2fb07e3551d9f7487fb51378b4ae501d8de9e4c1ae709f76bd2bc04cc6765d",
+    "response_models/fiqa_dense.model.json": "f2c6580df4967828e8a392e3efc7effb19d1ba45fa19f64471d33f2399051e7b",
+    "response_models/nfcorpus_bm25.audit.json": "003b321ffb2b4e49ed2d3dfb349be4367c739bf9c9ff1f93e04743f33345f0ec",
+    "response_models/nfcorpus_bm25.model.json": "41004daa3bf49510a96a7965de315743194a517e8fc3a9054d2c86f08eb8c1eb",
+    "response_models/nfcorpus_dense.audit.json": "736df7130c0e5863330764740894fd82514787f519e7127e4f56bafc1030433a",
+    "response_models/nfcorpus_dense.model.json": "1a26935efe78b86cd51802a1d9d4a4587c8ceac98577d091ed7b51b9a8451cf9",
+    "response_models/scifact_bm25.audit.json": "ec4c102feed86d5bcaa65ab3dc93a5c5a6c3ea61c655dc942936ba06197febaa",
+    "response_models/scifact_bm25.model.json": "55a664ca24c1cf0b523e93dddc64bdf09ee59c5d3f1f04deb2bc1a0685fec4ad",
+    "response_models/scifact_dense.audit.json": "3d2c40b20b62cd335370fe89c1de06cc4b40a64b31b6646f9f6ba89407fe92af",
+    "response_models/scifact_dense.model.json": "60c3f95ae0dbb7b82e79a13019d0421156e180b29907aefad8aa9a5244f446ad",
+    "source_decision_models/fiqa_bm25_audit.json": "b35d1a6858f059340251875d32c9510dd33bd10ebebad00a50c65dd6b60fe912",
+    "source_decision_models/fiqa_bm25_model.json": "efb066f0eed542c899430a6d5290f760f893494a78edb8f9d675dad8ac1248ff",
+    "source_decision_models/fiqa_dense_audit.json": "bd48b00abc0d2377521cfcc65bf78b00bb7b2c95e264703a34e7909ca1d093b0",
+    "source_decision_models/fiqa_dense_model.json": "a30ec31df34963d1b77288eff5a72537d76d4da8209c248fdd200a96d0bd84e8",
+    "source_decision_models/nfcorpus_bm25_audit.json": "aff604710bb3c701283cbb6c3557c82060a57dd391da6676447c8a48e1a718a4",
+    "source_decision_models/nfcorpus_bm25_model.json": "76e0ea7ffa1773febea40fc298b9c3cf9e6ea42ac9681199abb3f94c3e9eb92e",
+    "source_decision_models/nfcorpus_dense_audit.json": "996b40d7cc1d63eee3ff1eb481c4ebeaa52666e563363620bf0fa97aca46c103",
+    "source_decision_models/nfcorpus_dense_model.json": "35e4af82fbf2185acefd43e1405ac8493e7b1b0d30ebeb694b4aeaefb66f41cd",
+    "source_decision_models/scifact_bm25_audit.json": "32c74f1b23091c9d4da62d30d0aa99655b23b420e39eda2b69b2e7267acd1260",
+    "source_decision_models/scifact_bm25_model.json": "b75e826e363fe0bf834598d3a10f5c54a8c2353fa05f9df4c0bed35ce6db1a24",
+    "source_decision_models/scifact_dense_audit.json": "9d7550ecaef108663100b073fe574ae85451e58a2aa517458255092a0f28db26",
+    "source_decision_models/scifact_dense_model.json": "93be08bcc4163d2c13ff6c11a376514fa01df0d183714efd5bd015aa266e34a3",
+    "source_decisions.csv": "73b613a3ff33a0ab614f58e4e97ff279fa11541aabd8f1f3d450f36688cc34b5",
+    "world_model_followup/adaptation.csv": "41077197f762de2fe557ee46d1574bde595da0201817076e5d4cca3fc9de7217",
+    "world_model_followup/baselines.csv": "c6a1f38732dab5038dc9382af2975c7c4038721b6c4c719fcd197fcb5f7cea96",
+    "world_model_followup/paired_intervals.csv": "413a53ad75b3948f09a4c530c051e15575740c9ab5b8bc136be35de4d0c69992",
+    "world_model_followup/paired_outcomes.json": "687a6d6e063bf9bc6e850cb0091ce1ca2f12a592d1cad166a7068bd82be9ad38"
+  }
+}

@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What should a search agent learn before its first real question?</title>
+<style>
+  :root {
+    /* Warm paper palette — see design-system.md */
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --sky:      #6A8CAF;
+    --white:    #FFFFFF;
+    --gray-150: #F0EEE6;
+    --gray-300: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-700: #3D3D3A;
+    --danger:   #B04A3F;
+
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ivory:    #1A1A18;
+      --slate:    #F0EFE9;
+      --clay:     #E68A6A;
+      --oat:      #3A3530;
+      --olive:    #9CB077;
+      --sky:      #87A2C2;
+      --white:    #232220;
+      --gray-150: #2A2926;
+      --gray-300: #3A3935;
+      --gray-500: #8A8881;
+      --gray-700: #C8C6BF;
+      --danger:   #D97766;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ivory);
+    color: var(--gray-700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+
+  /* Two-column layout: prose + sticky aside.
+     Drop the aside and switch to a single column for short docs. */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 48px;
+  }
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; }
+    aside { order: 2; position: static; }
+  }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--slate);
+    margin: 40px 0 14px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--slate);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  .lead { max-width: 640px; font-size: 16px; }
+  .muted { color: var(--gray-500); }
+  em { font-style: italic; }
+  a { color: var(--clay); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--clay); }
+
+  code { font-family: var(--mono); font-size: 13px; background: var(--gray-150); padding: 0.125em 0.35em; border-radius: 4px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--slate); background: var(--white); border: 1.5px solid var(--gray-300); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* TL;DR card */
+  .tldr {
+    border: 1.5px solid var(--gray-300);
+    border-left: 3px solid var(--clay);
+    border-radius: 10px;
+    background: var(--white);
+    padding: 16px 18px;
+    margin: 8px 0 20px;
+  }
+  .tldr b { color: var(--slate); }
+
+  /* Demo / figure panel */
+  .panel {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 14px;
+    background: var(--white);
+    padding: 24px;
+    margin: 12px 0;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--oat);
+    background: rgba(227, 218, 204, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--clay); font-weight: 600; }
+
+  /* Dotted-underline term linked to glossary */
+  .term {
+    border-bottom: 1.5px dotted var(--clay);
+    cursor: help;
+    color: var(--slate);
+  }
+
+  /* Sticky aside (glossary or on-this-page) */
+  aside {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 18px 18px 8px;
+  }
+  aside .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  aside dl dt {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 0;
+  }
+  aside dl dd {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    margin: 2px 0 14px;
+  }
+  aside dl dt.hl, aside dl dt.hl + dd {
+    background: rgba(217, 119, 87, 0.10);
+    margin-left: -8px; margin-right: -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 4px;
+  }
+
+  /* Collapsible details */
+  details {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--slate);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    color: var(--clay);
+    font-family: var(--sans);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body { padding: 0 16px 16px; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 680px; font-size: 13.5px; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 500; }
+  td.good { color: var(--olive); }
+  td.bad  { color: var(--danger); }
+
+  html { scroll-behavior: smooth; }
+  .scientific-figure { margin: 24px 0; }
+  .scientific-figure svg { width: 100%; height: auto; background: #fff; display:block; }
+  .scientific-figure button { margin-bottom: 8px; }
+  dialog { border: 1px solid var(--gray-300); border-radius: 10px; padding: 18px; width: min(96vw, 1500px); max-height: 96vh; background: var(--white); color: var(--slate); }
+  dialog::backdrop { background: rgba(0,0,0,.6); }
+  dialog svg, dialog img { width: 100%; height:auto; background: #fff; }
+  .page { grid-template-columns: minmax(0, 760px) 220px; }
+  main { min-width: 0; }
+  h1 { font-size: clamp(32px, 4.2vw, 49px); max-width: 760px; }
+  .lead { font-size: 19px; line-height: 1.55; }
+  main p, main li { font-size: 16px; line-height: 1.8; }
+  main p { max-width: 710px; }
+  h2 { margin-top: 56px; font-size: 27px; }
+  a { color: var(--gray-700); text-decoration: underline; text-decoration-color: var(--clay); text-underline-offset: 3px; }
+  .eyebrow, .muted, th, aside .label { color: var(--gray-700); }
+  aside a { display: block; padding: 5px 0; font-size: 13px; }
+  .caption, main .caption { font-size: 13px; line-height: 1.65; }
+  .panel h3 { margin-top: 0; }
+  .controls { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 18px 0; }
+  .controls label { display: block; }
+  input { accent-color: var(--clay); }
+  input[type=range] { width: min(260px, 65vw); }
+  button, select { background: var(--white); color: var(--slate); font: inherit; border: 1px solid var(--gray-300); padding: 7px 11px; border-radius: 5px; }
+  :focus-visible { outline: 2px solid var(--slate); outline-offset: 4px; }
+  .table-wrap { overflow-x: auto; }
+  table { max-width: none; }
+  .bar { height: 9px; background: var(--gray-300); margin-top: 6px; width: 100%; }
+  .bar span { display: block; height: 100%; background: var(--clay); }
+  .finding { padding: 20px 0; border-top: 1px solid var(--gray-300); border-bottom: 1px solid var(--gray-300); margin: 26px 0; }
+  .finding strong { font-family: var(--serif); color: var(--slate); font-weight: 500; font-size: 24px; }
+  ul, ol { padding-left: 24px; margin: 14px 0; }
+  li { margin: 8px 0; }
+  footer { margin-top: 64px; border-top: 1px solid var(--gray-300); padding-top: 20px; }
+  @media (max-width: 960px) { .page { grid-template-columns: 1fr; } aside { position: static; order: 2; } }
+  @media (max-width: 560px) { body { padding: 28px 18px 64px; } .panel { padding: 16px; } th,td { padding: 8px 6px; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media print { aside, .controls, #copy-demo { display: none; } .page { display: block; } body { padding: 0; } details .body { display: block; } }
+
+</style>
+</head>
+<body>
+
+<div class="page"><main><article>
+<header>
+<div class="eyebrow">SearchProbe research notebook · Technical blog draft · 10 September 2026</div>
+<h1>What should a search agent learn before its first real question?</h1>
+<p class="lead">A new collection arrives. The agent can inspect a few documents and try a few searches. What should it ask now to make better decisions later?</p>
+<p>Consider an assistant searching an unfamiliar engineering archive. Exact product names may be essential. A paraphrase may uncover a concept described in different words. A generated hypothetical answer may help semantic search, or introduce a detail that sends it in the wrong direction. The assistant has several ways to search, and a small opportunity to learn which ones will work.</p>
+<div class="tldr"><b>The idea we are pursuing:</b> learn to choose small search experiments by their effect on future decisions. Our first system exposed an obstacle: it could collect evidence but could not change its mind. We now separate three questions: can observations distinguish useful behavior, can the controller act on them, and does the relationship survive a new collection? The last question remains open.</div>
+<p class="caption">This is a working account of an unfinished research program. The retrieval findings below are exploratory. The interactive example is a constructed mechanism test. Neither establishes a new state-of-the-art search method.</p>
+</header>
+
+<section id="contract"><h2>Learn the collection before the workload arrives</h2>
+<p>The setting is deliberately strict. During onboarding, the agent sees sampled documents and the results of searches it chooses to run. It does not see the future users’ questions or relevance labels. After onboarding, the retrieval system and controller weights stay frozen. A small profile of what happened during the probes is the only new state.</p>
+<p>A probe starts with a document we know exists. We generate a question from it, rewrite that question in a few ways, and ask whether each version retrieves the document. That gives us cheap feedback without a human relevance label. It is also an imperfect measurement: retrieving the document that inspired a question is easier than satisfying a real user’s need.</p>
+<p>The training problem is to connect these cheap observations to useful decisions on separate, real questions in source collections. The transfer problem is to carry that connection to a new collection. These are different problems. A probe generator can produce fluent questions and a controller can update its beliefs while the connection between the two remains wrong.</p>
+<details><summary>What counts as a fair comparison?</summary><div class="body">
+<p>Give random selection, coverage selection, information gain, and decision-based selection the same candidate pool, observation interface, router, and spending limit. Charge for sampling documents, generating and inspecting candidates, and executing selected searches. Compare against the router before onboarding and against strong fixed strategies. At serving time, count the generation and searches used by the chosen action. A gain over a weak starting policy is not enough.</p>
+</div></details></section>
+
+<section id="failure"><h2>A system that learned nothing because it could change nothing</h2>
+<p>We began with three BEIR collections: SciFact, FiQA, and NFCorpus. Each used BM25 and a frozen MiniLM dense retriever. For each real question, the available actions were the original query, keywords, a semantic rewrite, a hypothetical passage (HyDE), and a two-part decomposition.</p>
+<p>There was room to improve. On SciFact with dense retrieval, the original query scored 0.6436 nDCG@10; a hindsight oracle choosing the best action for each question scored 0.7892. That oracle is not a usable system. It tells us that the action set contains choices worth investigating. Here nDCG@10 measures the quality of the first ten results, from zero to one; higher is better.</p>
+<p>But every learned probe-selection reward was zero: 20,880 training labels. Across 450 evaluated method, seed, and budget combinations, onboarding changed no action. The first explanation might be that the probes contained no useful information. We checked the controller itself before accepting that explanation.</p>
+<div class="finding"><strong>For all 730 evaluated query/backend cases, the allowed probe updates were too small to change the winning action.</strong><p class="caption">This is a conditional certificate under the fitted score model and its declared update bounds, for histories of at most 32 probes. It does not prove that search probes are intrinsically useless.</p></div>
+<p>Imagine two actions whose scores differ by ten points, while the evidence can move their relative score by at most one. No clever probe selector can make that controller choose differently. Training a selector on the resulting zero rewards teaches it nothing about which evidence would matter to a more responsive controller.</p>
+<p>A separate intervention made the controller responsive. Its most favorable case gained 0.0418 nDCG over its own starting policy, but the interval included zero. It switched every SciFact/dense question to HyDE; always using HyDE achieved the same quality without onboarding. That result helped diagnose the mechanism, but did not establish an acquisition advantage.</p>
+<p class="caption">The three collections have all been inspected. They are development data now. NFCorpus also retains only 65 of 323 test questions under the support-document split, limiting what the result says about the full workload.</p>
+</section>
+
+<section id="joint"><h2>Evidence can matter only in combination</h2>
+<p>Fixing a controller that cannot respond is necessary. It does not make one-step learning sufficient. Sometimes one probe tells you how to interpret another probe. Looking only for an immediate improvement assigns the first probe a value of zero.</p>
+<p>Here is a deliberately small example. Two hidden switches, <em>r</em> and <em>s</em>, determine whether an action works: it succeeds when the switches differ. Either switch alone leaves you guessing. Observe both and you know the answer. A separate shortcut guesses that answer correctly 75% of the time. The shortcut offers an immediate gain; either exact switch alone offers none.</p>
+<p>The workload also includes two other question types, each controlled by its own independent switch. A final probe reveals two bits about the environment that affect none of the decisions. This lets us distinguish three tempting objectives: learning about the environment, identifying all optimal decisions, and improving the decisions that occur most often.</p>
+<div class="panel" id="demo"><h3>Spend two probes</h3>
+<p class="caption">Constructed, known-model example. Every probe costs one unit. The table computes expectations over all hidden states and possible observations; it does not sample favorable runs.</p>
+<div class="controls"><div><label for="weight">Share of questions needing both switches: <output id="weight-label">75%</output></label><input id="weight" type="range" min="0" max="100" step="5" value="75"></div><div><label for="budget">Probe budget</label><select id="budget"><option value="1">1</option><option value="2" selected>2</option></select></div></div>
+<div class="table-wrap"><table><thead><tr><th>Selection rule</th><th>First probe</th><th>Expected accuracy</th></tr></thead><tbody id="demo-rows"></tbody></table></div>
+<p class="caption" id="demo-note" aria-live="polite"></p><button id="copy-demo" type="button">Copy this example</button><span id="copy-status" class="caption" aria-live="polite"></span>
+<noscript><p>At 75% joint-switch questions and a budget of two, the best plan observes both switches and reaches 87.5% expected accuracy. A greedy immediate-value plan reaches 75%. This is an engineered counterexample, not a retrieval benchmark.</p></noscript></div>
+<p>This is not a new value-of-information theorem. Its job is to expose a weakness in the learning signal we actually used. A system trained only on immediate policy improvement can overlook evidence whose benefit arrives after another experiment. A useful test suite should include that failure, alongside cases where simple fixed probing is already optimal.</p>
+<p>There is a second distinction. If one probe reveals which of two later probes is relevant, adapting the second choice can beat any fixed pair. The controlled experiment includes both cases: complementary evidence, where a good fixed pair can suffice, and a gate, where the first observation changes what to ask next. These should not be conflated.</p>
+<p>At a two-probe budget and a 75% share of the joint task, the exact gated experiment reaches 87.5% accuracy with an adaptive plan versus 75% with the best fixed set. But if the task mix changes without being announced, that source-optimal plan falls to 62.5%; telling it the changed mix restores 87.5%. Planning can solve the supplied model while preparing for the wrong workload. The full suite records 1,658 exact results across 38 conditions, including shuffled utility associations, channel noise, and tie-order sensitivities.</p>
+</section>
+
+<!-- FIGURE:controlled -->
+<section id="natural"><h2>The difficult part is transferring what the probes mean</h2>
+<p>A toy with known hidden switches does not tell us which document-generated questions to ask in a new collection. We need to learn that relationship from source environments and test it where the answer is not already built into the generator.</p>
+<p>The next development experiment uses four source worlds at a time: two source collections crossed with BM25 and dense retrieval. It learns discrete distributions over probe outcomes and separate utilities for the five search actions. Unlike the earlier two-world Gaussian model, these channels need not all lie on a single information-quality scale. Backend identity is hidden from every selector in this experiment; this is an explicit change from the earlier setting.</p>
+<p>We compare random selection, fixed coverage, information gain, entropy over optimal source decisions, immediate decision value, and two-step lookahead. We also rotate the source utility matrices relative to the probe models and weaken the likelihood updates. The latter is an update-only sensitivity check: acquisition still plans with the original likelihood, so this does not constitute a calibrated uncertainty model. These controls ask whether the acquired evidence means what the model thinks it means, and whether excessive confidence is doing the work.</p>
+<!-- FIGURE:natural -->
+<div id="natural-result">
+<p><b>The richer acquisition model did not pass its development gate.</b> Across three collections and two backends, two-step selection scored 0.3824 nDCG@10 at its largest probe budget. It beat random selection (0.3782) and information gain (0.3805), but fell below its own no-probe policy (0.3842). We retain all 1,620 method/condition/seed/budget rows, including utility-rotation and update-tempering controls. A later audit verified that the fitted probe channels are incomparable, but every source world has a different optimal-action vector. As a result, entropy over those decision labels equals entropy over worlds exactly: those two curves are the same baseline in this model.</p>
+<div class="table-wrap"><table><caption class="caption">Equal collection/backend averages. These are descriptive development results, not six independent replications.</caption><thead><tr><th>Strategy</th><th>nDCG@10</th><th>Serving searches/question</th><th>Serving LLM calls/question</th></tr></thead><tbody>
+<tr><td>Original query</td><td>0.3957</td><td>1</td><td>0</td></tr>
+<tr><td>Source-world router, before probes</td><td>0.3842</td><td>1.04</td><td>0.16</td></tr>
+<tr><td>Two-step selection, largest budget</td><td>0.3824</td><td>1</td><td>0.37</td></tr>
+<tr><td>Source-selected two-search fusion</td><td>0.4094</td><td>2</td><td>1</td></tr>
+<tr><td>Fusion of all five actions</td><td>0.4212</td><td>6</td><td>1</td></tr>
+</tbody></table></div>
+<p class="caption">The two-step row also pays an average of 63.94 onboarding searches, 48 generation calls, and 16 document samples per onboarding episode. Fusion rows have no onboarding cost. Generation supplies the three semantic alternatives together, so all-action fusion pays one generation call rather than three. Token ledgers are retained in the downloadable evidence. No monetary or latency equivalence between a search and an LLM call is assumed.</p>
+<p>Fusion beat two-step selection on quality in all six environments, although it costs more to serve. That prompted a separate frozen baseline experiment: choose a fixed subset of actions using only source training queries. With backend identity hidden, the two-search version reached 0.4094 at one-third of all-action fusion’s search calls, but remained 0.0118 lower in quality. This is a useful baseline and an explicit tradeoff, not a new fusion algorithm or a proof of equal quality.</p>
+<p>We also gave the source-world router an unrealistic advantage: an evaluator could choose any source-world probability mixture using the target labels. Even its numerical optimistic capacity bound remained below all-action fusion in five environments. Those hypothetical probability mixtures need not be reachable through allowed probe histories. The restriction matters: this router can choose one of five actions using only four query buckets. Fusion is outside its menu. Even an oracle choosing the best single action for each bucket trails fusion in those five environments.</p>
+<p><b>Large action headroom is not necessarily reachable headroom.</b> A per-question oracle can exploit distinctions that a four-bucket router cannot express. Better probe selection cannot repair that gap. We therefore ran a separately frozen query-level transfer check, with backend identity known and source fitting restricted to the same backend. A source-calibrated choice among fixed, ridge, and nearest-neighbor models scored 0.3808, below the reconstructed original source router at 0.3858. The source-selected query router changed decisions in five folds, but its source-calibration gains did not reliably carry over. Capacity and transport both need attention; neither result rules out stronger query-aware methods.</p>
+</div>
+<p>Always using the original query, always using HyDE, and reciprocal-rank fusion across all actions are essential comparisons. A useful onboarding method must provide a better quality/cost tradeoff than a simple strategy a practitioner can deploy today.</p>
+</section>
+
+<!-- FIGURE:fusion -->
+<section id="novelty"><h2>What would make this a contribution?</h2>
+<p>The broad idea of acquiring information for a decision has a long history. Bayesian experimental design, active learning, and decision-region discovery already distinguish useful information from unnecessary identification. Javdani and colleagues’ <a href="https://arxiv.org/abs/1402.5886">decision-region discovery work</a> is particularly close. Renaming that idea for search would not be enough. More recently, <a href="https://arxiv.org/abs/2605.26093">GoBOED</a> directly optimizes robust downstream decision loss and studies cancellation of irrelevant dimensions. Our <a href="theory/LITERATURE.md">literature audit</a> treats these as substantive predecessors.</p>
+<p>Synthetic retrieval data and query rewriting are also established. <a href="https://arxiv.org/abs/2112.07577">GPL</a> adapts dense retrieval using generated queries and pseudo-labels. <a href="https://arxiv.org/abs/2212.10496">HyDE</a> retrieves through a hypothetical document. Our question concerns how a small, chosen set of observations can support later choices while the retrieval and controller weights remain fixed.</p>
+<p>The contribution we want to earn is a transferable way to identify <em>which behavioral distinctions are sufficient for good search decisions</em>, together with a reliable way to tell when the available probes cannot support that conclusion. To earn it, the method needs a useful mechanism beyond standard decision-region discovery, a result that explains when it works, and evidence on untouched collection families against strong alternatives.</p>
+<p>A workload can also change after onboarding. When the router sees each question’s type, the best response to that type may stay the same, while the best use of the earlier probe budget changes. We are examining that distinction explicitly. Robustness cannot be established by quietly allowing a model to inspect the future workload it was supposed to anticipate.</p>
+<p>We have not demonstrated recursive self-improvement. The current process improves experimental hypotheses and implementations between runs; the deployed learner does not improve its own learning rule. Keeping that distinction clear makes the research question easier to test.</p>
+</section>
+
+<section id="tool"><h2>A tool should be useful before its paper is finished</h2>
+<p>SearchProbe is the small, dependency-free package that came out of the diagnosis. It checks paired search logs for collisions, missing coverage, ties, and saturation. Given a source utility model, it can calculate conditional decision regret. Given a score model and justified update bounds, it can check whether the router could change its winning action.</p>
+<p>These checks are deliberately separate. A rank log cannot certify a learned utility model. A mathematically exact answer for a supplied model cannot certify transfer to a real collection.</p>
+<div id="reproduction"><p>The new package revision ships its examples. A fresh installation can run the three diagnostics without a repository checkout:</p>
+<pre><code>python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@codex/searchprobe-full-paper#subdirectory=packages/searchprobe"
+searchprobe-demo --output-dir editable-examples</code></pre>
+<p>A separate <a href="replay/README.md">CPU-only evidence replay</a> downloads 34 checksum-pinned files and recalculates 810 recorded run summaries, 600 paired-contrast means, and 12 conditional certificates. We tested an installed wheel outside the checkout, without NumPy, PyTorch, MLX, or model files. The replay checks analyses of saved outcomes; it does not regenerate retrieval, training, probe choices, costs, or bootstrap intervals. The evidence is pinned to the completed milestone; the package command above currently follows this development branch.</p></div>
+<p>The useful community artifact is a testable argument: a small example people can run, an explicit model contract, and evidence that can be checked without our local caches. Whether the eventual method deserves broad adoption will depend on those people finding it useful.</p>
+</section>
+
+<footer><p class="caption">Draft sources: <a href="../searchprobe-research-report.html">milestone research report</a>; <a href="natural/protocol.json">new retrieval protocol</a>; <a href="natural/freeze.json">input and code hashes</a>; <a href="controlled/RESULTS.md">controlled results</a>; <a href="fusion_frontier/protocol.json">fusion frontier protocol</a>; <a href="theory/THEORY.md">supporting theory and its limits</a>. Scientific claims and limitations are part of the draft, not hidden in a supplement. External links are references only; the article and demo work offline.</p></footer>
+</article></main><aside><div class="label">In this draft</div><nav aria-label="On this page"><a href="#contract">The onboarding contract</a><a href="#failure">A controller that cannot respond</a><a href="#joint">Evidence in combination</a><a href="#natural">Transfer to real search</a><a href="#novelty">The contribution to earn</a><a href="#tool">Run and inspect the evidence</a></nav><hr style="border:0;border-top:1px solid var(--gray-300);margin:16px 0"><p class="caption">Status: exploratory research. No publication or priority claim. Constructed examples and retrieval evidence are labeled separately.</p></aside></div>
+
+<dialog id="figure-dialog" aria-label="Enlarged research figure"><button type="button" id="close-figure">Close figure</button><div id="figure-content"></div></dialog>
+<script>
+const worlds=Array.from({length:64},(_,i)=>({d0:i&1,d1:(i>>1)&1,r:(i>>2)&1,s:(i>>3)&1,n:(i>>4)&3}));
+const probes=['nuisance','d0','d1','r','s','proxy'];
+const names={nuisance:'Two nuisance bits',d0:'First simple switch',d1:'Second simple switch',r:'Exact switch r',s:'Exact switch s',proxy:'75% shortcut'};
+function likelihood(w,p,y){ if(p==='nuisance')return +(w.n===y); if(p==='proxy')return ((w.r^w.s)===y)?.75:.25;return +(w[p]===y); }
+function branches(p,probe){const out=[];for(let y=0;y<(probe==='nuisance'?4:2);y++){const joint=p.map((mass,i)=>mass*likelihood(worlds[i],probe,y));const mass=joint.reduce((a,b)=>a+b,0);if(mass>1e-14)out.push([mass,joint.map(x=>x/mass)]);}return out;}
+function entropy(p){return -p.reduce((s,x)=>s+(x>0?x*Math.log2(x):0),0);}
+function decisionEntropy(p,weight){const m=Array(8).fill(0);worlds.forEach((w,i)=>m[(weight<1?w.d0+2*w.d1:0)+(weight>0?4*(w.r^w.s):0)]+=p[i]);return entropy(m);}
+function accuracy(p,w){const one=[0,0,0];worlds.forEach((s,i)=>{one[0]+=p[i]*s.d0;one[1]+=p[i]*s.d1;one[2]+=p[i]*(s.r^s.s);});return ((1-w)/2)*(Math.max(one[0],1-one[0])+Math.max(one[1],1-one[1]))+w*Math.max(one[2],1-one[2]);}
+function choose(p,left,budget,kind,w){let best=-Infinity,chosen=null;for(const q of left){const children=branches(p,q);let score;if(kind==='information')score=entropy(p)-children.reduce((s,[m,k])=>s+m*entropy(k),0);else if(kind==='labels')score=decisionEntropy(p,w)-children.reduce((s,[m,k])=>s+m*decisionEntropy(k,w),0);else score=children.reduce((s,[m,k])=>s+m*(kind==='plan'&&budget>1?run(k,left.filter(x=>x!==q),budget-1,kind,w).value:accuracy(k,w)),0)-accuracy(p,w);if(score>best+1e-12){best=score;chosen=q;}}return chosen;}
+function run(p,left,budget,kind,w){if(!budget)return {value:accuracy(p,w),first:'None'};const q=choose(p,left,budget,kind,w);const value=branches(p,q).reduce((s,[m,k])=>s+m*run(k,left.filter(x=>x!==q),budget-1,kind,w).value,0);return {value,first:names[q]};}
+function bestFixed(p,budget,w){let best={value:0,first:''};for(let i=0;i<probes.length;i++){const qs=budget===1?[null]:probes.slice(i+1);for(const q2 of qs){const q=probes[i];let val=branches(p,q).reduce((s,[m,k])=>s+m*(q2?branches(k,q2).reduce((a,[b,r])=>a+b*accuracy(r,w),0):accuracy(k,w)),0);if(val>best.value+1e-12)best={value:val,first:names[q]+(q2?' + '+names[q2]:'')};}}return best;}
+let displayed=[];
+function update(){const w=+document.getElementById('weight').value/100,b=+document.getElementById('budget').value,p=Array(64).fill(1/64);document.getElementById('weight-label').textContent=Math.round(100*w)+'%';displayed=[['No onboarding',{value:.5,first:'None'}],['Information about the world',run(p,probes,b,'information',w)],['Entropy of optimal decisions',run(p,probes,b,'labels',w)],['Immediate decision value',run(p,probes,b,'greedy',w)],['Best fixed probe set',bestFixed(p,b,w)],['Plan across the budget',run(p,probes,b,'plan',w)]];document.getElementById('demo-rows').innerHTML=displayed.map(([n,r])=>`<tr><td>${n}</td><td>${r.first}</td><td>${(r.value*100).toFixed(1)}%<div class="bar" aria-hidden="true"><span style="width:${r.value*100}%"></span></div></td></tr>`).join('');document.getElementById('demo-note').textContent=b===2?'A fixed pair can solve the complementary-switch case. Planning is valuable here, but adaptation of the second probe is not necessary. The separate gated experiment tests that stronger claim.':'With only one probe, learning either exact joint switch leaves its partner unknown. The useful choice depends on which question types occur most often.';}
+document.getElementById('weight').addEventListener('input',update);document.getElementById('budget').addEventListener('change',update);document.getElementById('copy-demo').addEventListener('click',async()=>{const text=`SearchProbe constructed example: joint-question share ${document.getElementById('weight').value}%, budget ${document.getElementById('budget').value}. `+displayed.map(([n,r])=>`${n}: ${(r.value*100).toFixed(1)}%`).join('; ');try{await navigator.clipboard.writeText(text);document.getElementById('copy-status').textContent=' Copied.';}catch{document.getElementById('copy-status').textContent=text;}});update();
+document.querySelectorAll('[data-enlarge]').forEach(button=>button.addEventListener('click',()=>{const source=document.getElementById(button.dataset.enlarge).querySelector('svg');const enlarged=new Image();enlarged.alt=source.getAttribute('aria-label');enlarged.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(source.outerHTML);document.getElementById('figure-content').replaceChildren(enlarged);document.getElementById('figure-dialog').showModal();}));document.getElementById('close-figure').addEventListener('click',()=>document.getElementById('figure-dialog').close());document.getElementById('figure-dialog').addEventListener('close',()=>{document.getElementById('figure-content').replaceChildren();});
+</script>
+
+</body>
+</html>

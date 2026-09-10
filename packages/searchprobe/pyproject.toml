@@ -13,13 +13,17 @@ license = "MIT"
 license-files = ["LICENSE"]
 
 [project.urls]
-Homepage = "https://github.com/yzzhu-ron/outer_loop/tree/codex/search-environment-exploration-proposal/packages/searchprobe"
-Documentation = "https://github.com/yzzhu-ron/outer_loop/blob/codex/search-environment-exploration-proposal/packages/searchprobe/README.md"
-Source = "https://github.com/yzzhu-ron/outer_loop/tree/codex/search-environment-exploration-proposal/packages/searchprobe/src/searchprobe"
+Homepage = "https://github.com/yzzhu-ron/outer_loop/tree/codex/searchprobe-full-paper/packages/searchprobe"
+Documentation = "https://github.com/yzzhu-ron/outer_loop/blob/codex/searchprobe-full-paper/packages/searchprobe/README.md"
+Source = "https://github.com/yzzhu-ron/outer_loop/tree/codex/searchprobe-full-paper/packages/searchprobe/src/searchprobe"
 Issues = "https://github.com/yzzhu-ron/outer_loop/issues"
 
 [project.scripts]
 searchprobe = "searchprobe.cli:main"
+searchprobe-demo = "searchprobe.demo:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+searchprobe = ["example_data/*.json", "example_data/*.jsonl"]

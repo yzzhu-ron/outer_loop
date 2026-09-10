@@ -1,0 +1,69 @@
+{
+  "version": "1.0.0",
+  "date": "2026-09-10",
+  "stage": "Exploratory capacity/transport diagnostic using previously inspected target families",
+  "question": "Can query-specific source utility models recover useful action-selection headroom before further probe acquisition work?",
+  "not_claimed": ["new algorithm", "new target confirmation", "probe or onboarding benefit", "held-out-family hyperparameter validation", "population generalization"],
+  "data": {
+    "families": ["fiqa", "nfcorpus", "scifact"],
+    "backends": ["bm25", "dense"],
+    "source_train_queries_per_family": 128,
+    "source_calibration_queries_per_family": 32,
+    "target_test_queries": {"fiqa": 150, "nfcorpus": 65, "scifact": 150},
+    "new_queries_generations_or_retrieval_calls": 0,
+    "actions": ["original", "keywords", "semantic", "hyde", "decomposed"],
+    "features": "The original eight deployable lexical features followed by384 frozen MiniLM query coordinates; no corpus or probe features added.",
+    "portable_export": "Deduplicate query IDs/features/buckets across backends per family. Preserve train/calibration/test action scores, test action costs, archived router choices/model label, RRF-all per-query scores, and input hashes. No raw documents/query text or model download is needed to rerun.",
+    "evidence": "evidence.json"
+  },
+  "folds": {
+    "outer": "Leave one corpus family out and use only the two same-backend source families. Backend identity is documented side information.",
+    "fit": "Source train only; never refit on calibration or target outcomes.",
+    "select": "Highest equal-source-family mean calibration nDCG@10, using source calibration queries only.",
+    "calibration_limitation": "Calibration queries are new queries within the source corpora. This does not validate transfer to a new corpus family, and repeated research use makes all three target families development data.",
+    "freeze_selection": "Persist the source-selected model names before loading/scoring that fold's test outcomes. The candidate grid and source-only selection rule are frozen before the run."
+  },
+  "candidate_grid": {
+    "total": 15,
+    "global_mean": "Equal mean of the two source-family mean action utility vectors; the same global prior is used for shrinkage.",
+    "ridge": {"alphas": [10, 100], "features": "all392", "scaler": "StandardScaler fit on source train only", "estimator": "sklearn Ridge defaults"},
+    "cosine_knn": {
+      "features": "L2-normalize only coordinates8:392; lexical features do not enter distance",
+      "total_neighbors": [16, 64, 128],
+      "neighborhoods": ["balanced: k/2 nearest queries from each source family and equal-family mean", "pooled: k nearest queries across both source families"],
+      "neighbor_weighting": "Uniform selected-neighbor weights, not similarity weighting",
+      "global_mean_shrinkage": [0, 0.5],
+      "prediction": "(1-shrinkage)*local_action_means + shrinkage*global_prior",
+      "distance_ties": "Stable source-family/query export order"
+    },
+    "selection_ties": "First in registered order: global mean, ridge10, ridge100, then k ascending, shrinkage ascending, balanced before pooled.",
+    "target_grid_reporting": "Report all15 target candidate outcomes for transparency but never select a model using those outcomes."
+  },
+  "methods": {
+    "primary": "source_selected_query: source-calibration winner over all15 candidates",
+    "secondary": ["source_selected_knn: source-calibration winner among12 kNN candidates", "reconstructed_existing_router: source-calibration winner among fixed/ridge10/ridge100"],
+    "baselines": ["original", "source_fixed", "HyDE", "archived existing router", "RRF all five action result lists"],
+    "reconstruction_audit": "Compare reconstructed choices and nDCG numerically with the archived semantic router. Report mismatches rather than assuming the algorithms are identical.",
+    "label_oracles": ["target-best fixed action", "per-query best action"],
+    "fusion": "Import the already-computed RRF-all vector from full_paper/natural/results/paired.json after exact query-ID matching; no new fusion selection is performed here."
+  },
+  "costs": {
+    "onboarding": 0,
+    "single_action_serving": "Selected cached action's search/LLM/token charges; cache reuse does not imply free serving.",
+    "feature_cost": "Ridge/kNN require one query MiniLM encoding; fixed/original/HyDE/archive-fixed need no extra routing encoder. Report original batched feature-generation time per encoded query and separate measured predictor time. Batched encoder averages are not measured online latency.",
+    "fusion": "Sum search calls across actions, but charge the shared semantic/HyDE/decomposed format-generating call and tokens once. The three generation entries must match.",
+    "not_cost_matched": "RRF-all executes six searches and one shared generation per query under these caches. It is a stronger inference-time comparator, not a cost-matched single-action router."
+  },
+  "evaluation": {
+    "primary_metric": "nDCG@10 per environment and equal-family/equal-backend macro",
+    "secondary": ["recall@10 where available", "oracle regret", "action counts", "changed fraction from source fixed", "resource costs", "reconstruction agreement"],
+    "intervals": "2000 paired-query bootstrap replicates per existing environment for primary vs fixed/archive/original/HyDE/RRF; seed20260910. Conditional descriptive intervals, no multiple-comparison or research-reuse correction, no population/new-family claim.",
+    "no_macro_intervals": "No independent-environment bootstrap that would ignore shared queries across backends.",
+    "all_outcomes": true
+  },
+  "freeze": {
+    "files": ["protocol.v1.json", "experiment.py", "export_evidence.py", "test_experiment.py", "evidence.json"],
+    "artifact": "freeze.v1.json",
+    "enforcement": "Hash verification before the registered model fitting/evaluation; changed code/evidence requires a new version."
+  }
+}

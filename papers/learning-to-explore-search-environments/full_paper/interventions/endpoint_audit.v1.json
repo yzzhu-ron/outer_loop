@@ -1,0 +1,173 @@
+{
+  "adapter_sha256": "560e2d8ef0453d01ead5e0cbbe9db5f073cc075e00b48dd9d874128073f6e4c8",
+  "corpora": {
+    "fiqa": {
+      "distinct_required_query_strings": 2625,
+      "endpoint_checks": {
+        "bm25": {
+          "candidate_schema_mismatches": 0,
+          "empty_ranklists": 0,
+          "missing_required_queries": 0,
+          "probe_observations_exact": 384,
+          "rank_cache_identity": "c8fc1af3d2dbd02e085f2bab109080e06890f1985a54e83a87834e346aaf9909",
+          "raw_ranklists_exact": 2625,
+          "task_action_ranklists_exact": 1710
+        },
+        "dense": {
+          "candidate_schema_mismatches": 0,
+          "empty_ranklists": 0,
+          "missing_required_queries": 0,
+          "probe_observations_exact": 384,
+          "rank_cache_identity": "5ba7da34517e84c32869123df5f5da0dbbdad984688259b64855184d864d413f",
+          "raw_ranklists_exact": 2625,
+          "task_action_ranklists_exact": 1710
+        }
+      },
+      "probe_candidates_by_seed": {
+        "11": 128,
+        "23": 128,
+        "47": 128
+      },
+      "task_queries_by_partition": {
+        "calibration": 32,
+        "test": 150,
+        "train": 128,
+        "utility": 32
+      }
+    },
+    "nfcorpus": {
+      "distinct_required_query_strings": 1917,
+      "endpoint_checks": {
+        "bm25": {
+          "candidate_schema_mismatches": 0,
+          "empty_ranklists": 36,
+          "missing_required_queries": 0,
+          "probe_observations_exact": 384,
+          "rank_cache_identity": "635e70defd90490d6d40a095e348b3b9d72a0e452bf2acae422157bc914518ef",
+          "raw_ranklists_exact": 1917,
+          "task_action_ranklists_exact": 1285
+        },
+        "dense": {
+          "candidate_schema_mismatches": 0,
+          "empty_ranklists": 0,
+          "missing_required_queries": 0,
+          "probe_observations_exact": 384,
+          "rank_cache_identity": "4a5394c3a1df942b77c4a13e86bfc03c9ac9eef17125f9abdfd9db3bb547f647",
+          "raw_ranklists_exact": 1917,
+          "task_action_ranklists_exact": 1285
+        }
+      },
+      "probe_candidates_by_seed": {
+        "11": 128,
+        "23": 128,
+        "47": 128
+      },
+      "task_queries_by_partition": {
+        "calibration": 32,
+        "test": 65,
+        "train": 128,
+        "utility": 32
+      }
+    },
+    "scifact": {
+      "distinct_required_query_strings": 2624,
+      "endpoint_checks": {
+        "bm25": {
+          "candidate_schema_mismatches": 0,
+          "empty_ranklists": 0,
+          "missing_required_queries": 0,
+          "probe_observations_exact": 384,
+          "rank_cache_identity": "44c00c9753466aa9ef6a2407bc1fbc7654bd9bc74a888fb6cf692d72239b3072",
+          "raw_ranklists_exact": 2624,
+          "task_action_ranklists_exact": 1710
+        },
+        "dense": {
+          "candidate_schema_mismatches": 0,
+          "empty_ranklists": 0,
+          "missing_required_queries": 0,
+          "probe_observations_exact": 384,
+          "rank_cache_identity": "0d49478674c598bca24c550b70d4e11ff96a2a779c85045aa9e0bdee7dc3e6f0",
+          "raw_ranklists_exact": 2624,
+          "task_action_ranklists_exact": 1710
+        }
+      },
+      "probe_candidates_by_seed": {
+        "11": 128,
+        "23": 128,
+        "47": 128
+      },
+      "task_queries_by_partition": {
+        "calibration": 32,
+        "test": 150,
+        "train": 128,
+        "utility": 32
+      }
+    }
+  },
+  "input_files": {
+    "semantic_pilot/cache/fiqa_bm25_outcomes.json": {
+      "bytes": 5251949,
+      "sha256": "5b585b292b6e301fcd8ee5a2e091233ab0d79b2ae7c03c07d8f9c3b5087f3168"
+    },
+    "semantic_pilot/cache/fiqa_bm25_ranks.json": {
+      "bytes": 775578,
+      "sha256": "9c45ca64adb9578df6f9f1304f1125b87b4d2ce82f166fbb8f258cbe188c5cb0"
+    },
+    "semantic_pilot/cache/fiqa_dense_outcomes.json": {
+      "bytes": 5255989,
+      "sha256": "3df55aecfb95ecdbc702ecc0cdda0b2c278d357639d8dfefe6ad2de3e54789c3"
+    },
+    "semantic_pilot/cache/fiqa_dense_ranks.json": {
+      "bytes": 775647,
+      "sha256": "06b8f08bf585b4c108cff3167ebda292d708c169328302f517eae92c8d1ecca6"
+    },
+    "semantic_pilot/cache/nfcorpus_bm25_outcomes.json": {
+      "bytes": 3987850,
+      "sha256": "1aa56629c010c9e57ea1894c9732ff1317177cd3eb39aa1507f79e7239008cfa"
+    },
+    "semantic_pilot/cache/nfcorpus_bm25_ranks.json": {
+      "bytes": 598786,
+      "sha256": "e194275ad2c119ef525056df9250623d757c5379678d6163b558e30327c8810d"
+    },
+    "semantic_pilot/cache/nfcorpus_dense_outcomes.json": {
+      "bytes": 4029472,
+      "sha256": "c82a19801f565a4b3857030e4da53dd7951e35e75f1779162e39362cce102fa7"
+    },
+    "semantic_pilot/cache/nfcorpus_dense_ranks.json": {
+      "bytes": 613630,
+      "sha256": "adbd853cd2b1dc9cfbe98ee1b0a1d4c5c827541d417a4c6054ae45b6d3c35449"
+    },
+    "semantic_pilot/cache/prepared.json": {
+      "bytes": 5481867,
+      "sha256": "99a3615452345de77f9d09744dcf672480c1df8d822a015148ef7811608d1a25"
+    },
+    "semantic_pilot/cache/scifact_bm25_outcomes.json": {
+      "bytes": 5283883,
+      "sha256": "0f145ca33be07474ba0c9eb2dfa630ad3e9119b57bb8f7d396f708976d19fca7"
+    },
+    "semantic_pilot/cache/scifact_bm25_ranks.json": {
+      "bytes": 868285,
+      "sha256": "1a2efc63fdee5d5456d34b67d12a6f325b1ac681a73bc45915944efc3897a5c5"
+    },
+    "semantic_pilot/cache/scifact_dense_outcomes.json": {
+      "bytes": 5284967,
+      "sha256": "b5223aff21860833f00691f18440e4b41c351e854efff85f25a677e2a69446f8"
+    },
+    "semantic_pilot/cache/scifact_dense_ranks.json": {
+      "bytes": 868136,
+      "sha256": "6794423d3b161cdf7a19efdda4e5df6e020e31e3e85cf3eb2a6146749bc1f8e8"
+    }
+  },
+  "interior_mixture_outcomes_computed": false,
+  "prepared_contract": {
+    "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+    "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+    "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+    "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+    "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+  },
+  "schema_version": 1,
+  "status": "endpoint_validation_only",
+  "task_utility_metrics_computed": false,
+  "utility_models_fitted": false
+}
