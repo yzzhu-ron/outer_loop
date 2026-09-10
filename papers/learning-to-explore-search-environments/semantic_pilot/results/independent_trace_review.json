@@ -1,0 +1,333 @@
+{
+  "all_checks_passed": true,
+  "files": 18,
+  "reconstructed_raw_queries_and_ranks": 2304,
+  "aggregate": {
+    "records": 1728,
+    "valid_records": 1728,
+    "invalid_records": 0,
+    "accounting_violation_records": 0,
+    "preflight_records": 0,
+    "observed_records": 1728,
+    "exact_identical_query_pairs": 0,
+    "token_bag_identical_query_pairs": 0,
+    "zero_contrast_pairs": 1360,
+    "saturated_success_pairs": 1195,
+    "floor_pairs": 123,
+    "raw_records": 2304,
+    "excluded_decomposed": 576,
+    "raw_nominal_search_calls": 5184,
+    "strict_nominal_search_calls": 3456
+  },
+  "warnings_by_number_of_files": {
+    "observed_zero_contrast": 18,
+    "saturated_success": 18,
+    "observed_floor": 10
+  },
+  "per_file": [
+    {
+      "file": "fiqa_bm25_11.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 36,
+      "rank1_both": 35,
+      "floor_both": 22,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "fiqa_bm25_23.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 33,
+      "rank1_both": 47,
+      "floor_both": 15,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "fiqa_bm25_47.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 42,
+      "rank1_both": 28,
+      "floor_both": 25,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "fiqa_dense_11.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 34,
+      "rank1_both": 51,
+      "floor_both": 8,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "fiqa_dense_23.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 25,
+      "rank1_both": 48,
+      "floor_both": 18,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "fiqa_dense_47.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 31,
+      "rank1_both": 36,
+      "floor_both": 26,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "nfcorpus_bm25_11.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 21,
+      "rank1_both": 73,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "nfcorpus_bm25_23.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 30,
+      "rank1_both": 61,
+      "floor_both": 4,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "nfcorpus_bm25_47.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 21,
+      "rank1_both": 72,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "nfcorpus_dense_11.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 12,
+      "rank1_both": 82,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "nfcorpus_dense_23.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 25,
+      "rank1_both": 69,
+      "floor_both": 1,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "nfcorpus_dense_47.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 16,
+      "rank1_both": 76,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "scifact_bm25_11.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 8,
+      "rank1_both": 87,
+      "floor_both": 1,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "scifact_bm25_23.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 9,
+      "rank1_both": 80,
+      "floor_both": 3,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success",
+        "observed_floor"
+      ]
+    },
+    {
+      "file": "scifact_bm25_47.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 7,
+      "rank1_both": 89,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "scifact_dense_11.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 6,
+      "rank1_both": 88,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "scifact_dense_23.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 11,
+      "rank1_both": 81,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    },
+    {
+      "file": "scifact_dense_47.jsonl",
+      "raw": 128,
+      "strict": 96,
+      "excluded_decomposed": 32,
+      "nonzero": 1,
+      "rank1_both": 92,
+      "floor_both": 0,
+      "warnings": [
+        "observed_zero_contrast",
+        "saturated_success"
+      ]
+    }
+  ],
+  "frozen_text_audit_sha256": "071efd73432f2bceff03cf7606dbe936e1b0e643b58be8e7c999b3fa6f5ec330",
+  "strict_observed_buckets": {
+    "2": 744,
+    "3": 984
+  },
+  "strict_family_counts": {
+    "direct_question": 864,
+    "indirect_question": 864
+  },
+  "upstream_excluded_candidate_reasons": {},
+  "interpretation": {
+    "scope": "Admitted candidate pool, excluding decomposition; not selected deployment histories.",
+    "costs": "Nominal independently selected-pair search calls; not actual cached/backend/model spend.",
+    "malformed": "Zero malformed, duplicate-ID, or accounting-violation records in current files.",
+    "warnings": "Endpoint zero contrast, rank-1 saturation, and absence at cutoff; not semantic validation or a guarantee about future-task value.",
+    "coverage": "Default inferred grid includes only observed buckets2/3. No sparse warning does not certify coverage of unobserved buckets0/1."
+  },
+  "review_type": "Assistant-conducted independent technical cross-check; not external human review.",
+  "target_query_buckets": {
+    "fiqa_bm25": {
+      "0": 31,
+      "1": 20,
+      "2": 61,
+      "3": 38
+    },
+    "fiqa_dense": {
+      "0": 31,
+      "1": 20,
+      "2": 61,
+      "3": 38
+    },
+    "nfcorpus_bm25": {
+      "0": 57,
+      "1": 4,
+      "2": 4
+    },
+    "nfcorpus_dense": {
+      "0": 57,
+      "1": 4,
+      "2": 4
+    },
+    "scifact_bm25": {
+      "0": 14,
+      "1": 21,
+      "2": 36,
+      "3": 79
+    },
+    "scifact_dense": {
+      "0": 14,
+      "1": 21,
+      "2": 36,
+      "3": 79
+    }
+  },
+  "missing_probe_buckets": [
+    0,
+    1
+  ],
+  "coverage_scope": "Post-result support audit: all raw probes are in buckets2/3. Default strict audits cross observed bucket union; missing0/1 require explicitly declared expected buckets. Shared queries and seed pools are correlated.",
+  "trace_provenance_sha256": "888ed105d4147e6c85a203a05e399b6aaa44d98cc7b855c79589e075e3590efe"
+}

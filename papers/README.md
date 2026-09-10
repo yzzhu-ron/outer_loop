@@ -13,10 +13,12 @@
   develops the selected direction into an ICLR 2027 main-track discussion
   proposal: a concrete method, source/target information contract, closest prior
   work, decisive pilot, cost and transfer evaluation, and open research choices.
-  The first [executable pilot and result ledger](learning-to-explore-search-environments/)
-  now cover full-corpus SciFact/FiQA retrieval with BM25 and MiniLM. The reduced
-  lexical action/probe library has limited oracle headroom and no profile gain;
-  stronger actions and probes are needed before learning a selector.
+  The [research report](learning-to-explore-search-environments/searchprobe-research-report.html)
+  now joins a completed semantic experiment on SciFact/FiQA/NFCorpus, a responsive
+  source-world follow-up, executable finite-model theory, and the installable
+  [SearchProbe diagnostics](../packages/searchprobe/). The original router could
+  not respond to probes; the intervention changes decisions and improves SciFact
+  dense retrieval descriptively, with mixed transfer and substantial uncertainty.
 
 These research documents are self-contained HTML reports. Open them locally
 in a browser or HTML preview for the formatted view; GitHub displays their source.

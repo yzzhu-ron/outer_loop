@@ -1,23 +1,40 @@
 # Search environment exploration
 
-This track now has an executable **exploratory ceiling-and-signal pilot** on
-the full SciFact and FiQA corpora, using BM25 and a pinned MiniLM encoder.
-It follows the first feasibility stage of the
-[proposal](search-environment-exploration-proposal.html), which remains the
-original discussion document.
+This track turns the [proposal](search-environment-exploration-proposal.html)
+into a semantic retrieval experiment, executable decision-theory examples, and
+an installable diagnostic tool.
 
-Start with the [result ledger](pilot/RESULTS.md), the three
-[figures](pilot/results/figures/), and the frozen
-[pilot protocol](pilot/PROTOCOL.md). Machine-readable scores, profiles,
-conditional intervals, source models, and provenance are in
-[`pilot/results/`](pilot/results/).
+Start with the [research report](searchprobe-research-report.html), which joins
+the evidence and an interactive counterexample. The
+[semantic experiment](semantic_pilot/README.md) uses SciFact, FiQA and NFCorpus,
+BM25 and MiniLM, five query actions, and four probe selectors. Its source-trained
+router and selector never use target-task labels during onboarding. All three
+corpora remain exploratory, and retrieval scores do not measure answer correctness.
 
-This reduced pilot uses deterministic lexical transformations and extractive
-document probes. It does **not** implement semantic LLM rewrites, learned probe
-selection, or an end-to-end search agent. Neither corpus is an untouched final
-test family after this pilot.
+The [completed results](semantic_pilot/RESULTS.md) diagnose a router that could
+not change actions within the allowed budget. A separately frozen source-world
+intervention removes that bottleneck: SciFact/dense nDCG@10 rises from .6376 to
+.6795 after 32 probes. Its conditional interval includes zero; results across
+the other environments are mixed. Both experiments and every selector remain
+in the evidence ledger.
 
-## Reproduce
+[SearchProbe](../../packages/searchprobe/) runs locally with Python's standard
+library. It audits paired-query logs for collisions, ties, saturation, coverage
+and costs. A separate command computes the exact minimax decision radius of a
+declared source utility model, including conflicts that pairwise checks miss.
+The third command, `response-audit`, determines whether declared score bounds
+allow any change in a router's decisions, without task relevance labels.
+The [theory note](theory/theory.md) gives the assumptions, proofs and limitations;
+the tool does not certify transfer to an unseen corpus.
+
+The first [lexical pilot](pilot/RESULTS.md) is preserved with its
+[figures](pilot/results/figures/), [protocol](pilot/PROTOCOL.md), and
+[machine-readable evidence](pilot/results/). Its zero profile gain motivated
+the stronger semantic experiment. Follow the
+[semantic reproduction instructions](semantic_pilot/README.md#reproduce) for
+the continuation; the commands below reproduce only that original lexical pilot.
+
+## Reproduce the lexical pilot
 
 From the repository root, create a separate environment and install the exact
 dependency versions used for the run (Python 3.14.0 on macOS arm64):

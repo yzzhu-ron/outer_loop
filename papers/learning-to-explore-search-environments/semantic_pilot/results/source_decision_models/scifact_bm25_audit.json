@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "audit_kind": "source_model_decision_radius",
+  "status": "computed",
+  "model_id": "semantic-training-sources-for-scifact-bm25",
+  "target_regret_guarantee": false,
+  "scope": "Exact conditional regret certificate for the supplied finite source utility matrix; not a target-regret guarantee.",
+  "provenance": {
+    "utility_source": "Measured BEIR nDCG@10 for the five frozen query actions; input hashes and IDs in source_decision_provenance.json.",
+    "source_split": "Only router-training partitions of the two other corpora; no source calibration/utility or target-task labels.",
+    "task_distribution": "Uniform over 128 selected source training queries within each world. Cohorts differ by world. The minimax prior is adversarial, not an empirical corpus frequency.",
+    "synthetic": false
+  },
+  "declared_assumptions": [
+    "Conditional finite diagnostic: the two source worlds define this model, without asserting target coverage or observational indistinguishability.",
+    "Recorded floating-point nDCG values are converted to exact decimal rationals; exact optimization does not remove measurement or sampling uncertainty.",
+    "Each policy uses one fixed query action on every task; the oracle chooses the best fixed policy within each source world.",
+    "A conflict can motivate exploration only if permitted observations can distinguish its decision-relevant worlds; this audit does not establish that link."
+  ],
+  "model": {
+    "actions": [
+      "original",
+      "keywords",
+      "semantic",
+      "hyde",
+      "decomposed"
+    ],
+    "world_ids": [
+      "fiqa_bm25",
+      "nfcorpus_bm25"
+    ],
+    "utilities_exact": [
+      [
+        "158838393272860043/640000000000000000",
+        "1547532616976808337/6400000000000000000",
+        "251428997806060567/1600000000000000000",
+        "1061510683608440713/6400000000000000000",
+        "1920195024503128039/12800000000000000000"
+      ],
+      [
+        "691637610118480489/2560000000000000000",
+        "3469192638907306453/12800000000000000000",
+        "2984623125784516109/12800000000000000000",
+        "3240486338230073393/12800000000000000000",
+        "3187889982149977297/12800000000000000000"
+      ]
+    ]
+  },
+  "decision_radius": {
+    "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+    "value": 0.0007576808622126543
+  },
+  "pairwise_sum_incompatibility": {
+    "exact": "1375573539363001/1600000000000000000",
+    "value": 0.0008597334621018756
+  },
+  "pairwise_radius_lower_bound": {
+    "exact": "1375573539363001/3200000000000000000",
+    "value": 0.0004298667310509378
+  },
+  "common_optimal_actions": [],
+  "minimax_action_mixture": [
+    {
+      "action": "original",
+      "probability": {
+        "exact": "40851315751792093/46353609909244097",
+        "value": 0.8812973969400665
+      }
+    },
+    {
+      "action": "keywords",
+      "probability": {
+        "exact": "5502294157452004/46353609909244097",
+        "value": 0.11870260305993353
+      }
+    },
+    {
+      "action": "semantic",
+      "probability": {
+        "exact": "0",
+        "value": 0.0
+      }
+    },
+    {
+      "action": "hyde",
+      "probability": {
+        "exact": "0",
+        "value": 0.0
+      }
+    },
+    {
+      "action": "decomposed",
+      "probability": {
+        "exact": "0",
+        "value": 0.0
+      }
+    }
+  ],
+  "worst_case_source_prior": [
+    {
+      "world_id": "fiqa_bm25",
+      "weight": {
+        "exact": "5502294157452004/46353609909244097",
+        "value": 0.11870260305993353
+      }
+    },
+    {
+      "world_id": "nfcorpus_bm25",
+      "weight": {
+        "exact": "40851315751792093/46353609909244097",
+        "value": 0.8812973969400665
+      }
+    }
+  ],
+  "certificate": {
+    "primal_max_regret": {
+      "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+      "value": 0.0007576808622126543
+    },
+    "dual_min_expected_regret": {
+      "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+      "value": 0.0007576808622126543
+    },
+    "duality_gap": {
+      "exact": "0",
+      "value": 0.0
+    },
+    "witness_support": 2,
+    "witness_support_upper_bound": 2,
+    "per_world_mixture_regret": [
+      {
+        "world_id": "fiqa_bm25",
+        "regret": {
+          "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+          "value": 0.0007576808622126543
+        }
+      },
+      {
+        "world_id": "nfcorpus_bm25",
+        "regret": {
+          "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+          "value": 0.0007576808622126543
+        }
+      }
+    ],
+    "per_action_witness_regret": [
+      {
+        "action": "original",
+        "regret": {
+          "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+          "value": 0.0007576808622126543
+        }
+      },
+      {
+        "action": "keywords",
+        "regret": {
+          "exact": "56193988996328163429443408551093/74165775854790555200000000000000000",
+          "value": 0.0007576808622126543
+        }
+      },
+      {
+        "action": "semantic",
+        "regret": {
+          "exact": "3275915375602412798294383674657911/74165775854790555200000000000000000",
+          "value": 0.04417017603936807
+        }
+      },
+      {
+        "action": "hyde",
+        "regret": {
+          "exact": "3785244126023291891650156027410079/148331551709581110400000000000000000",
+          "value": 0.025518806231019785
+        }
+      },
+      {
+        "action": "decomposed",
+        "regret": {
+          "exact": "2300702131775763267404578863443349/74165775854790555200000000000000000",
+          "value": 0.03102107549282996
+        }
+      }
+    ]
+  },
+  "diagnostics": [],
+  "required_interpretation": [
+    "Each action denotes the same available policy/router in every world; quality is expected over the declared task distribution.",
+    "Utilities are treated as exact supplied numbers; source-label sampling error and model misspecification are not covered by this certificate.",
+    "The witness prior is an adversarial certificate, not a learned posterior or an estimate of target-world frequency.",
+    "The action mixture is a model solution, not a recommendation to deploy it on an unvalidated target.",
+    "A radius of zero does not certify target performance, source-family coverage, useful probes, or source-to-target transfer."
+  ],
+  "what_this_model_cannot_establish": [
+    "Whether the target world or its workload is represented by the supplied source worlds.",
+    "Whether real probe transcripts distinguish worlds or produce calibrated posteriors/confidence sets.",
+    "Whether source labels, utility estimates, declared splits, and task-mix assumptions are correct or free of leakage.",
+    "Whether any exploration policy reduces actual target regret or repays its cost."
+  ],
+  "method": {
+    "solver": "Exact rational primal/dual vertex enumeration",
+    "vertex_systems_enumerated": 40,
+    "max_vertex_systems": 20000,
+    "precision": "Integer/rational/decimal inputs treated exactly; display values use floating point.",
+    "credit": "Adapted from outer_loop theory/finite_decisions.py; standard finite minimax statistical decision theory and LP duality."
+  }
+}

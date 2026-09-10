@@ -1,0 +1,29 @@
+{
+  "code_sha256": "e2f510dafad27855ebc6da3227924a3457ef83c7bdf84b1cdfb8ceae5bd82dce",
+  "input_sha256": {
+    "results/models.json": "b579b44f19b5cdb5f58abc23755b860e0eeee50d5c9e32393f3081a813455073",
+    "results/paired_outcomes.json": "c903666243f1de29e13cfed682341202078fe73a2e5637c6fd5c11321e576041",
+    "results/analysis_metadata.json": "befe7694a560cda7a8849b646390b9b77e363a583a74f94691acc3d7b34826c5",
+    "cache/fiqa_bm25_outcomes.json": "5b585b292b6e301fcd8ee5a2e091233ab0d79b2ae7c03c07d8f9c3b5087f3168",
+    "cache/fiqa_dense_outcomes.json": "3df55aecfb95ecdbc702ecc0cdda0b2c278d357639d8dfefe6ad2de3e54789c3",
+    "cache/nfcorpus_bm25_outcomes.json": "1aa56629c010c9e57ea1894c9732ff1317177cd3eb39aa1507f79e7239008cfa",
+    "cache/nfcorpus_dense_outcomes.json": "c82a19801f565a4b3857030e4da53dd7951e35e75f1779162e39362cce102fa7",
+    "cache/scifact_bm25_outcomes.json": "0f145ca33be07474ba0c9eb2dfa630ad3e9119b57bb8f7d396f708976d19fca7",
+    "cache/scifact_dense_outcomes.json": "b5223aff21860833f00691f18440e4b41c351e854efff85f25a677e2a69446f8"
+  },
+  "output_sha256": {
+    "router_sensitivity.csv": "08301e4fda007d97690cf47daf191cb370fabf478fce0c17474c1d173e7ebbe9",
+    "router_sensitivity_queries.json": "974156a319e6e874119af6549cab2ad8c48144e0a403c82eb1022eeb1fea814b",
+    "full_pool_sensitivity.csv": "6fe1928aaccb6439ca2da57af18b32a1f5053840bbf150a5ff2bddade6492bc6"
+  },
+  "uses_target_task_utility_labels": false,
+  "uses_unselected_probe_outcomes": true,
+  "uses_future_query_features_for_frozen_evaluation": true,
+  "learning_sha256": "8a94bf4f3348944cb13e019337a10ed9120c5132e6393b18d92dc394c8132203",
+  "guarantee": "For any history of at most B paired probes with RR differences in [-1,1], each linear correction is bounded by coefficient_l1*B/(B+shrinkage). Original correction is zero. Certified queries cannot change action in this frozen profile router; all other queries are only potentially changeable.",
+  "conservatism": "The four feature extremes and the winner/challenger bounds need not be jointly attainable under a shared total probe budget. The test intentionally overestimates how much decisions could change.",
+  "bounded_utility_statement": "If per-query utilities lie in [0,1], the absolute mean utility change is at most the uncertified query fraction. This upper bound requires no task labels and is usually loose.",
+  "floating_point": "Positive bounds rounded upward once; strict margin comparisons add 1e-12 slack. This is not formally verified interval arithmetic.",
+  "full_pool_warning": "Optional hindsight diagnostic only. Combining every probe can cancel useful subsets, so unchanged full-pool actions do not establish that all subsets are useless. It is not a selector oracle or statistical generalization claim.",
+  "cost_scope": "Full-pool search counts are logical probe-pair searches; sampling/generation setup remains separately recorded in the main cost ledger."
+}

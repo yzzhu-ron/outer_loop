@@ -1,0 +1,939 @@
+{
+  "datasets": {
+    "fiqa": {
+      "actual_generation_cost": {
+        "output_tokens": 58391,
+        "prompt_tokens": 194670,
+        "seconds": 730.2350768273463
+      },
+      "examples": [
+        {
+          "body_excerpt": "\"A bit strange but okay.  The way I would think about this is again that you need to determine for what purpose you're computing this, in much the same way you would if you were to build out the model. The IPO valuation is not going to be relevant to the accretion/dilution analysis unless you're trying to determine whether the transaction was net accretive at exit. But that's a weird analysis to do. For longer holding periods like that you're more likely to look at IRR, not EPS. EPS is something investors look at over the short to medium term to get a sense of whether the company is making good acquisition decisions. And to do that short-to-m",
+          "document_id": "108770",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "7325a486085c6bf2f1c6f7562d86740120893801849483e39947f89af61d1922",
+              "source": "generated"
+            },
+            "direct_question": "Should liquidation value be included in accretion/dilution analysis for a standalone operating company?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "Is it appropriate to use IPO valuation or liquidation value as a basis for assessing whether an acquisition boosts earnings per share over a short to medium-term horizon, especially when the analysis focuses on operational performance rather than long-term investment returns?",
+            "raw_response": "{\"direct_question\": \"Should liquidation value be included in accretion/dilution analysis for a standalone operating company?\", \"indirect_question\": \"Is it appropriate to use IPO valuation or liquidation value as a basis for assessing whether an acquisition boosts earnings per share over a short to medium-term horizon, especially when the analysis focuses on operational performance rather than long-term investment returns?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.0544840826187283,
+              "batch_id": "4da886bd45e943cd80cf9392bcc585ab",
+              "batch_output_tokens": 436,
+              "batch_prompt_seconds": 12.900019750348292,
+              "batch_prompt_tokens": 3455,
+              "batch_size": 8,
+              "batch_wall_seconds": 15.955282000009902,
+              "incurred_output_tokens": 79,
+              "incurred_prompt_tokens": 870,
+              "incurred_seconds": 1.9944102500012377,
+              "output_tokens": 79,
+              "output_tokens_without_stop": 78,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 870,
+              "seconds": 1.9944102500012377,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": ""
+        },
+        {
+          "body_excerpt": "\"Question:  Why is \"\"negative equity\"\" on a home such a huge deal? Whether or not your home equity/mortgage balance is positive or negative, it's not like your monthly payments are changing at all, right? Regardless of if you have a mortgage or were renting an apartment, you'd still have to pay to live there, right? If every month you're still going to be out $1000 one or another, some equity is better than no equity right?\"",
+          "document_id": "139025",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "9d4c2789d3db7a5217cf72d3d9608827e2877b8bfd7627ac6e3a59bc670733ad",
+              "source": "generated"
+            },
+            "direct_question": "What makes negative equity in a home so significant?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "How does owning a home with less value than the mortgage affect financial stability and potential future consequences for the homeowner?",
+            "raw_response": "{\"direct_question\": \"What makes negative equity in a home so significant?\", \"indirect_question\": \"How does owning a home with less value than the mortgage affect financial stability and potential future consequences for the homeowner?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.0544840826187283,
+              "batch_id": "4da886bd45e943cd80cf9392bcc585ab",
+              "batch_output_tokens": 436,
+              "batch_prompt_seconds": 12.900019750348292,
+              "batch_prompt_tokens": 3455,
+              "batch_size": 8,
+              "batch_wall_seconds": 15.955282000009902,
+              "incurred_output_tokens": 45,
+              "incurred_prompt_tokens": 377,
+              "incurred_seconds": 1.9944102500012377,
+              "output_tokens": 45,
+              "output_tokens_without_stop": 44,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 377,
+              "seconds": 1.9944102500012377,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": ""
+        },
+        {
+          "body_excerpt": "From what I read, if the monthly average of the stock falls below 1 dollar, it can be delisted from the NYSE, which of course means you lose everything.  I've been playing this same stock on a day by day basis.  Twice I've finished up 15% on the day, with AMR, but  I don't plan on being able to do this for much longer though.  I dumped it all today just in case they decide to remove it this weekend.",
+          "document_id": "146479",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "19f6832811b37731f1c77177f04df8a5d13c98b2809e2194e5553f4dcfb528c9",
+              "source": "generated"
+            },
+            "direct_question": "What happens to a stock if its monthly average price drops below $1 on the NYSE?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "How does the NYSE determine whether a stock will be delisted due to a declining average price over a month?",
+            "raw_response": "{\"direct_question\": \"What happens to a stock if its monthly average price drops below $1 on the NYSE?\", \"indirect_question\": \"How does the NYSE determine whether a stock will be delisted due to a declining average price over a month?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.0544840826187283,
+              "batch_id": "4da886bd45e943cd80cf9392bcc585ab",
+              "batch_output_tokens": 436,
+              "batch_prompt_seconds": 12.900019750348292,
+              "batch_prompt_tokens": 3455,
+              "batch_size": 8,
+              "batch_wall_seconds": 15.955282000009902,
+              "incurred_output_tokens": 55,
+              "incurred_prompt_tokens": 376,
+              "incurred_seconds": 1.9944102500012377,
+              "output_tokens": 55,
+              "output_tokens_without_stop": 54,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 376,
+              "seconds": 1.9944102500012377,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": ""
+        },
+        {
+          "body_excerpt": "How are you even comparing a turkey, that will be eaten, to child abuse?  Its not even the same ballpark, hell, its not even the same sport.  Its not about everything dies.  Its about, they are raised simply to eat.  Who cares if the handlers are mean to them.",
+          "document_id": "152618",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "8664f88dde14910e5fc016cce72f6378042fdd8fa55e1224a0fb956496c352f0",
+              "source": "generated"
+            },
+            "direct_question": "What is the comparison between raising turkeys for consumption and child abuse based on?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "In what ways do the conditions of raising turkeys for food resemble or differ from the treatment of children in abusive situations?",
+            "raw_response": "{\"direct_question\": \"What is the comparison between raising turkeys for consumption and child abuse based on?\", \"indirect_question\": \"In what ways do the conditions of raising turkeys for food resemble or differ from the treatment of children in abusive situations?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.0544840826187283,
+              "batch_id": "4da886bd45e943cd80cf9392bcc585ab",
+              "batch_output_tokens": 436,
+              "batch_prompt_seconds": 12.900019750348292,
+              "batch_prompt_tokens": 3455,
+              "batch_size": 8,
+              "batch_wall_seconds": 15.955282000009902,
+              "incurred_output_tokens": 53,
+              "incurred_prompt_tokens": 336,
+              "incurred_seconds": 1.9944102500012377,
+              "output_tokens": 53,
+              "output_tokens_without_stop": 52,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 336,
+              "seconds": 1.9944102500012377,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": ""
+        }
+      ],
+      "logical_generation_cost": {
+        "input_tokens": 194670,
+        "llm_calls": 486,
+        "output_tokens": 58391,
+        "seconds": 730.2350768273463
+      },
+      "probe_rewrite_count": 96,
+      "sampled_documents": 48,
+      "split": {
+        "archive_sha256": "32c7df99ed21252fdfb2cf3f5673502a8d245ee0c44c4a133570d92ce2b3ad02",
+        "selected_source_queries": 192,
+        "selected_test_blank_support_ids": [],
+        "selected_test_queries": 150,
+        "split": {
+          "assignment": "sha256(seed:sha256(normalized_content)), first 64 bits / 2**64",
+          "content_group_count": 57599,
+          "document_count": 57638,
+          "document_id_overlap_count": 0,
+          "documents_in_duplicate_groups": 42,
+          "duplicate_excess_document_count": 39,
+          "duplicate_group_count": 3,
+          "empty_body_document_count": 38,
+          "empty_content_document_count": 38,
+          "exploration_document_count": 11588,
+          "exploration_group_count": 11588,
+          "heldout_document_count": 46050,
+          "heldout_group_count": 46011,
+          "normalization": "NFKC, casefold, whitespace collapse; body text, title fallback for empty body",
+          "requested_exploration_fraction": 0.2,
+          "seed": 20260909
+        },
+        "test": {
+          "eligible_positive_judgment_count": 809,
+          "eligible_query_count": 402,
+          "excluded_query_count": 246,
+          "missing_document_count": 0,
+          "missing_document_ids": [],
+          "missing_document_query_count": 0,
+          "no_heldout_support_query_count": 53,
+          "no_positive_support_query_count": 0,
+          "original_positive_judgment_count": 1706,
+          "original_query_count": 648,
+          "partially_heldout_query_count": 193,
+          "query_retention_fraction": 0.6203703703703703,
+          "rule": "nonempty positive support; every judged document exists; all positive support held out"
+        },
+        "train": {
+          "eligible_positive_judgment_count": 6634,
+          "eligible_query_count": 3366,
+          "excluded_query_count": 2134,
+          "missing_document_count": 0,
+          "missing_document_ids": [],
+          "missing_document_query_count": 0,
+          "no_heldout_support_query_count": 488,
+          "no_positive_support_query_count": 0,
+          "original_positive_judgment_count": 14166,
+          "original_query_count": 5500,
+          "partially_heldout_query_count": 1646,
+          "query_retention_fraction": 0.612,
+          "rule": "nonempty positive support; every judged document exists; all positive support held out"
+        }
+      },
+      "task_count": 342,
+      "valid_probe_rewrites": 96,
+      "valid_question_pairs": 48,
+      "valid_task_rewrites": 342
+    },
+    "nfcorpus": {
+      "actual_generation_cost": {
+        "output_tokens": 48619,
+        "prompt_tokens": 167712,
+        "seconds": 623.9102872515796
+      },
+      "examples": [
+        {
+          "body_excerpt": "OBJECTIVE: To assess the life history consequences of cow milk consumption at different stages in early life (prenatal to adolescence), especially with regard to linear growth and age at menarche and the role of insulin-like growth factor I (IGF-I) in mediating a relationship among milk, growth and development, and long-term biological outcomes. METHODS: United States National Health and Nutrition Examination Survey (NHANES) data from 1999 to 2004 and review of existing literature. RESULTS: The literature tends to support milk's role in enhancing growth early in life (prior to age 5 years), but there is less support for this relationship duri",
+          "document_id": "MED-1223",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "300fd97b86f5d2a0fceadfb8a8723169b52f19e2c49c40a9ed76372b140a6c77",
+              "source": "generated"
+            },
+            "direct_question": "How does cow milk consumption during early life stages affect linear growth and age at menarche, and what role might insulin-like growth factor I play in these effects?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "What biological mechanisms could explain how drinking cow's milk in childhood and adolescence influences physical growth rates and the timing of puberty, and is there a known link to a hormone involved in growth regulation?",
+            "raw_response": "{\"direct_question\": \"How does cow milk consumption during early life stages affect linear growth and age at menarche, and what role might insulin-like growth factor I play in these effects?\", \"indirect_question\": \"What biological mechanisms could explain how drinking cow's milk in childhood and adolescence influences physical growth rates and the timing of puberty, and is there a known link to a hormone involved in growth regulation?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.759989954531193,
+              "batch_id": "50b3c99b4fef4f93b1421bc782121aae",
+              "batch_output_tokens": 563,
+              "batch_prompt_seconds": 16.306354211526923,
+              "batch_prompt_tokens": 5157,
+              "batch_size": 8,
+              "batch_wall_seconds": 20.067209707922302,
+              "incurred_output_tokens": 84,
+              "incurred_prompt_tokens": 571,
+              "incurred_seconds": 2.5084012134902878,
+              "output_tokens": 84,
+              "output_tokens_without_stop": 83,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 571,
+              "seconds": 2.5084012134902878,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "Cow milk consumption, insulin-like growth factor-I, and human biology: a life history approach."
+        },
+        {
+          "body_excerpt": "Sugar-sweetened drinks have been associated with several health problems. In the point narrative as presented below, we provide our opinion and review of the data to date that we need to reconsider consumption of dietary sugar based on the growing concern of obesity and type 2 diabetes. In the counterpoint narrative following our contribution, Drs. Kahn and Sievenpiper provide a defense and suggest that dietary sugar is not the culprit. Data from the National Health and Nutrition Examination Survey and U.S. Department of Agriculture dietary surveys along with commercial Homescan data on household purchases were used to understand changes in s",
+          "document_id": "MED-1707",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "3cb665dc7f4447e844ebd6ed4f0f5d0f6c3f7b05b76000e356e5277e3beeb920",
+              "source": "generated"
+            },
+            "direct_question": "Is there a link between sugar-sweetened drink consumption and the risk of obesity, type 2 diabetes, and metabolic syndrome?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "How does regularly drinking sugary beverages contribute to weight gain and metabolic disorders, and what evidence supports this connection?",
+            "raw_response": "{\"direct_question\": \"Is there a link between sugar-sweetened drink consumption and the risk of obesity, type 2 diabetes, and metabolic syndrome?\", \"indirect_question\": \"How does regularly drinking sugary beverages contribute to weight gain and metabolic disorders, and what evidence supports this connection?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.759989954531193,
+              "batch_id": "50b3c99b4fef4f93b1421bc782121aae",
+              "batch_output_tokens": 563,
+              "batch_prompt_seconds": 16.306354211526923,
+              "batch_prompt_tokens": 5157,
+              "batch_size": 8,
+              "batch_wall_seconds": 20.067209707922302,
+              "incurred_output_tokens": 61,
+              "incurred_prompt_tokens": 625,
+              "incurred_seconds": 2.5084012134902878,
+              "output_tokens": 61,
+              "output_tokens_without_stop": 60,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 625,
+              "seconds": 2.5084012134902878,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "Dietary sugar and body weight: have we reached a crisis in the epidemic of obesity and diabetes?: health be damned! Pour on the sugar."
+        },
+        {
+          "body_excerpt": "Roundup is a glyphosate-based herbicide used worldwide, including on most genetically modified plants that have been designed to tolerate it. Its residues may thus enter the food chain, and glyphosate is found as a contaminant in rivers. Some agricultural workers using glyphosate have pregnancy problems, but its mechanism of action in mammals is questioned. Here we show that glyphosate is toxic to human placental JEG3 cells within 18 hr with concentrations lower than those found with agricultural use, and this effect increases with concentration and time or in the presence of Roundup adjuvants. Surprisingly, Roundup is always more toxic than ",
+          "document_id": "MED-1741",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "dbdac33de3fe40ff5e8b73ea248843e37e919fef519bd4bb63c37028cef5dc61",
+              "source": "generated"
+            },
+            "direct_question": "Why is Roundup more toxic than glyphosate to human placental cells?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "How do Roundup adjuvants increase the toxicity of glyphosate in human placental cells, and what role do they play in disrupting estrogen-producing enzyme activity?",
+            "raw_response": "{\"direct_question\": \"Why is Roundup more toxic than glyphosate to human placental cells?\", \"indirect_question\": \"How do Roundup adjuvants increase the toxicity of glyphosate in human placental cells, and what role do they play in disrupting estrogen-producing enzyme activity?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.759989954531193,
+              "batch_id": "50b3c99b4fef4f93b1421bc782121aae",
+              "batch_output_tokens": 563,
+              "batch_prompt_seconds": 16.306354211526923,
+              "batch_prompt_tokens": 5157,
+              "batch_size": 8,
+              "batch_wall_seconds": 20.067209707922302,
+              "incurred_output_tokens": 61,
+              "incurred_prompt_tokens": 547,
+              "incurred_seconds": 2.5084012134902878,
+              "output_tokens": 61,
+              "output_tokens_without_stop": 60,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 547,
+              "seconds": 2.5084012134902878,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "Differential Effects of Glyphosate and Roundup on Human Placental Cells and Aromatase"
+        },
+        {
+          "body_excerpt": "Given the history of GMO conflict and debate, the GM animal future is dependent on the response of the regulatory landscape and its associated range of interest groups at national, regional and international levels. Focusing on the EU and the USA, this article examines the likely form of that multi-level response, the increased role of cultural values, the contribution of new and existing interest groups and the consequent implications for the commercialization of both green and red GM animal biotechnology. Copyright \u00a9 2012. Published by Elsevier Inc.",
+          "document_id": "MED-1753",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "eeb7a3d25416aeab4c34f0f0aa150ebee74d70ff969b8546a71ad873206c98e4",
+              "source": "generated"
+            },
+            "direct_question": "How do EU and USA regulatory environments shape the development and commercialization of green and red GM animals?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "What influence do national and international regulations, along with cultural values and interest groups, have on whether genetically modified animal technologies advance commercially in the United States and Europe?",
+            "raw_response": "{\"direct_question\": \"How do EU and USA regulatory environments shape the development and commercialization of green and red GM animals?\", \"indirect_question\": \"What influence do national and international regulations, along with cultural values and interest groups, have on whether genetically modified animal technologies advance commercially in the United States and Europe?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.759989954531193,
+              "batch_id": "50b3c99b4fef4f93b1421bc782121aae",
+              "batch_output_tokens": 563,
+              "batch_prompt_seconds": 16.306354211526923,
+              "batch_prompt_tokens": 5157,
+              "batch_size": 8,
+              "batch_wall_seconds": 20.067209707922302,
+              "incurred_output_tokens": 65,
+              "incurred_prompt_tokens": 393,
+              "incurred_seconds": 2.5084012134902878,
+              "output_tokens": 65,
+              "output_tokens_without_stop": 64,
+              "peak_memory_gb": 5.72195434,
+              "prompt_tokens": 393,
+              "seconds": 2.5084012134902878,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "The current state of GMO governance: are we ready for GM animals?"
+        }
+      ],
+      "logical_generation_cost": {
+        "input_tokens": 167712,
+        "llm_calls": 395,
+        "output_tokens": 48619,
+        "seconds": 623.9102872515796
+      },
+      "probe_rewrite_count": 92,
+      "sampled_documents": 46,
+      "split": {
+        "archive_sha256": "efe5be03f8c5b86a5870102d0599d227c8c6e2484328e68c6522560385671b0b",
+        "selected_source_queries": 192,
+        "selected_test_blank_support_ids": [],
+        "selected_test_queries": 65,
+        "split": {
+          "assignment": "sha256(seed:sha256(normalized_content)), first 64 bits / 2**64",
+          "content_group_count": 3593,
+          "document_count": 3633,
+          "document_id_overlap_count": 0,
+          "documents_in_duplicate_groups": 80,
+          "duplicate_excess_document_count": 40,
+          "duplicate_group_count": 40,
+          "empty_body_document_count": 0,
+          "empty_content_document_count": 0,
+          "exploration_document_count": 697,
+          "exploration_group_count": 690,
+          "heldout_document_count": 2936,
+          "heldout_group_count": 2903,
+          "normalization": "NFKC, casefold, whitespace collapse; body text, title fallback for empty body",
+          "requested_exploration_fraction": 0.2,
+          "seed": 20260909
+        },
+        "test": {
+          "eligible_positive_judgment_count": 213,
+          "eligible_query_count": 65,
+          "excluded_query_count": 258,
+          "missing_document_count": 0,
+          "missing_document_ids": [],
+          "missing_document_query_count": 0,
+          "no_heldout_support_query_count": 3,
+          "no_positive_support_query_count": 0,
+          "original_positive_judgment_count": 12334,
+          "original_query_count": 323,
+          "partially_heldout_query_count": 255,
+          "query_retention_fraction": 0.20123839009287925,
+          "rule": "nonempty positive support; every judged document exists; all positive support held out"
+        },
+        "train": {
+          "eligible_positive_judgment_count": 1482,
+          "eligible_query_count": 468,
+          "excluded_query_count": 2122,
+          "missing_document_count": 0,
+          "missing_document_ids": [],
+          "missing_document_query_count": 0,
+          "no_heldout_support_query_count": 32,
+          "no_positive_support_query_count": 0,
+          "original_positive_judgment_count": 110575,
+          "original_query_count": 2590,
+          "partially_heldout_query_count": 2090,
+          "query_retention_fraction": 0.1806949806949807,
+          "rule": "nonempty positive support; every judged document exists; all positive support held out"
+        }
+      },
+      "task_count": 257,
+      "valid_probe_rewrites": 92,
+      "valid_question_pairs": 46,
+      "valid_task_rewrites": 256
+    },
+    "scifact": {
+      "actual_generation_cost": {
+        "output_tokens": 65406,
+        "prompt_tokens": 205733,
+        "seconds": 764.7077632067958
+      },
+      "examples": [
+        {
+          "body_excerpt": "BACKGROUND Raised concentrations of nitrate and nitrite have been found in exhaled breath condensate (EBC) in airway disease, and it has been postulated that this reflects increased nitric oxide (NO) metabolism. However, the chemical and anatomical origin of nitrate and nitrite in the airways has not yet been sufficiently studied. METHODS The fraction of exhaled NO at an exhalation flow rate of 50 ml/s (FE(NO)) and nitrite and nitrate in EBC, nasal condensate, and saliva were measured in 17 tracheostomised and 15 non-tracheostomised subjects, all of whom were non-smokers without respiratory disease. Tracheal and oral samples were taken from t",
+          "document_id": "10538985",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "89f82d9291283a3d323a974ba772ddb6ef28a98e663eca5ec8ca26a8ee0e5c96",
+              "source": "generated"
+            },
+            "direct_question": "How does bacterial activity in the oropharyngeal tract contribute to nitrite levels in exhaled breath condensate?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "What role do bacteria in the mouth and throat play in converting nitrate to nitrite, and how does this process affect the amount of nitrite detected in breath samples collected from healthy individuals?",
+            "raw_response": "{\"direct_question\": \"How does bacterial activity in the oropharyngeal tract contribute to nitrite levels in exhaled breath condensate?\", \"indirect_question\": \"What role do bacteria in the mouth and throat play in converting nitrate to nitrite, and how does this process affect the amount of nitrite detected in breath samples collected from healthy individuals?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.4208950409665704,
+              "batch_id": "981186373cf14685a1a99a900ff94a56",
+              "batch_output_tokens": 549,
+              "batch_prompt_seconds": 11.033884292002767,
+              "batch_prompt_tokens": 4997,
+              "batch_size": 8,
+              "batch_wall_seconds": 14.458964749937877,
+              "incurred_output_tokens": 76,
+              "incurred_prompt_tokens": 872,
+              "incurred_seconds": 1.8073705937422346,
+              "output_tokens": 76,
+              "output_tokens_without_stop": 75,
+              "peak_memory_gb": 4.547964416,
+              "prompt_tokens": 872,
+              "seconds": 1.8073705937422346,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "Origin of nitrite and nitrate in nasal and exhaled breath condensate and relation to nitric oxide formation."
+        },
+        {
+          "body_excerpt": "BACKGROUND HOX genes are a family of developmental genes that are expressed neither in the developing forebrain nor in the normal brain. Aberrant expression of a HOX-gene dominated stem-cell signature in glioblastoma has been linked with increased resistance to chemo-radiotherapy and sustained proliferation of glioma initiating cells. Here we describe the epigenetic and genetic alterations and their interactions associated with the expression of this signature in glioblastoma. RESULTS We observe prominent hypermethylation of the HOXA locus 7p15.2 in glioblastoma in contrast to non-tumoral brain. Hypermethylation is associated with a gain of c",
+          "document_id": "11578459",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "9e8a6ec1474708bb4ee48e2d334d71bb70d1f310ec9f82e929c985d367c21bdb",
+              "source": "generated"
+            },
+            "direct_question": "How does chromosome 7 gain and DNA hypermethylation at the HOXA10 locus contribute to the expression of a stem cell-related HOX-signature in glioblastoma?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "What happens when a tumor gains extra copies of chromosome 7 and simultaneously silences the HOXA10 gene through hypermethylation, and how does this combination promote abnormal stem cell gene activity in brain cancer?",
+            "raw_response": "{\"direct_question\": \"How does chromosome 7 gain and DNA hypermethylation at the HOXA10 locus contribute to the expression of a stem cell-related HOX-signature in glioblastoma?\", \"indirect_question\": \"What happens when a tumor gains extra copies of chromosome 7 and simultaneously silences the HOXA10 gene through hypermethylation, and how does this combination promote abnormal stem cell gene activity in brain cancer?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.4208950409665704,
+              "batch_id": "981186373cf14685a1a99a900ff94a56",
+              "batch_output_tokens": 549,
+              "batch_prompt_seconds": 11.033884292002767,
+              "batch_prompt_tokens": 4997,
+              "batch_size": 8,
+              "batch_wall_seconds": 14.458964749937877,
+              "incurred_output_tokens": 92,
+              "incurred_prompt_tokens": 637,
+              "incurred_seconds": 1.8073705937422346,
+              "output_tokens": 92,
+              "output_tokens_without_stop": 91,
+              "peak_memory_gb": 4.547964416,
+              "prompt_tokens": 637,
+              "seconds": 1.8073705937422346,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "Chromosome 7 gain and DNA hypermethylation at the HOXA10 locus are associated with expression of a stem cell related HOX-signature in glioblastoma"
+        },
+        {
+          "body_excerpt": "Aberrant methylation of promoter CpG islands in cancer is associated with silencing of tumor-suppressor genes, and age-dependent hypermethylation in normal appearing mucosa may be a risk factor for human colon cancer. It is not known whether this age-related DNA methylation phenomenon is specific to human tissues. We performed comprehensive DNA methylation profiling of promoter regions in aging mouse intestine using methylated CpG island amplification in combination with microarray analysis. By comparing C57BL/6 mice at 3-mo-old versus 35-mo-old for 3627 detectable autosomal genes, we found 774 (21%) that showed increased methylation and 466 ",
+          "document_id": "11935250",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "5af269f5128b6e4e67e057a382e286c1cc9a26011843c2f7b8c4cf47bd58b029",
+              "source": "generated"
+            },
+            "direct_question": "What is the pattern of age-related DNA methylation changes in the mouse small intestine?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "How do methylation levels of genes change with age in normal mouse intestinal tissue, and to what extent do these changes mirror those in other organs like lung, liver, and spleen?",
+            "raw_response": "{\"direct_question\": \"What is the pattern of age-related DNA methylation changes in the mouse small intestine?\", \"indirect_question\": \"How do methylation levels of genes change with age in normal mouse intestinal tissue, and to what extent do these changes mirror those in other organs like lung, liver, and spleen?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.4208950409665704,
+              "batch_id": "981186373cf14685a1a99a900ff94a56",
+              "batch_output_tokens": 549,
+              "batch_prompt_seconds": 11.033884292002767,
+              "batch_prompt_tokens": 4997,
+              "batch_size": 8,
+              "batch_wall_seconds": 14.458964749937877,
+              "incurred_output_tokens": 67,
+              "incurred_prompt_tokens": 629,
+              "incurred_seconds": 1.8073705937422346,
+              "output_tokens": 67,
+              "output_tokens_without_stop": 66,
+              "peak_memory_gb": 4.547964416,
+              "prompt_tokens": 629,
+              "seconds": 1.8073705937422346,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "Widespread and tissue specific age-related DNA methylation changes in mice."
+        },
+        {
+          "body_excerpt": "Multiple extracellular factors are hypothesized to promote the differentiation of unstimulated and/or stimulated secretory pathways in exocrine secretory cells, but the identity of differentiation factors, particularly those organ-specific, remain largely unknown. Here, we report on the identification of a novel secreted glycoprotein, lacritin, that enhances exocrine secretion in overnight cultures of lacrimal acinar cells which otherwise display loss of secretory function. Lacritin mRNA and protein are highly expressed in human lacrimal gland, moderately in major and minor salivary glands and slightly in thyroid. No lacritin message or prote",
+          "document_id": "12086818",
+          "generated": {
+            "cache": {
+              "hit": false,
+              "key": "51310613258fa386a71868cc6fcba6b05fbdbf31cd20e0f38aa4c84f7eff46a0",
+              "source": "generated"
+            },
+            "direct_question": "What is the role of lacritin in enhancing exocrine secretion in lacrimal acinar cells?",
+            "errors": [],
+            "generation": {
+              "determinism": "greedy; bitwise invariance across hardware or batch composition is not guaranteed",
+              "finish_reason": "stop",
+              "kind": "probe",
+              "model": {
+                "metadata_sha256": {
+                  "config.json": "574349e5a343236546fda55e4744a76e181f534182d7dc60ff1bad7e7a502849",
+                  "model.safetensors.index.json": "388d811b8b7c2608dd04cce1bcb04a8bf715d19b42790894e6d3427ff429a777",
+                  "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+                  "tokenizer_config.json": "4397cc477eb6d79715ccd2000accd6b3531928f30029665832fa1b255f24d2b9"
+                },
+                "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+              },
+              "prompt_version": "semantic-pilot-v2",
+              "temperature": 0.0
+            },
+            "indirect_question": "How does a secreted glycoprotein from the lacrimal gland boost unstimulated secretion and promote ductal cell growth in secretory cells?",
+            "raw_response": "{\"direct_question\": \"What is the role of lacritin in enhancing exocrine secretion in lacrimal acinar cells?\", \"indirect_question\": \"How does a secreted glycoprotein from the lacrimal gland boost unstimulated secretion and promote ductal cell growth in secretory cells?\"}",
+            "usage": {
+              "batch_decode_seconds": 3.4208950409665704,
+              "batch_id": "981186373cf14685a1a99a900ff94a56",
+              "batch_output_tokens": 549,
+              "batch_prompt_seconds": 11.033884292002767,
+              "batch_prompt_tokens": 4997,
+              "batch_size": 8,
+              "batch_wall_seconds": 14.458964749937877,
+              "incurred_output_tokens": 64,
+              "incurred_prompt_tokens": 679,
+              "incurred_seconds": 1.8073705937422346,
+              "output_tokens": 64,
+              "output_tokens_without_stop": 63,
+              "peak_memory_gb": 4.547964416,
+              "prompt_tokens": 679,
+              "seconds": 1.8073705937422346,
+              "time_accounting": "measured generation batch wall seconds divided equally by batch size; excludes model load and prompt tokenization",
+              "token_accounting": "exact input token IDs after chat template; output counts sampled tokens including EOS; without_stop excludes EOS"
+            },
+            "valid": true,
+            "validity": {
+              "schema_and_format": true,
+              "semantic": "not_automatically_verified"
+            },
+            "warnings": [
+              "probe_answerability_and_same_information_need_require_human_audit"
+            ]
+          },
+          "title": "cDNA and genomic cloning of lacritin, a novel secretion enhancing factor from the human lacrimal gland."
+        }
+      ],
+      "logical_generation_cost": {
+        "input_tokens": 205733,
+        "llm_calls": 486,
+        "output_tokens": 65406,
+        "seconds": 764.7077632067958
+      },
+      "probe_rewrite_count": 96,
+      "sampled_documents": 48,
+      "split": {
+        "archive_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+        "selected_source_queries": 192,
+        "selected_test_blank_support_ids": [],
+        "selected_test_queries": 150,
+        "split": {
+          "assignment": "sha256(seed:sha256(normalized_content)), first 64 bits / 2**64",
+          "content_group_count": 5183,
+          "document_count": 5183,
+          "document_id_overlap_count": 0,
+          "documents_in_duplicate_groups": 0,
+          "duplicate_excess_document_count": 0,
+          "duplicate_group_count": 0,
+          "empty_body_document_count": 0,
+          "empty_content_document_count": 0,
+          "exploration_document_count": 1037,
+          "exploration_group_count": 1037,
+          "heldout_document_count": 4146,
+          "heldout_group_count": 4146,
+          "normalization": "NFKC, casefold, whitespace collapse; body text, title fallback for empty body",
+          "requested_exploration_fraction": 0.2,
+          "seed": 20260909
+        },
+        "test": {
+          "eligible_positive_judgment_count": 270,
+          "eligible_query_count": 249,
+          "excluded_query_count": 51,
+          "missing_document_count": 0,
+          "missing_document_ids": [],
+          "missing_document_query_count": 0,
+          "no_heldout_support_query_count": 42,
+          "no_positive_support_query_count": 0,
+          "original_positive_judgment_count": 339,
+          "original_query_count": 300,
+          "partially_heldout_query_count": 9,
+          "query_retention_fraction": 0.83,
+          "rule": "nonempty positive support; every judged document exists; all positive support held out"
+        },
+        "train": {
+          "eligible_positive_judgment_count": 672,
+          "eligible_query_count": 604,
+          "excluded_query_count": 205,
+          "missing_document_count": 0,
+          "missing_document_ids": [],
+          "missing_document_query_count": 0,
+          "no_heldout_support_query_count": 180,
+          "no_positive_support_query_count": 0,
+          "original_positive_judgment_count": 919,
+          "original_query_count": 809,
+          "partially_heldout_query_count": 25,
+          "query_retention_fraction": 0.7466007416563659,
+          "rule": "nonempty positive support; every judged document exists; all positive support held out"
+        }
+      },
+      "task_count": 342,
+      "valid_probe_rewrites": 96,
+      "valid_question_pairs": 48,
+      "valid_task_rewrites": 342
+    }
+  },
+  "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+  "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b"
+}

@@ -1,0 +1,18 @@
+{
+  "code_sha256": "c4369f9368acc332290f8ecae592f65beff2957b9836057be6306c028eb54b4d",
+  "validation_sha256": "3313694aba0995fe71323d029d3b3029e106e57fca60d676f4f7be8639519757",
+  "protocol_sha256": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+  "future_tasks": 50,
+  "input_sha256": {
+    "cost_curves.csv": "164d58c383f8e160b9902cb52738f7a24a9c931446655fa684e079b37f01a6a6",
+    "fusion_baseline.csv": "4d3885835900535c1f3b977d783bc30384d297cf393741869ebce3d674c05479",
+    "adaptation.csv": "bc8fd81e5a2ea64ed1c9f6fe0bf30fb551fe84b69207afc08aa705f13ab1cb58"
+  },
+  "output_sha256": {
+    "figures/cost_search_calls.png": "1a2578aae99af4a4619883d5bc78617786a99a139b2d02f0f490737c1865cef7",
+    "figures/cost_search_calls.svg": "2f36f9724cbbc174591ed7c4ecdc18deedd4e60a429950343b6616771b7fee2c",
+    "figures/cost_output_tokens.png": "06126366aa641790b5fce623df7ade84f773f779e78a6b4c486f68db3df76bf6",
+    "figures/cost_output_tokens.svg": "3b825ed03bf75e4cb1bda5a3ddb7528c2ec212f7e2b03b16cd6b19572c38986d"
+  },
+  "scope": "Each panel averages three profiles on one corpus/backend. Horizontal axes are separate cost categories, not a scalar complete cost. Input tokens, sampling calls and missing serving latency also matter."
+}

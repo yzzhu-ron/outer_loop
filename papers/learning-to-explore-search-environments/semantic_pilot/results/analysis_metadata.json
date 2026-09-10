@@ -1,0 +1,241 @@
+{
+  "started_utc": "2026-09-10T04:30:00.889134+00:00",
+  "learning_sha256": "8a94bf4f3348944cb13e019337a10ed9120c5132e6393b18d92dc394c8132203",
+  "protocol_sha256": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+  "protocol": {
+    "version": "0.2.0",
+    "frozen_on": "2026-09-09",
+    "status": "Exploratory protocol fixed before inspecting semantic retrieval outcomes; all three families are pilot-only.",
+    "parent_proposal_commit": "a24a29a",
+    "preceding_lexical_pilot_commit": "2964eec6ffe49448320cfd6b56bf93ad39341de2",
+    "questions": [
+      "Do semantic actions create real-query selection headroom?",
+      "Do document-generated probe contrasts support source-trained routing improvements on another corpus?",
+      "Can source-trained one-step utility selection outperform random, fixed-coverage, and Gaussian-information-gain selection?"
+    ],
+    "datasets": {
+      "scifact": {
+        "sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+        "eligible_test": 249,
+        "original_test": 300
+      },
+      "fiqa": {
+        "sha256": "32c7df99ed21252fdfb2cf3f5673502a8d245ee0c44c4a133570d92ce2b3ad02",
+        "eligible_test": 402,
+        "original_test": 648
+      },
+      "nfcorpus": {
+        "sha256": "efe5be03f8c5b86a5870102d0599d227c8c6e2484328e68c6522560385671b0b",
+        "eligible_test": 65,
+        "original_test": 323
+      }
+    },
+    "document_split": {
+      "implementation": "Inherited unchanged from pilot/data.py; SHA256 duplicate-group assignment, seed 20260909, exploration probability 0.2; full corpus remains indexed.",
+      "assignment_uses_qrels": false,
+      "eligibility": "All judged documents must exist and every positive support document must belong to the held-out document pool.",
+      "distribution_limit": "Especially severe query retention in NFCorpus (65/323 test). Results apply to retained queries; no claim about full test-distribution quality or entity disjointness."
+    },
+    "query_selection": {
+      "implementation": "Inherited select_ids: deterministic ID hash, train-20260909 / test-20260909 salts.",
+      "source_queries": 192,
+      "source_partition": {
+        "router_train": 128,
+        "calibration": 32,
+        "selector_utility": 32
+      },
+      "source_partition_rule": "First floor(2n/3) selected IDs train; split remaining IDs equally into calibration and utility, with odd remainder in utility.",
+      "maximum_test_queries": 150,
+      "test_counts": {
+        "scifact": 150,
+        "fiqa": 150,
+        "nfcorpus": 65
+      },
+      "source_partition_query_ids_disjoint": true,
+      "source_partition_support_document_disjointness": false,
+      "same_tasks_for_all_methods_and_backends": true
+    },
+    "retrieval": {
+      "backends": [
+        "BM25",
+        "all-MiniLM-L6-v2 dense"
+      ],
+      "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+      "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "maximum_input_tokens": 256,
+      "rank_cutoff": 10,
+      "index_frozen": true,
+      "backend_known_to_all_methods": true,
+      "unit": "Three corpus families, each with two correlated backend configurations."
+    },
+    "generation": {
+      "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+      "revision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+      "prompt_version": "semantic-pilot-v2",
+      "sampling": "Greedy local MLX; batch size 8; max output 300 rewrite / 192 probe tokens.",
+      "action_order": [
+        "original",
+        "keywords",
+        "semantic",
+        "hyde",
+        "decomposed"
+      ],
+      "actions": "Original and inherited lexical keywords; query-only semantic rewrite, synthetic hypothetical passage, and two-subquery reciprocal-rank fusion (k=60). All semantic outputs share one generation response.",
+      "failure_policy": "No repair, retries, lexical fallback, or task deletion. A malformed/invalid response makes all three generated actions unavailable; choosing one receives empty retrieval and zero task utility.",
+      "validity": "Format validation is not a semantic-faithfulness guarantee. HyDE requested 40-60 words, hard valid range 20-100 with warnings outside request; passages are synthetic retrieval representations, never evidence.",
+      "qrels_or_document_access_by_rewriter": false
+    },
+    "probes": {
+      "seeds": [
+        11,
+        23,
+        47
+      ],
+      "sampled_documents_per_pool": 16,
+      "sampling": "Sort exploration IDs, shuffle with Python random.Random(seed), take first 16. Deduplicate generation across overlapping pools but charge logical costs in each pool.",
+      "families": [
+        "direct_question",
+        "indirect_question"
+      ],
+      "construction": "Document-only question pair generation followed by a separate query-only rewrite call for each valid question; no document passed to the rewriter.",
+      "pairs": "Original versus each of four alternatives, sharing the same inspected candidate pool across selectors.",
+      "preflight_exclusions": "Invalid generation or exactly identical original/alternative query text; decisions made before observing search outcomes.",
+      "observation": "Known sampled-document reciprocal-rank delta, overlap, and per-action reciprocal rank; not complete relevance judgments.",
+      "selector_visibility": "Family, action, bucket, eight query features, pair search cost; numerical history. No unselected outcomes, text, document IDs, or real target queries/labels.",
+      "candidate_id": "Opaque hash; may be used for deterministic tie breaking only.",
+      "pair_budgets": [
+        0,
+        4,
+        8,
+        16,
+        32
+      ]
+    },
+    "training": {
+      "folds": "Leave one corpus out, using both other corpora as source. Fit separately by known backend. All configurations of a corpus stay in the same role.",
+      "router": "Choose source-train mean fixed scores or StandardScaler+Ridge(alpha=10 or 100), using equally averaged source-calibration nDCG@10; eight lexical features plus 384 frozen query-encoder features.",
+      "profile": "Numerical count,sum,sumsq in 2 families x 4 query buckets x 4 alternative actions; shrunk means with pseudocount 4.",
+      "calibrator": "Per-action Ridge(alpha=10, fit_intercept=false) predicts action-original real utility residual from global and bucket probe deltas in each family. Fit only source calibration tasks; repeated histories weight each source task total 1.",
+      "source_histories": "All three source pools, random prefixes [0,4,8,16,32], seed first eight hex digits of SHA256('source_history|environment_name|pool_seed').",
+      "selector_labels": "One-step change in frozen calibrated router's mean source utility-task nDCG after a candidate observation; utility tasks disjoint from router train and calibration IDs.",
+      "value_model": "ExtraTreesRegressor(n_estimators=64,max_depth=5,min_samples_leaf=20,max_features=1.0,random_state=1927,n_jobs=1); no target tuning.",
+      "value_features": "Family/action/bucket one-hots; 8 query features; 32 logcounts,32 shrunk means,32 variances; log total count and pair cost. Prediction divided by search cost.",
+      "information_gain": "Independent Gaussian cell model with source between-environment cell-mean variance as prior, source marginal contrast variance as noise; both floored at 0.01. Gaussian information gain divided by search cost; heuristic model, not calibrated confidence.",
+      "target_random_seed": "First eight hex digits of SHA256('target|pool_seed')."
+    },
+    "comparisons": {
+      "adapted_methods": [
+        "random",
+        "fixed",
+        "information_gain",
+        "learned_value"
+      ],
+      "shared_components": "Same base router, profile, calibrator, candidate pool, and pair-budget schedule. Selectors differ only in acquisition.",
+      "fixed": "Balance observed family/bucket/action cell counts, then deterministic cell and candidate ID order.",
+      "baselines": [
+        "original",
+        "source_fixed",
+        "source_router"
+      ],
+      "oracles": [
+        "target_best_fixed",
+        "per_query_best_action"
+      ],
+      "oracle_visibility": "Evaluator-only; no target label access in onboarding or fitting."
+    },
+    "outcomes_and_costs": {
+      "primary": "Real-query nDCG@10, per corpus/backend with paired query and seed deltas; equal-family aggregation descriptive only.",
+      "secondary": [
+        "Recall@10",
+        "oracle headroom",
+        "routing changes",
+        "probe collisions and outcome contrast",
+        "generation validity",
+        "selection histories",
+        "search and generation costs"
+      ],
+      "setup": "Budget zero bypasses pool construction. Every positive-budget method pays all 16 sampled document inspections and every question/rewrite generation in the full inspected pool, including unselected/invalid candidates.",
+      "onboarding": "Charge every selected pair's search count: 2 normally, 3 for decomposition. Cached and reused original results do not make virtual interactions free.",
+      "serving": "Original/keywords cost one search, semantic/HyDE one, decomposition two. Any generated action pays one full shared rewrite response; unavailable generated action still pays generation and zero searches. This is conservative logical single-action serving accounting.",
+      "budget_limit": "Equal probe counts do not ensure equal total search or generation cost. Report actual costs and do not claim cost dominance from count-matched results.",
+      "offline": "Full action/outcome caches, corpus indexing and source fitting are experiment infrastructure, reported separately from deployment costs.",
+      "uncertainty": "Paired descriptive intervals conditional on these families, selected queries and three adaptation seeds; no family-population guarantee."
+    },
+    "not_established": [
+      "Untouched confirmatory transfer",
+      "end-to-end agent answer improvement",
+      "validated semantic equivalence of every rewrite",
+      "probe reward alignment with real tasks",
+      "optimal multi-step acquisition",
+      "novelty relative to all prior work",
+      "deployment cost advantage"
+    ]
+  },
+  "python": "3.14.0",
+  "numpy": "2.5.3",
+  "scikit_learn": "1.9.0",
+  "joblib": "1.6.0",
+  "input_record_sha256": {
+    "scifact_bm25": "4c1f4b7e24263264faa8401876668ecd1a31843195a7f0e738cd0926f7a4d8b4",
+    "scifact_dense": "79660b26c869e3b4f8a3282092563dfcd295ae9d063d9b8abe38735812b50532",
+    "fiqa_bm25": "9359887078410e60d24159f79dbb6a45b794ff632bf76a7d55c9bae1c9bb3282",
+    "fiqa_dense": "6bb15f2b2202a10e911e1259168eb5e359999cb6c07f80cb535e3d7530df96db",
+    "nfcorpus_bm25": "b59d4808a0eec2fa3cefa5810c0e8ebbc40e0efb65cf3df01f16e61f83d21b06",
+    "nfcorpus_dense": "d733818700b5ea2c15d5feb2c91dd1d74d36a0f7de0c75b31b873b9c9642a575"
+  },
+  "retrieval_contracts": {
+    "scifact_bm25": {
+      "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+      "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+      "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+      "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+      "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+    },
+    "scifact_dense": {
+      "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+      "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+      "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+      "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+      "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+    },
+    "fiqa_bm25": {
+      "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+      "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+      "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+      "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+      "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+    },
+    "fiqa_dense": {
+      "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+      "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+      "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+      "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+      "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+    },
+    "nfcorpus_bm25": {
+      "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+      "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+      "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+      "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+      "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+    },
+    "nfcorpus_dense": {
+      "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+      "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+      "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+      "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+      "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+    }
+  },
+  "source_fitting_seconds": {
+    "fiqa::bm25": 0.6692255000816658,
+    "fiqa::dense": 0.661319125094451,
+    "nfcorpus::bm25": 0.6525772500317544,
+    "nfcorpus::dense": 0.6500889579765499,
+    "scifact::bm25": 0.656368708005175,
+    "scifact::dense": 0.6744871250120923
+  },
+  "timing_scope": "measured_onboarding_generation_seconds sums the pool's recorded generation batch-wall-time shares. It excludes model load, retrieval, and serving. Task generation/search latency is unavailable; no total latency or total generation-seconds claim is made.",
+  "recall_scope": "Recall@10 is secondary and never used to fit or select models. Oracle recall columns evaluate the actions selected by the nDCG oracle, not a separate recall oracle.",
+  "analysis_wall_seconds": 6.038685417035595
+}

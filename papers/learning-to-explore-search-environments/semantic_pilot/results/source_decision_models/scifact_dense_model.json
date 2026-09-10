@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "source_utility_model",
+  "model_id": "semantic-training-sources-for-scifact-dense",
+  "actions": [
+    "original",
+    "keywords",
+    "semantic",
+    "hyde",
+    "decomposed"
+  ],
+  "world_ids": [
+    "fiqa_dense",
+    "nfcorpus_dense"
+  ],
+  "utilities": [
+    [
+      "2580835584648815137/6400000000000000000",
+      "590732339460692093/1600000000000000000",
+      "2333278126313328493/6400000000000000000",
+      "2080611553864197631/6400000000000000000",
+      "394443130066610899/1280000000000000000"
+    ],
+    [
+      "3519700829437602281/12800000000000000000",
+      "3493368400857279333/12800000000000000000",
+      "338997291320458471/1280000000000000000",
+      "3584633295147028809/12800000000000000000",
+      "1641251371235273159/6400000000000000000"
+    ]
+  ],
+  "provenance": {
+    "utility_source": "Measured BEIR nDCG@10 for the five frozen query actions; input hashes and IDs in source_decision_provenance.json.",
+    "source_split": "Only router-training partitions of the two other corpora; no source calibration/utility or target-task labels.",
+    "task_distribution": "Uniform over 128 selected source training queries within each world. Cohorts differ by world. The minimax prior is adversarial, not an empirical corpus frequency.",
+    "synthetic": false
+  },
+  "assumptions": [
+    "Conditional finite diagnostic: the two source worlds define this model, without asserting target coverage or observational indistinguishability.",
+    "Recorded floating-point nDCG values are converted to exact decimal rationals; exact optimization does not remove measurement or sampling uncertainty.",
+    "Each policy uses one fixed query action on every task; the oracle chooses the best fixed policy within each source world.",
+    "A conflict can motivate exploration only if permitted observations can distinguish its decision-relevant worlds; this audit does not establish that link."
+  ]
+}

@@ -1,2 +1,3 @@
-results/*.csv text eol=lf
+# Evidence provenance hashes raw bytes. Preserve CSV writers' CRLF on checkout.
+results/**/*.csv -text whitespace=cr-at-eol
 results/figures/*.svg -whitespace

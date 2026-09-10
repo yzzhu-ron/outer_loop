@@ -1,0 +1,836 @@
+{
+  "fiqa::bm25": {
+    "training_examples": 3480,
+    "source_environments": [
+      "nfcorpus_bm25",
+      "scifact_bm25"
+    ],
+    "unique_utility_queries": {
+      "scifact_bm25": 32,
+      "nfcorpus_bm25": 32
+    },
+    "gain_mean": 0.0,
+    "gain_positive_fraction": 0.0,
+    "gain_negative_fraction": 0.0,
+    "gain_nonzero_fraction": 0.0,
+    "gain_range": [
+      0.0,
+      0.0
+    ],
+    "calibration_histories": 30,
+    "repeated_labels_warning": "Histories reuse source calibration and utility labels; training rows are not independent task or environment evidence.",
+    "information_gain_model": "Independent Gaussian cell-mean surrogate, source marginal RR-contrast variance as noise and between-environment mean variance as prior; each floored at .01. This is a heuristic, not calibrated coverage.",
+    "extra_trees": {
+      "n_estimators": 64,
+      "max_depth": 5,
+      "min_samples_leaf": 20,
+      "random_state": 1927
+    },
+    "prior_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.017330650254140993,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ]
+    ],
+    "noise_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.10246529655669731,
+          0.09494809506640228,
+          0.09312090619554113
+        ],
+        [
+          0.01,
+          0.052682844824176275,
+          0.07459159052252681,
+          0.07269787587516319
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.0671878317347253,
+          0.11713915604330376,
+          0.0759176606930861
+        ],
+        [
+          0.01,
+          0.06933878555385692,
+          0.14262612536096483,
+          0.09666342663370012
+        ]
+      ]
+    ]
+  },
+  "fiqa::dense": {
+    "training_examples": 3480,
+    "source_environments": [
+      "nfcorpus_dense",
+      "scifact_dense"
+    ],
+    "unique_utility_queries": {
+      "scifact_dense": 32,
+      "nfcorpus_dense": 32
+    },
+    "gain_mean": 0.0,
+    "gain_positive_fraction": 0.0,
+    "gain_negative_fraction": 0.0,
+    "gain_nonzero_fraction": 0.0,
+    "gain_range": [
+      0.0,
+      0.0
+    ],
+    "calibration_histories": 30,
+    "repeated_labels_warning": "Histories reuse source calibration and utility labels; training rows are not independent task or environment evidence.",
+    "information_gain_model": "Independent Gaussian cell-mean surrogate, source marginal RR-contrast variance as noise and between-environment mean variance as prior; each floored at .01. This is a heuristic, not calibrated coverage.",
+    "extra_trees": {
+      "n_estimators": 64,
+      "max_depth": 5,
+      "min_samples_leaf": 20,
+      "random_state": 1927
+    },
+    "prior_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.010355671638724523
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ]
+    ],
+    "noise_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.021878492879033717,
+          0.0719451956012259,
+          0.06979921579232017
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.024504568648392074
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.03341893659587567,
+          0.01552881655894121,
+          0.07105417051400431,
+          0.05049495998768852
+        ],
+        [
+          0.015694939886378653,
+          0.021987135024441804,
+          0.0452506936187079,
+          0.08909441471792838
+        ]
+      ]
+    ]
+  },
+  "nfcorpus::bm25": {
+    "training_examples": 3480,
+    "source_environments": [
+      "fiqa_bm25",
+      "scifact_bm25"
+    ],
+    "unique_utility_queries": {
+      "scifact_bm25": 32,
+      "fiqa_bm25": 32
+    },
+    "gain_mean": 0.0,
+    "gain_positive_fraction": 0.0,
+    "gain_negative_fraction": 0.0,
+    "gain_nonzero_fraction": 0.0,
+    "gain_range": [
+      0.0,
+      0.0
+    ],
+    "calibration_histories": 30,
+    "repeated_labels_warning": "Histories reuse source calibration and utility labels; training rows are not independent task or environment evidence.",
+    "information_gain_model": "Independent Gaussian cell-mean surrogate, source marginal RR-contrast variance as noise and between-environment mean variance as prior; each floored at .01. This is a heuristic, not calibrated coverage.",
+    "extra_trees": {
+      "n_estimators": 64,
+      "max_depth": 5,
+      "min_samples_leaf": 20,
+      "random_state": 1927
+    },
+    "prior_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.025931523943782307,
+          0.01528617079969243
+        ],
+        [
+          0.01,
+          0.013613838378771673,
+          0.04348804245784067,
+          0.027460523550029484
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ]
+    ],
+    "noise_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.031652809271856895,
+          0.11865807665658856,
+          0.19830953780689226,
+          0.14661537068531116
+        ],
+        [
+          0.01,
+          0.07732786541685718,
+          0.13488618827160498,
+          0.10850866441430004
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.02947403326191205,
+          0.13797628359917924,
+          0.15574126506365565,
+          0.14889258257464127
+        ],
+        [
+          0.015746396820254936,
+          0.0955529531876579,
+          0.1348074822250878,
+          0.14452516482456854
+        ]
+      ]
+    ]
+  },
+  "nfcorpus::dense": {
+    "training_examples": 3480,
+    "source_environments": [
+      "fiqa_dense",
+      "scifact_dense"
+    ],
+    "unique_utility_queries": {
+      "scifact_dense": 32,
+      "fiqa_dense": 32
+    },
+    "gain_mean": 0.0,
+    "gain_positive_fraction": 0.0,
+    "gain_negative_fraction": 0.0,
+    "gain_nonzero_fraction": 0.0,
+    "gain_range": [
+      0.0,
+      0.0
+    ],
+    "calibration_histories": 30,
+    "repeated_labels_warning": "Histories reuse source calibration and utility labels; training rows are not independent task or environment evidence.",
+    "information_gain_model": "Independent Gaussian cell-mean surrogate, source marginal RR-contrast variance as noise and between-environment mean variance as prior; each floored at .01. This is a heuristic, not calibrated coverage.",
+    "extra_trees": {
+      "n_estimators": 64,
+      "max_depth": 5,
+      "min_samples_leaf": 20,
+      "random_state": 1927
+    },
+    "prior_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.017585951825866985,
+          0.01
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ]
+    ],
+    "noise_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.010787706286218196,
+          0.03935500125976316,
+          0.044576089695137315,
+          0.04583274281934996
+        ],
+        [
+          0.026952065233958235,
+          0.038822971003673545,
+          0.06927135920669138,
+          0.06341611415942691
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.03877155392306908,
+          0.05059687786960515,
+          0.08311651872257933,
+          0.10554484236302418
+        ],
+        [
+          0.028566780477016357,
+          0.02564949146703278,
+          0.05190527895041447,
+          0.09764885415827537
+        ]
+      ]
+    ]
+  },
+  "scifact::bm25": {
+    "training_examples": 3480,
+    "source_environments": [
+      "fiqa_bm25",
+      "nfcorpus_bm25"
+    ],
+    "unique_utility_queries": {
+      "fiqa_bm25": 32,
+      "nfcorpus_bm25": 32
+    },
+    "gain_mean": 0.0,
+    "gain_positive_fraction": 0.0,
+    "gain_negative_fraction": 0.0,
+    "gain_nonzero_fraction": 0.0,
+    "gain_range": [
+      0.0,
+      0.0
+    ],
+    "calibration_histories": 30,
+    "repeated_labels_warning": "Histories reuse source calibration and utility labels; training rows are not independent task or environment evidence.",
+    "information_gain_model": "Independent Gaussian cell-mean surrogate, source marginal RR-contrast variance as noise and between-environment mean variance as prior; each floored at .01. This is a heuristic, not calibrated coverage.",
+    "extra_trees": {
+      "n_estimators": 64,
+      "max_depth": 5,
+      "min_samples_leaf": 20,
+      "random_state": 1927
+    },
+    "prior_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01709926642260377,
+          0.01
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ]
+    ],
+    "noise_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.026220897945234745,
+          0.14156942842496478,
+          0.1727698095699185,
+          0.1370813041992396
+        ],
+        [
+          0.011056241426611798,
+          0.1259061728395062,
+          0.17993484224965708,
+          0.12704465782655086
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.029091479939189636,
+          0.12132216603123942,
+          0.18945752001419688,
+          0.17647527559286436
+        ],
+        [
+          0.018338955416877505,
+          0.057360101947114946,
+          0.17446381439628192,
+          0.11721088143858706
+        ]
+      ]
+    ]
+  },
+  "scifact::dense": {
+    "training_examples": 3480,
+    "source_environments": [
+      "fiqa_dense",
+      "nfcorpus_dense"
+    ],
+    "unique_utility_queries": {
+      "fiqa_dense": 32,
+      "nfcorpus_dense": 32
+    },
+    "gain_mean": 0.0,
+    "gain_positive_fraction": 0.0,
+    "gain_negative_fraction": 0.0,
+    "gain_nonzero_fraction": 0.0,
+    "gain_range": [
+      0.0,
+      0.0
+    ],
+    "calibration_histories": 30,
+    "repeated_labels_warning": "Histories reuse source calibration and utility labels; training rows are not independent task or environment evidence.",
+    "information_gain_model": "Independent Gaussian cell-mean surrogate, source marginal RR-contrast variance as noise and between-environment mean variance as prior; each floored at .01. This is a heuristic, not calibrated coverage.",
+    "extra_trees": {
+      "n_estimators": 64,
+      "max_depth": 5,
+      "min_samples_leaf": 20,
+      "random_state": 1927
+    },
+    "prior_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.013894743033939142,
+          0.01
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ],
+        [
+          0.01,
+          0.01,
+          0.01,
+          0.01
+        ]
+      ]
+    ],
+    "noise_variance": [
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.01450697381349054,
+          0.04987825195437651,
+          0.0838651800589517,
+          0.0858035904993806
+        ],
+        [
+          0.025834842249657076,
+          0.04566511015929006,
+          0.08152813191120072,
+          0.06468587105624142
+        ]
+      ],
+      [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.02662932117126049,
+          0.05598949038270872,
+          0.12112499173772229,
+          0.11566527860400552
+        ],
+        [
+          0.04423027585689926,
+          0.04747280317085511,
+          0.0764340735743333,
+          0.1328885731151965
+        ]
+      ]
+    ]
+  },
+  "contract": {
+    "folding": "Hold out one entire corpus family and every backend configuration; fit using the other families with the same documented backend.",
+    "budgets": [
+      0,
+      4,
+      8,
+      16,
+      32
+    ],
+    "budget_unit": "paired probes, not tool calls",
+    "zero_budget": "No pool generation or selected probes charged; all methods reduce exactly to source router.",
+    "positive_budget": "Charge the complete candidate pool setup, including unselected generations, plus selected-probe operations.",
+    "baseline_source_router": "Zero onboarding cost at every displayed budget; budget is a comparison axis, not spending.",
+    "inference": "Queries share profiles and corpus configurations; these are not independent adaptation replicates. Three corpus families are pilot evidence only.",
+    "myopic_warning": "Learned value approximates one-step source utility; no global optimality or complementarity guarantee.",
+    "analysis_learning_sha256": "8a94bf4f3348944cb13e019337a10ed9120c5132e6393b18d92dc394c8132203",
+    "analysis_protocol_sha256": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e"
+  }
+}

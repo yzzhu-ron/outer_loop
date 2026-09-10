@@ -1,0 +1,7 @@
+environment,pair_budget,n_queries,certified_unchanged,potentially_changed,unchanged_fraction,mean_utility_change_abs_upper_bound,original_unchanged_fraction,original_certificate_matches,baseline_actions_match,cli_matches_api,model_path,audit_path
+fiqa_bm25,32,150,150,0,1.0,0.0,1.0,True,True,True,response_models/fiqa_bm25.model.json,response_models/fiqa_bm25.audit.json
+fiqa_dense,32,150,150,0,1.0,0.0,1.0,True,True,True,response_models/fiqa_dense.model.json,response_models/fiqa_dense.audit.json
+nfcorpus_bm25,32,65,65,0,1.0,0.0,1.0,True,True,True,response_models/nfcorpus_bm25.model.json,response_models/nfcorpus_bm25.audit.json
+nfcorpus_dense,32,65,65,0,1.0,0.0,1.0,True,True,True,response_models/nfcorpus_dense.model.json,response_models/nfcorpus_dense.audit.json
+scifact_bm25,32,150,150,0,1.0,0.0,1.0,True,True,True,response_models/scifact_bm25.model.json,response_models/scifact_bm25.audit.json
+scifact_dense,32,150,150,0,1.0,0.0,1.0,True,True,True,response_models/scifact_dense.model.json,response_models/scifact_dense.audit.json

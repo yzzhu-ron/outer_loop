@@ -1,0 +1,36 @@
+{
+  "analysis_protocol": {
+    "frozen_before_semantic_retrieval": true,
+    "created_on": "2026-09-09",
+    "purpose": "Descriptive diagnostics and a stronger inference-time comparator; this supplements protocol.json without changing generation or selection.",
+    "bootstrap": "2000 draws, seed 20260910. Resample query IDs jointly across methods and resample the three shared onboarding seeds; conditional on these selected tasks/families. Percentile 95% intervals, no multiple-comparison correction or population claim.",
+    "headroom": "Per-query oracle minus source router and target-best-fixed, with query bootstrap. Fixed oracle chosen on the displayed target sample is descriptive, not an unbiased held-out oracle estimate.",
+    "alignment": "For each corpus/backend, family and action, compare mean known-document RR alternative-original contrast with real-task nDCG alternative-original contrast. Display individual action means and bucket means; observations are correlated through shared queries/documents and are not independent causal effects.",
+    "fusion_baseline": "Choose the non-original alternative with greatest mean utility on the two source training partitions, equally weighting source environments; fuse original and that alternative's saved top-10 output using RRF k=60. Decomposed action output is already a two-query fusion. No target label selection; target labels only score the resulting ranking.",
+    "fusion_cost": "Sum original and selected alternative serving search counts and full response generation tokens/calls. For decomposition this totals 3 searches. No onboarding setup.",
+    "reporting": "Display every family/backend and every selector; no cherry-picked corpus or seed. New post-result diagnostics must be explicitly marked post hoc."
+  },
+  "code_sha256": "fc0d432112564119239ea0db99a1bd960fc6a31a87a1af4faeab98d2d87555cd",
+  "input_sha256": {
+    "results/paired_outcomes.json": "c903666243f1de29e13cfed682341202078fe73a2e5637c6fd5c11321e576041",
+    "analysis_protocol.json": "159d0365618fd974d4636807e6a6597327de42ffd05b0a3c1caa7b1041f99c57",
+    "cache/prepared.json": "99a3615452345de77f9d09744dcf672480c1df8d822a015148ef7811608d1a25",
+    "cache/fiqa_bm25_outcomes.json": "5b585b292b6e301fcd8ee5a2e091233ab0d79b2ae7c03c07d8f9c3b5087f3168",
+    "cache/fiqa_dense_outcomes.json": "3df55aecfb95ecdbc702ecc0cdda0b2c278d357639d8dfefe6ad2de3e54789c3",
+    "cache/nfcorpus_bm25_outcomes.json": "1aa56629c010c9e57ea1894c9732ff1317177cd3eb39aa1507f79e7239008cfa",
+    "cache/nfcorpus_dense_outcomes.json": "c82a19801f565a4b3857030e4da53dd7951e35e75f1779162e39362cce102fa7",
+    "cache/scifact_bm25_outcomes.json": "0f145ca33be07474ba0c9eb2dfa630ad3e9119b57bb8f7d396f708976d19fca7",
+    "cache/scifact_dense_outcomes.json": "b5223aff21860833f00691f18440e4b41c351e854efff85f25a677e2a69446f8"
+  },
+  "output_sha256": {
+    "paired_intervals.csv": "95c620e18a306903b38eb397f4aa2dcf2a51ddd6e15fbe9cd406192660273f11",
+    "headroom_intervals.csv": "57e1584474d5eecf2d1619c3a47e48541331409464f2afd88926a7434cbc5588",
+    "action_utilities.csv": "001a6fb28933625dda46ef656e4fd2938ed9782ff57055d72b0310342586cf7f",
+    "probe_contrasts.csv": "b664ee397240a1cb784e8a7b872aff199ef852a58fbcf4b63d1d59702060b67e",
+    "fusion_baseline.csv": "4d3885835900535c1f3b977d783bc30384d297cf393741869ebce3d674c05479",
+    "figures/headroom.svg": "ff08e9c59d2c73ff4e28806aebe44346f6a8ccde392c59e4e1f3b4e8a9ac68ca",
+    "figures/adaptation.svg": "e21c7d866940ce26ef378391aa1e80325921bf537cd0f4673a713e81b09eab09",
+    "figures/alignment.svg": "52cd66e174b13ee5c62d743beee89d57e23e0d25f77f054646ca91b1086f6dbe"
+  },
+  "interpretation": "Conditional descriptive bootstrap; shared profiles, tasks and corpora are not independent population evidence."
+}

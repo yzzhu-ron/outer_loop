@@ -1,0 +1,74 @@
+{
+  "unchanged_action_checks": [
+    {
+      "environment": "fiqa_bm25",
+      "action": "original",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "fiqa_bm25",
+      "action": "keywords",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "fiqa_dense",
+      "action": "original",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "fiqa_dense",
+      "action": "keywords",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "scifact_bm25",
+      "action": "original",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "scifact_bm25",
+      "action": "keywords",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "scifact_dense",
+      "action": "original",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    },
+    {
+      "environment": "scifact_dense",
+      "action": "keywords",
+      "n_queries": 150,
+      "changed_query_count_at_1e_minus_12": 0,
+      "maximum_absolute_ndcg_difference": 0.0,
+      "mean_ndcg_difference": 0.0
+    }
+  ],
+  "all_shared_actions_match": true,
+  "input_sha256": {
+    "/Users/yzzhu/Documents/LFM_for_cross_encoder_rerank/outer_loop/papers/learning-to-explore-search-environments/pilot/results/paired_outcomes.json": "2e774a1331e287ad1ba84abd0d0c33ccf6109534fcf933b4c55f4fbae8dc2a5f",
+    "/Users/yzzhu/Documents/LFM_for_cross_encoder_rerank/outer_loop/papers/learning-to-explore-search-environments/semantic_pilot/results/paired_outcomes.json": "c903666243f1de29e13cfed682341202078fe73a2e5637c6fd5c11321e576041"
+  },
+  "interpretation": "Original and keyword queries, corpus, eligibility rule, backend and test cohort are unchanged. Generated action menus and source routers differ between pilots, so their changes cannot be attributed to a single factor."
+}

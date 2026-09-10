@@ -1,0 +1,19 @@
+{
+  "records_per_corpus": {
+    "fiqa": 486,
+    "nfcorpus": 395,
+    "scifact": 486
+  },
+  "file": "generation_records.jsonl",
+  "sha256": "00a2c86a1097804cd9296843c6c7c619596e72912882d89585f3de187d316efd",
+  "prepared_sha256": "99a3615452345de77f9d09744dcf672480c1df8d822a015148ef7811608d1a25",
+  "contract": {
+    "pilot/data.py": "6deeda84e0e7c85abbae35fd64e5b90c966a58840f661237d01cdefe66b9147f",
+    "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de",
+    "semantic_pilot/generation.py": "3d9b933cd251bfb5b6d455f9517e9e1f69219cfc999b2199dabd20d4f7022aed",
+    "semantic_pilot/protocol.json": "513fd6d3266d744863479a5893a48266eceee64d59c91d8a7948fb7a98d5798e",
+    "semantic_pilot/run_semantic.py": "eab470844b4b06af8f7b766c74a9520e8232b927fe8304d5774f3cea10765f36"
+  },
+  "scope": "Realized generated text, source document IDs, query IDs and generation metadata; no qrels. Corpus contents come from the checksum-pinned archives.",
+  "source_truncation": "See generation.py for fixed character bounds and per-record warnings."
+}

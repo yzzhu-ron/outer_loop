@@ -46,10 +46,10 @@ def validate_cost_rows(adaptation, paired, records):
                 raise ValueError('Report costs disagree with selected probes or serving actions')
 
 
-def validate_cost_curves(rows, adaptation, protocol):
+def validate_cost_curves(rows, adaptation, protocol, methods=None):
     """Require every frozen workload and connect its totals to the run ledger."""
     environments = {name + '_' + backend for name in protocol['datasets'] for backend in ('bm25', 'dense')}
-    methods = ('source_router', 'random', 'fixed', 'information_gain', 'learned_value')
+    methods = methods or ('source_router', 'random', 'fixed', 'information_gain', 'learned_value')
     required_runs = {(name, seed, method, budget) for name in environments for seed in protocol['probes']['seeds']
                      for method in methods for budget in protocol['probes']['pair_budgets']}
     run_key = lambda row: (row['environment'], int(row['seed']), row['method'], int(row['budget']))
@@ -196,6 +196,9 @@ def figure(name, caption):
         svg = svg.replace(f'href="#{identifier}"', f'href="#{name}_{identifier}"')
         svg = svg.replace(f'url(#{identifier})', f'url(#{name}_{identifier})')
     svg = svg.replace('<svg ', f'<svg role="img" aria-label="{html.escape(caption, quote=True)}" ', 1)
+    # Matplotlib path attributes contain trailing spaces; normalize only the
+    # embedded presentation, preserving the separately hashed source SVG.
+    svg = '\n'.join(line.rstrip() for line in svg.splitlines())
     return '<figure>' + svg + '<figcaption>' + html.escape(caption) + '</figcaption></figure>'
 
 
@@ -207,7 +210,11 @@ def main():
     generation = json.loads((RESULTS / 'generation_audit.json').read_text())
     diagnostics = json.loads((RESULTS / 'selector_diagnostics.json').read_text())
     validate_results(headroom, adaptation, intervals)
+    from report_response_audit import validate_response_evidence
+    validate_response_evidence(ROOT, RESULTS)
     replacements = {}
+    from report_world_followup import fragment, read as read_followup
+    replacements['FOLLOWUP'] = fragment(table, figure, validate_cost_rows, validate_cost_curves)
     replacements['HEADROOM'] = table(['Environment', 'Queries', 'Original', 'Source router', 'Best fixed oracle', 'Per-query oracle', 'Oracle − fixed', 'Oracle − router'], [
         [r['environment'], r['n_queries'], num(r['original']), num(r['source_router']), num(r['target_fixed_oracle']), num(r['query_oracle']), num(r['oracle_gap_vs_target_fixed']), num(r['oracle_gap_vs_router'])]
         for r in headroom])
@@ -229,6 +236,11 @@ def main():
     replacements['MEASURED_SUMMARY'] = html.escape(
         f"The semantic action menu leaves {min(float(r['oracle_gap_vs_target_fixed']) for r in headroom):.3f}–{max(float(r['oracle_gap_vs_target_fixed']) for r in headroom):.3f} nDCG@10 of per-query oracle headroom over the best fixed action. "
         f"At 32 probes, learned selection changes quality in {nonzero}/{len(headroom)} configurations, with a descriptive equal-family/backend average change of {mean_gain:+.4f} against the source router. The complete results appear below.")
+    follow_runs = [r for r in read_followup('adaptation.csv') if r['environment'] == 'scifact_dense' and r['method'] == 'decision_value' and r['budget'] == '32']
+    follow_prior = next(r for r in read_followup('baselines.csv') if r['environment'] == 'scifact_dense' and r['baseline'] == 'zero_budget')
+    follow_quality = sum(float(r['ndcg']) for r in follow_runs)/len(follow_runs)
+    replacements['INTERVENTION_SUMMARY'] = html.escape(
+        f"A source-world router updates its choices from probe outcomes. On SciFact/dense, 32 probes raise nDCG@10 from {float(follow_prior['ndcg']):.4f} to {follow_quality:.4f}, selecting the best fixed action in this test set. Other environments are mixed, and the conditional interval includes zero. This is a promising lead, not an established transfer gain.")
     replacements['GENERATION'] = table(['Corpus', 'Valid question pairs', 'Valid probe rewrites', 'Valid task rewrites', 'Retained test / original'], [
         [name, f"{r['valid_question_pairs']}/{r['sampled_documents']}", f"{r['valid_probe_rewrites']}/{r['probe_rewrite_count']}", f"{r['valid_task_rewrites']}/{r['task_count']}", {'scifact': '249/300 → 150 evaluated', 'fiqa': '402/648 → 150 evaluated', 'nfcorpus': '65/323 → 65 evaluated'}[name]]
         for name, r in generation['datasets'].items()])
@@ -236,7 +248,7 @@ def main():
         [name, ' + '.join(map(str, d['unique_utility_queries'].values())), d['training_examples'], f"{100*d['gain_nonzero_fraction']:.2f}%", f"{100*d['gain_positive_fraction']:.2f}%"]
         for name, d in diagnostics.items() if name != 'contract'])
     sensitivity = read_csv('router_sensitivity.csv')
-    replacements['SENSITIVITY'] = table(['Environment', 'Provably unchanged at 32 pairs', 'Potentially changeable (upper bound)'], [
+    replacements['SENSITIVITY'] = table(['Environment', 'Certified unchanged in supplied model / 32 pairs', 'Potentially changeable (upper bound)'], [
         [r['environment'], f"{100*float(r['certified_unchangeable_fraction']):.1f}%", f"{100*float(r['changeable_query_fraction_upper_bound']):.1f}%"]
         for r in sensitivity if r['pair_budget'] == '32'])
     costs = []
@@ -260,6 +272,8 @@ def main():
     (RESULTS / 'report_provenance.json').write_text(json.dumps({
         'builder_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'template_sha256': hashlib.sha256((ROOT / 'report_template.html').read_bytes()).hexdigest(),
+        'followup_renderer_sha256': hashlib.sha256((ROOT / 'report_world_followup.py').read_bytes()).hexdigest(),
+        'response_validator_sha256': hashlib.sha256((ROOT / 'report_response_audit.py').read_bytes()).hexdigest(),
         'report_sha256': hashlib.sha256(content.encode()).hexdigest(),
         'input_sha256': {str(p.relative_to(RESULTS)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(RESULTS.rglob('*'))
                          if p.is_file() and p.suffix in ('.csv', '.svg', '.json') and p.name != 'report_provenance.json'}

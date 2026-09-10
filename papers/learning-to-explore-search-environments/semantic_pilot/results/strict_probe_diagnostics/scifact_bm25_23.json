@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "status": "warning",
+  "counts": {
+    "records": 96,
+    "valid_records": 96,
+    "invalid_records": 0,
+    "accounting_violation_records": 0,
+    "preflight_records": 0,
+    "observed_records": 96,
+    "exact_identical_query_pairs": 0,
+    "token_bag_identical_query_pairs": 0,
+    "exact_distinct_query_pairs": 96,
+    "token_bag_distinct_query_pairs": 96,
+    "zero_contrast_pairs": 87,
+    "nonzero_contrast_pairs": 9,
+    "saturated_success_pairs": 80,
+    "floor_pairs": 3,
+    "exact_identical_with_nonzero_outcomes": 0
+  },
+  "rates": {
+    "exact_query_collision_among_valid": 0.0,
+    "token_bag_collision_among_valid": 0.0,
+    "zero_contrast_among_observed": 0.90625,
+    "saturated_success_among_observed": 0.8333333333333334,
+    "nonzero_contrast_among_observed": 0.09375
+  },
+  "coverage": {
+    "min_per_cell": 3,
+    "expected_action_pairs": [],
+    "expected_buckets": [],
+    "cells": [
+      {
+        "family": "direct_question",
+        "actions": [
+          "hyde",
+          "original"
+        ],
+        "bucket": "2",
+        "records": 3,
+        "exact_distinct_query_pairs": 3,
+        "token_bag_distinct_query_pairs": 3,
+        "observed_records": 3,
+        "nonzero_contrast_pairs": 1
+      },
+      {
+        "family": "direct_question",
+        "actions": [
+          "hyde",
+          "original"
+        ],
+        "bucket": "3",
+        "records": 13,
+        "exact_distinct_query_pairs": 13,
+        "token_bag_distinct_query_pairs": 13,
+        "observed_records": 13,
+        "nonzero_contrast_pairs": 1
+      },
+      {
+        "family": "direct_question",
+        "actions": [
+          "keywords",
+          "original"
+        ],
+        "bucket": "2",
+        "records": 3,
+        "exact_distinct_query_pairs": 3,
+        "token_bag_distinct_query_pairs": 3,
+        "observed_records": 3,
+        "nonzero_contrast_pairs": 0
+      },
+      {
+        "family": "direct_question",
+        "actions": [
+          "keywords",
+          "original"
+        ],
+        "bucket": "3",
+        "records": 13,
+        "exact_distinct_query_pairs": 13,
+        "token_bag_distinct_query_pairs": 13,
+        "observed_records": 13,
+        "nonzero_contrast_pairs": 0
+      },
+      {
+        "family": "direct_question",
+        "actions": [
+          "original",
+          "semantic"
+        ],
+        "bucket": "2",
+        "records": 3,
+        "exact_distinct_query_pairs": 3,
+        "token_bag_distinct_query_pairs": 3,
+        "observed_records": 3,
+        "nonzero_contrast_pairs": 1
+      },
+      {
+        "family": "direct_question",
+        "actions": [
+          "original",
+          "semantic"
+        ],
+        "bucket": "3",
+        "records": 13,
+        "exact_distinct_query_pairs": 13,
+        "token_bag_distinct_query_pairs": 13,
+        "observed_records": 13,
+        "nonzero_contrast_pairs": 1
+      },
+      {
+        "family": "indirect_question",
+        "actions": [
+          "hyde",
+          "original"
+        ],
+        "bucket": "2",
+        "records": 4,
+        "exact_distinct_query_pairs": 4,
+        "token_bag_distinct_query_pairs": 4,
+        "observed_records": 4,
+        "nonzero_contrast_pairs": 1
+      },
+      {
+        "family": "indirect_question",
+        "actions": [
+          "hyde",
+          "original"
+        ],
+        "bucket": "3",
+        "records": 12,
+        "exact_distinct_query_pairs": 12,
+        "token_bag_distinct_query_pairs": 12,
+        "observed_records": 12,
+        "nonzero_contrast_pairs": 2
+      },
+      {
+        "family": "indirect_question",
+        "actions": [
+          "keywords",
+          "original"
+        ],
+        "bucket": "2",
+        "records": 4,
+        "exact_distinct_query_pairs": 4,
+        "token_bag_distinct_query_pairs": 4,
+        "observed_records": 4,
+        "nonzero_contrast_pairs": 0
+      },
+      {
+        "family": "indirect_question",
+        "actions": [
+          "keywords",
+          "original"
+        ],
+        "bucket": "3",
+        "records": 12,
+        "exact_distinct_query_pairs": 12,
+        "token_bag_distinct_query_pairs": 12,
+        "observed_records": 12,
+        "nonzero_contrast_pairs": 0
+      },
+      {
+        "family": "indirect_question",
+        "actions": [
+          "original",
+          "semantic"
+        ],
+        "bucket": "2",
+        "records": 4,
+        "exact_distinct_query_pairs": 4,
+        "token_bag_distinct_query_pairs": 4,
+        "observed_records": 4,
+        "nonzero_contrast_pairs": 1
+      },
+      {
+        "family": "indirect_question",
+        "actions": [
+          "original",
+          "semantic"
+        ],
+        "bucket": "3",
+        "records": 12,
+        "exact_distinct_query_pairs": 12,
+        "token_bag_distinct_query_pairs": 12,
+        "observed_records": 12,
+        "nonzero_contrast_pairs": 1
+      }
+    ],
+    "sparse_cells": 0,
+    "sparse_distinct_query_cells": 0,
+    "scope": "Observed families crossed with the union of observed and declared pairs/buckets; undeclared, unobserved families cannot be detected."
+  },
+  "costs_by_unit": {
+    "nominal_selected_probe_search_calls": {
+      "total": 192.0,
+      "on_exact_identical_queries": 0.0,
+      "on_zero_contrast_outcomes": 174.0
+    }
+  },
+  "cost_scope": "Valid records only; reported paired marginal costs. Generation/setup costs outside these records are not inferred. Cost categories overlap and must not be added together.",
+  "invalid_records": [],
+  "diagnostics": [
+    {
+      "code": "observed_zero_contrast",
+      "severity": "warning",
+      "evidence": "The paired recorded endpoints are equal (numeric outcomes use absolute tolerance 1e-12).",
+      "interpretation": "These observations provide no signed preference between the paired actions on this endpoint. They do not establish permanent incapacity or equal result lists.",
+      "action": "Inspect endpoint coarseness and probe difficulty; use informative targets and repeat stochastic cases.",
+      "count": 87,
+      "example_probe_ids": [
+        "9d8c685de2f10cd615c08a2c",
+        "67c9c690ccf96fcee934528a",
+        "e37918a7d1ce4a4f0be1d12f",
+        "934a3131b493b23b71c6e16b",
+        "108cea67c9542081ef3c90d3"
+      ]
+    },
+    {
+      "code": "saturated_success",
+      "severity": "warning",
+      "evidence": "Both actions reach rank 1, or the declared best outcome bound.",
+      "interpretation": "The chosen endpoint has no upward room on these trials; this does not measure future-task usefulness.",
+      "action": "Try indirect, paraphrased, or harder known-target probes and check that both easy and difficult cases remain represented.",
+      "count": 80,
+      "example_probe_ids": [
+        "9d8c685de2f10cd615c08a2c",
+        "67c9c690ccf96fcee934528a",
+        "e37918a7d1ce4a4f0be1d12f",
+        "934a3131b493b23b71c6e16b",
+        "108cea67c9542081ef3c90d3"
+      ]
+    },
+    {
+      "code": "observed_floor",
+      "severity": "warning",
+      "evidence": "Both targets are absent at cutoff, or both outcomes reach the declared worst bound.",
+      "interpretation": "Censoring or an overly difficult probe may hide differences. Absence at cutoff says nothing about deeper ranks.",
+      "action": "Inspect target validity and query difficulty; consider a deeper cutoff or a more sensitive endpoint.",
+      "count": 3,
+      "example_probe_ids": [
+        "da8ab1309488d604b6d3aab9",
+        "5488c081ee1a97f1acb4ea34",
+        "4130cf2c16c4da075dfc51c4"
+      ]
+    }
+  ],
+  "what_this_log_cannot_establish": [
+    "Whether probe preferences predict future-task preferences, improve relevance, or generalize to another environment.",
+    "Whether unsaturated or nonzero-contrast probes are causally informative, statistically reliable, or worth their cost.",
+    "Whether equal query strings imply equal full API requests; request settings and retrieval determinism must be established separately.",
+    "Whether self-reported costs, target identities, outcome bounds, and observations match the actual service.",
+    "Whether probe generation leaked held-out labels, or unlogged probes/costs were omitted."
+  ],
+  "method": {
+    "query_canonicalization": "Unicode NFKC, casefold, Unicode \\w+ tokens, sorted with multiplicity",
+    "outcome_absolute_tolerance": 1e-12,
+    "target_endpoint": "Reciprocal rank at declared cutoff; null is censored absence, not an unbounded rank.",
+    "no_future_task_labels_used": true,
+    "example_ids_per_diagnostic_limit": 5
+  }
+}

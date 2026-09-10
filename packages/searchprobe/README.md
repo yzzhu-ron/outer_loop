@@ -1,6 +1,12 @@
 # searchprobe
 
-Check whether paired search probes can tell you anything before spending a larger retrieval budget. `searchprobe` audits submitted query strings, optional known-target ranks or numeric outcomes, action coverage, and declared costs. It runs locally with Python's standard library and works with logs from any search API.
+Inspect search probes, decision models, and router responsiveness before spending a larger retrieval budget. `searchprobe` runs locally with Python's standard library and accepts logs from any search API.
+
+| Command | Input | What it checks |
+| --- | --- | --- |
+| `audit` | Paired-query JSONL logs | Collisions, coverage, rank ties, saturation and declared costs |
+| `decision-audit` | Explicit source-world utility matrix | Exact conditional minimax regret and a worst-case witness |
+| `response-audit` | Base scores and correction bounds | Which decisions cannot change, with exact tie handling |
 
 The tool grew out of a retrieval pilot in which many nominally different query actions produced identical strings. It separates this structural problem from a measured tie between different queries. Neither a clean audit nor a nonzero probe contrast establishes that a probe predicts useful behavior on future tasks.
 
@@ -24,11 +30,11 @@ PYTHONPATH=packages/searchprobe/src python3 -m searchprobe audit \
   packages/searchprobe/examples/synthetic.jsonl --output /tmp/searchprobe-report.json
 ```
 
-For an installation pinned to the initial implementation commit, without a
+For an installation pinned to a commit containing all three commands, without a
 manual checkout (requires Git and access to this repository):
 
 ```sh
-python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@c08f62d8a82cadfa6682f5a8804ae33cd16a1ca6#subdirectory=packages/searchprobe"
+python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@17c2680ca05f8abf9d6d11f354e20c20f28e576b#subdirectory=packages/searchprobe"
 ```
 
 `searchprobe` is also a member of this repository's uv workspace. With uv, use `uv run --package searchprobe searchprobe audit probes.jsonl --output report.json` from the repository root.

@@ -1,0 +1,8 @@
+{
+  "corpus": "nfcorpus",
+  "documents": 3633,
+  "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "cache_key": "2efe92016e6625a0bd859f41cbaab0e96a242446cadf00476109fc689d2cac46",
+  "measured_model_load_and_index_preparation_seconds": 47.919640042004175,
+  "scope": "Offline corpus index preparation on CPU during question generation; no search queries or task labels used. Existing SciFact and FiQA caches are inherited from the lexical pilot."
+}

@@ -1,0 +1,3790 @@
+{
+  "schema_version": 1,
+  "scope": "Strict single-query audit of admitted experiment candidates, derived from immutable raw traces. This is not a log of probes selected by a deployment policy.",
+  "directories": {
+    "raw_traces": "probe_traces",
+    "raw_reports": "probe_diagnostics",
+    "strict_traces": "strict_probe_traces",
+    "strict_reports": "strict_probe_diagnostics"
+  },
+  "raw_query_fields": "Raw query strings render action inputs by joining each action's query group with a newline. Decomposed action outcomes may be ranks from fused multiple requests; these renderings are not always single submitted queries.",
+  "strict_query_fields": "Only original-vs-keywords/semantic/hyde pairs with one nominal request per side are retained. Their query strings, action names, buckets, and observed target ranks are unchanged. Embedded newlines in a single query are preserved.",
+  "exclusion_policy": "All decomposed action pairs are excluded from the strict single-query audit, including any one-request fallback cases, to avoid reinterpreting the frozen action pipeline. This does not exclude them from the experiment.",
+  "upstream_filtering": "The raw traces already omit invalid-generation and exact-identical action pairs. Audit collision rates describe admitted candidates, not the unfiltered generator; consult the experiment's excluded-candidate records for upstream failures.",
+  "cost_unit": "nominal_selected_probe_search_calls",
+  "cost_meaning": "Each pair records the nominal calls required if that pair were selected independently. The harness precomputes action panels, shares reference queries, and may cache results. Summed trace costs are not actual harness/backend requests or total experiment spend; sampling, generation, and setup require the experiment's separate ledger.",
+  "conversion": "The only retained-record change is cost.unit: search_calls -> nominal_selected_probe_search_calls. Raw traces and raw reports are preserved; SHA-256 hashes identify the source and derived files.",
+  "tool": "searchprobe audit CLI, executed separately for each strict JSONL file",
+  "exporter_sha256": "9b33a7459a0bdd8fde43a1bb19d9336084cd5d39c3a43ea6cd127f1a4bb8b6ae",
+  "counts": {
+    "files": 18,
+    "raw_records": 2304,
+    "retained_records": 1728,
+    "excluded_records": 576,
+    "files_without_retained_pairs": 0
+  },
+  "files": [
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "97460c2e363f7a6ee1594630de623f5007db6c262c5b4fd761fd724e9a4dc78e",
+      "excluded": [
+        {
+          "probe_id": "40546f8856b8e53f745150f2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8b27d1166f5463c39088f562",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7af4c38de4489914580c79e8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1c543f7424ad7eaf917f286d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cbba5f66e11cfae0d93bbc98",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "efb40820c0954b7904c6cc59",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d8794fa5b0681df8a9eff9db",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2dd1450bafceb4058f2e3cb5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0f3eea6958fd30362a47c436",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fb1d0bbf5f285dcd857439e2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fb61287361ba096d1fdb52af",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8570c98bf50fe1e166a7ea29",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f09e479e66eba4be6d14019d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bff692662cf7fb65dc26d516",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7e178b8ee0a1ce50269314e6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "555bc5df59dd890a57d53083",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1cd48b50ce75f7d355a9eacf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "39ea9b0334fe42b9a7e1621b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cac5627da82f1ca8f06b2217",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ff3482860846b63c44e6ca01",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8ceca4ea54572deff8087437",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4f7104681e750dfa0be49ff",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fef86e3be66410a35b841ae8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2e5ed79f2243724e653b26ac",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1483f5f40a02b1ec978b59ce",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4db847ea894b4f22deda1b7a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f5c2251e64b836caf406852f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bd6d1ae1b71043fee5767a97",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "eb34d820341bc111787260e7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f2110ca35e996804078fba09",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf611cd3870648df91f5d231",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "59d249b883f0f638a19c660b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/fiqa_bm25_11.jsonl",
+      "strict_trace": "strict_probe_traces/fiqa_bm25_11.jsonl",
+      "strict_report": "strict_probe_diagnostics/fiqa_bm25_11.json",
+      "strict_sha256": "61e76f398a0be570ff65ef64b451712831843b0022a0588344ba860d94ef8f0e",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "24a569712fd695876ce977338f3f85eb61554f241e906d8af5b741e2d4fb6a58",
+      "excluded": [
+        {
+          "probe_id": "2e515f73ee87eef4979b6930",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6b2f25a384f4f700678f8bfc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6a19afb65bea9b91c1a4a176",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "77541a56039f12169e4d0e82",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "61a50fc3fd315337236308ce",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "be3f6e1ed052d6dd011cff39",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ed41b1ee9351f9cf14c01fc4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "63e1ad75a8e97d2928bd662a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "06000e5beee83d674472a334",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "01d20205548db336b4e9d6b8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b733a666afead803d3770b6a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a0f781f8058d6f34ac28903c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0173d47f750759ce80d14465",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8e4838e82185526f621f7775",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "903f59e13b33a5ff0a20c602",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "32c64836b90376ef1207a60a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bc492079a2ff8c9b9195c65b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "78bb581581e7d1ee7a9a13f9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4b820923e1966b22093e0ad",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b561d9c53afb777876b265aa",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2a2f2e1e4c90ab91455be2ae",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "58b1d5908b2099a2567af7ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fe226a56cd13e8c7e9d16fd2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6a0832bba388910bbe9933f4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf89fe9e1a4bb1dc65ac152d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ffa4fe3a94719b56247e27bb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4c55759863ee6cc22e954c74",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "12d8cb995e3e4c755fe791c0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e5f1eccd93e1fffb9f7fa0f2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "09cd187ff811fc7e43f954fc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1ebca263416d16940a03e8cf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "70411bbefed550829cfd3377",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/fiqa_bm25_23.jsonl",
+      "strict_trace": "strict_probe_traces/fiqa_bm25_23.jsonl",
+      "strict_report": "strict_probe_diagnostics/fiqa_bm25_23.json",
+      "strict_sha256": "9714f9ef0f6b1f5c82b8fff1e81ab45b497b330badbeae2bfd2678d6398a24e6",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "86a8654376ac52fc68e55e41718a89644e203693946bf9444d24577b6f5cb29e",
+      "excluded": [
+        {
+          "probe_id": "73d5b68418cebf63b55ffdb3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f1733aa383a0e897fc1aab90",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "95b787bf2ff5ca857791162d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b0aad71065d5927e8b818cf5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3c084abb571ed7ce323f6be8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0c0c000b2a8c1ce757a99bd9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1d44c4ba26e913205f6ed199",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9a4e838df22bfc205704e235",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3012af0f3e814b14dcae561b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "96db8152ba1826d2b13a9e0a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6a06ced36aa8fb356bb56348",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ce27160641e410583ae96cb3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3ce3ae091d1a067107bfbdc8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "951f29486faebbeb9ba0036c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf407598de2ce933c1b7b467",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cb9023b6b1f5c7760dfa6618",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7b745025986a5704bd029cd7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b3992ce5458edadcc2fc449d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ad8a0817a3ff55ec06c3f729",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "80c8e5753282284dc1005709",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "35f4248f9af3d92fff0b41ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3daf57241ab533bc29b6dd7f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a91da72b3fb2ff51514baf8d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "80a16b6e7c7185e9d4f89dd8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "92cd547c46c7b8ba7daf532e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8569bfa48dfbfb1cec617497",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "72c233595f0cabdeac18f294",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bafb9e5fcb0bcbb5288a159d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "026fbf72d902239be62cd339",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "34cbabbd4e7c1d512f2d8c6d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "46e8d92e9f77f55a1b4a6b90",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f2322a46ec1dad23dc6fe6bc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/fiqa_bm25_47.jsonl",
+      "strict_trace": "strict_probe_traces/fiqa_bm25_47.jsonl",
+      "strict_report": "strict_probe_diagnostics/fiqa_bm25_47.json",
+      "strict_sha256": "af7a957dcedf57fc7062722d554fd4963add79fbd7c0af16fe269e033de76ec2",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "45b461ca1a61a2fa8041f9b0b7274115eddc4d832ac15539848e12182651d1d4",
+      "excluded": [
+        {
+          "probe_id": "40546f8856b8e53f745150f2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8b27d1166f5463c39088f562",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7af4c38de4489914580c79e8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1c543f7424ad7eaf917f286d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cbba5f66e11cfae0d93bbc98",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "efb40820c0954b7904c6cc59",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d8794fa5b0681df8a9eff9db",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2dd1450bafceb4058f2e3cb5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0f3eea6958fd30362a47c436",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fb1d0bbf5f285dcd857439e2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fb61287361ba096d1fdb52af",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8570c98bf50fe1e166a7ea29",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f09e479e66eba4be6d14019d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bff692662cf7fb65dc26d516",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7e178b8ee0a1ce50269314e6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "555bc5df59dd890a57d53083",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1cd48b50ce75f7d355a9eacf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "39ea9b0334fe42b9a7e1621b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cac5627da82f1ca8f06b2217",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ff3482860846b63c44e6ca01",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8ceca4ea54572deff8087437",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4f7104681e750dfa0be49ff",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fef86e3be66410a35b841ae8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2e5ed79f2243724e653b26ac",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1483f5f40a02b1ec978b59ce",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4db847ea894b4f22deda1b7a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f5c2251e64b836caf406852f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bd6d1ae1b71043fee5767a97",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "eb34d820341bc111787260e7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f2110ca35e996804078fba09",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf611cd3870648df91f5d231",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "59d249b883f0f638a19c660b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/fiqa_dense_11.jsonl",
+      "strict_trace": "strict_probe_traces/fiqa_dense_11.jsonl",
+      "strict_report": "strict_probe_diagnostics/fiqa_dense_11.json",
+      "strict_sha256": "7cf0906ce9df38ec635097fb5aa58f1962a8213ba7f8d0f0bb72df1fc5ebf75c",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "dd0eead75f0ba28745d39406c730629d7315c7789ea9f309f5f35a99dc4fdd91",
+      "excluded": [
+        {
+          "probe_id": "2e515f73ee87eef4979b6930",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6b2f25a384f4f700678f8bfc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6a19afb65bea9b91c1a4a176",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "77541a56039f12169e4d0e82",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "61a50fc3fd315337236308ce",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "be3f6e1ed052d6dd011cff39",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ed41b1ee9351f9cf14c01fc4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "63e1ad75a8e97d2928bd662a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "06000e5beee83d674472a334",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "01d20205548db336b4e9d6b8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b733a666afead803d3770b6a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a0f781f8058d6f34ac28903c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0173d47f750759ce80d14465",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8e4838e82185526f621f7775",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "903f59e13b33a5ff0a20c602",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "32c64836b90376ef1207a60a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bc492079a2ff8c9b9195c65b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "78bb581581e7d1ee7a9a13f9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4b820923e1966b22093e0ad",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b561d9c53afb777876b265aa",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2a2f2e1e4c90ab91455be2ae",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "58b1d5908b2099a2567af7ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fe226a56cd13e8c7e9d16fd2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6a0832bba388910bbe9933f4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf89fe9e1a4bb1dc65ac152d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ffa4fe3a94719b56247e27bb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4c55759863ee6cc22e954c74",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "12d8cb995e3e4c755fe791c0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e5f1eccd93e1fffb9f7fa0f2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "09cd187ff811fc7e43f954fc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1ebca263416d16940a03e8cf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "70411bbefed550829cfd3377",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/fiqa_dense_23.jsonl",
+      "strict_trace": "strict_probe_traces/fiqa_dense_23.jsonl",
+      "strict_report": "strict_probe_diagnostics/fiqa_dense_23.json",
+      "strict_sha256": "92fd7ea4ecb8df43e039715067acfd7834bf1472dd93dd8298def9270bfe8e2e",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "b30c47a6da8046790d32401f2957202e6880c6bafff05ae830dc3e98aa58e53c",
+      "excluded": [
+        {
+          "probe_id": "73d5b68418cebf63b55ffdb3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f1733aa383a0e897fc1aab90",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "95b787bf2ff5ca857791162d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b0aad71065d5927e8b818cf5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3c084abb571ed7ce323f6be8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0c0c000b2a8c1ce757a99bd9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1d44c4ba26e913205f6ed199",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9a4e838df22bfc205704e235",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3012af0f3e814b14dcae561b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "96db8152ba1826d2b13a9e0a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6a06ced36aa8fb356bb56348",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ce27160641e410583ae96cb3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3ce3ae091d1a067107bfbdc8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "951f29486faebbeb9ba0036c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf407598de2ce933c1b7b467",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cb9023b6b1f5c7760dfa6618",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7b745025986a5704bd029cd7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b3992ce5458edadcc2fc449d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ad8a0817a3ff55ec06c3f729",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "80c8e5753282284dc1005709",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "35f4248f9af3d92fff0b41ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3daf57241ab533bc29b6dd7f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a91da72b3fb2ff51514baf8d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "80a16b6e7c7185e9d4f89dd8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "92cd547c46c7b8ba7daf532e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8569bfa48dfbfb1cec617497",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "72c233595f0cabdeac18f294",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bafb9e5fcb0bcbb5288a159d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "026fbf72d902239be62cd339",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "34cbabbd4e7c1d512f2d8c6d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "46e8d92e9f77f55a1b4a6b90",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f2322a46ec1dad23dc6fe6bc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/fiqa_dense_47.jsonl",
+      "strict_trace": "strict_probe_traces/fiqa_dense_47.jsonl",
+      "strict_report": "strict_probe_diagnostics/fiqa_dense_47.json",
+      "strict_sha256": "ae1dfd77c0d52c1f655f536496aa56839cc07f5276ad371c2863ba6f954c0649",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "81e6b2c5b0d9c90c7b5b95a7bd34a757669ada1a1a0b8d06d138c787a4890810",
+      "excluded": [
+        {
+          "probe_id": "871041dbec6fd174332b9376",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3ab473768edc8cb48ed55a8d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fc73b1be296551ca321d0bba",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "88677acf28c37ebd22eb370a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b61b44af61d3f81a59dd1487",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "23ff0fe489a88c8a2aceb6a3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "70d79c2e0b76a396415a266b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b60f32417431891806d8d087",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "451ea5f4feb43c6b7e1fcb0c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "93f70f2b801923cd5f365ac7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2eaf9e8dfb08646bd2277ff0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0a13f6163bc0973d816f1b4c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "66768bf6633f5610d2118ca2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "10fe187907ef1a0bcc807368",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "91b991a5ecdd2cc22a4531ef",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "06cd97fd24aa58d7f88e6eb5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "af21d5ad69f7980846922434",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a24daf57c6af0025eab79fb2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d799cce2a51f18d793a8dd5c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8f7fdf913b30c3c54494b88e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2d7c8e6e08409a20602727b2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4e5dc69a09b21674c121fdc7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "eaf11a7764357d13913d4ca3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "48effc44ffd9898105335872",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e23223344183274bccee2624",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bb54aa9b5ce434037ad2fe66",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "40189ccf389d999e19a123ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "39194cbd3ea7f7e26b9de52f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "28ad9fee9cc907a9e0aeb369",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e8fad0f4476fce3fb8fa038c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "998f916186d66f98efbbeaff",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "53922106642a7bafa2efa560",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/nfcorpus_bm25_11.jsonl",
+      "strict_trace": "strict_probe_traces/nfcorpus_bm25_11.jsonl",
+      "strict_report": "strict_probe_diagnostics/nfcorpus_bm25_11.json",
+      "strict_sha256": "6c088596b4ef26ab5928d2c8c88ec9d79a74541784a8c24c4198d3928e388b36",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "f1fa29a2327ff6b2be0d7f4d033cac13bc210f4ffe40d91caadb0d972b736830",
+      "excluded": [
+        {
+          "probe_id": "764bd375345ae17b01c8327e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "61dfc373b306a2bbdaee672c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "88c17bc7d9dadb07666ed255",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf0340d471f490ae7e4a76b3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cbdb53eb58894985393e2106",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "39e4a585b9d208b1e94c443c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "26faa353b68e11fd3bf953c2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "373adc9233a5baabddba6194",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a05ebfeae1131f3dfdeb1c21",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2890e919deb4b077e9aa5c94",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e98b8966b59fcba8144ae95b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b355ce437ebe0e3e716453ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "265fe51452e8fdb2d0e6a7ed",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "73fb0fad8b70554e674eb0b8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c4d6f1e42376b3760d982f39",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6c3ab18e7c95233151e4b5e7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "068b6e5f3a8ba464cbe7e5a7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fd5acda1bd60aabfa4439e18",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ee75cf5e9c41ec53d80483cd",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "191e11a30fae1e66865fd9b3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b89dfbc9d68dc557318b3f7a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0aa39b6f04905cb989baf856",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "18b3d904d77999327813b281",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cd17663e0b4b0ed9dea0d132",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4e35a369963a6c6c62bfcc3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b881ffb472295ac4ef8eeb72",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8ffa30450418318162379d66",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e48ecc82015d40d73bf2f42d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bffc6744ef7dae51c99c8620",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c36e995e2bdb6336dda37d5a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "381561d68f7d796d3fabf5cf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b642afa7966569f002cd941c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/nfcorpus_bm25_23.jsonl",
+      "strict_trace": "strict_probe_traces/nfcorpus_bm25_23.jsonl",
+      "strict_report": "strict_probe_diagnostics/nfcorpus_bm25_23.json",
+      "strict_sha256": "6083901532d2cdced217d07725a3b9e183db20aa5e8b760629327bcdc2babeda",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "ff5554942429a8f8ca1cc2d7e431427d7bd32f0954b1a82891d7b047bc07e142",
+      "excluded": [
+        {
+          "probe_id": "f7bc4800be9e0844c7d68826",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bbc8d03ef70d812a729deb98",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "12a6b4f9a3ab4125756008ae",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4d9d21a2d05825e165b2dab5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5a1127117cb461b302df0745",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "dbcdc1a74d39ba0c409b256f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d19f573a3a5179c93454af6d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0d95d83ff3482ad026836aa1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2852e1e84250f336441dc4a1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "92ca7493529a82d9a5eb7fdf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "226ca898b4b8e3f298fcde12",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ee625ee3c01c98c877becd7e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "511ec1e9f7b80b2ddbe48a7f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6fb5f0a60b06c8d6db7a2a4f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "00ec104bb652db926bd815fa",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1c981559ea825953e44c84af",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "501147d7fcc53acaa08abdf4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4b5031ec9160c340bbc6e9c6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ef083654b4614adfdaef33a6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bec9bf11b6b5f6bc412be0eb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ff1b01d20c5ef5d2b9b670bb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d5b4ab8102d8b6f24d359ff3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "45f5458ddcee7fbf6b575333",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c94a0b4143dfe3c1a2e5f3b2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "66768bf6633f5610d2118ca2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "10fe187907ef1a0bcc807368",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e98b8966b59fcba8144ae95b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b355ce437ebe0e3e716453ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7eb1127732938f0aa780db41",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "469b4904d2b4dfb9f63f3d0a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "de6a2d1348e1cd648cf0e6c4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "48fa1c7c63f7bd2606455049",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/nfcorpus_bm25_47.jsonl",
+      "strict_trace": "strict_probe_traces/nfcorpus_bm25_47.jsonl",
+      "strict_report": "strict_probe_diagnostics/nfcorpus_bm25_47.json",
+      "strict_sha256": "a75a3f263160526f54e6308f828ac2b8536e63ae0c33bd117828f7955fe6bd80",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "8d302bc24009ec91432c8c91b1900ad5ac21030a5ebb5a13cfa85412159a271b",
+      "excluded": [
+        {
+          "probe_id": "871041dbec6fd174332b9376",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3ab473768edc8cb48ed55a8d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fc73b1be296551ca321d0bba",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "88677acf28c37ebd22eb370a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b61b44af61d3f81a59dd1487",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "23ff0fe489a88c8a2aceb6a3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "70d79c2e0b76a396415a266b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b60f32417431891806d8d087",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "451ea5f4feb43c6b7e1fcb0c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "93f70f2b801923cd5f365ac7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2eaf9e8dfb08646bd2277ff0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0a13f6163bc0973d816f1b4c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "66768bf6633f5610d2118ca2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "10fe187907ef1a0bcc807368",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "91b991a5ecdd2cc22a4531ef",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "06cd97fd24aa58d7f88e6eb5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "af21d5ad69f7980846922434",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a24daf57c6af0025eab79fb2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d799cce2a51f18d793a8dd5c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8f7fdf913b30c3c54494b88e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2d7c8e6e08409a20602727b2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4e5dc69a09b21674c121fdc7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "eaf11a7764357d13913d4ca3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "48effc44ffd9898105335872",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e23223344183274bccee2624",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bb54aa9b5ce434037ad2fe66",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "40189ccf389d999e19a123ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "39194cbd3ea7f7e26b9de52f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "28ad9fee9cc907a9e0aeb369",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e8fad0f4476fce3fb8fa038c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "998f916186d66f98efbbeaff",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "53922106642a7bafa2efa560",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/nfcorpus_dense_11.jsonl",
+      "strict_trace": "strict_probe_traces/nfcorpus_dense_11.jsonl",
+      "strict_report": "strict_probe_diagnostics/nfcorpus_dense_11.json",
+      "strict_sha256": "a0b21e994262b690419dbaa2fce70ef3a4d76bb72d8b8a67033ca8d98941a181",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "0995ff6bda66cd589263d731580ba41704ac9ff901c3cbace57c5db121f206cd",
+      "excluded": [
+        {
+          "probe_id": "764bd375345ae17b01c8327e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "61dfc373b306a2bbdaee672c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "88c17bc7d9dadb07666ed255",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf0340d471f490ae7e4a76b3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cbdb53eb58894985393e2106",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "39e4a585b9d208b1e94c443c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "26faa353b68e11fd3bf953c2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "373adc9233a5baabddba6194",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a05ebfeae1131f3dfdeb1c21",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2890e919deb4b077e9aa5c94",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e98b8966b59fcba8144ae95b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b355ce437ebe0e3e716453ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "265fe51452e8fdb2d0e6a7ed",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "73fb0fad8b70554e674eb0b8",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c4d6f1e42376b3760d982f39",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6c3ab18e7c95233151e4b5e7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "068b6e5f3a8ba464cbe7e5a7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fd5acda1bd60aabfa4439e18",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ee75cf5e9c41ec53d80483cd",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "191e11a30fae1e66865fd9b3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b89dfbc9d68dc557318b3f7a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0aa39b6f04905cb989baf856",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "18b3d904d77999327813b281",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cd17663e0b4b0ed9dea0d132",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4e35a369963a6c6c62bfcc3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b881ffb472295ac4ef8eeb72",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8ffa30450418318162379d66",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e48ecc82015d40d73bf2f42d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bffc6744ef7dae51c99c8620",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c36e995e2bdb6336dda37d5a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "381561d68f7d796d3fabf5cf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b642afa7966569f002cd941c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/nfcorpus_dense_23.jsonl",
+      "strict_trace": "strict_probe_traces/nfcorpus_dense_23.jsonl",
+      "strict_report": "strict_probe_diagnostics/nfcorpus_dense_23.json",
+      "strict_sha256": "0fefb5e358b8172fd81c938d7e4b1dbde2287d43aa9b4652eae7703cfcd60c61",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "03ceef46e377e3b015a6571655a02d5597fd1b6284457de01c7631e298c5af4f",
+      "excluded": [
+        {
+          "probe_id": "f7bc4800be9e0844c7d68826",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bbc8d03ef70d812a729deb98",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "12a6b4f9a3ab4125756008ae",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4d9d21a2d05825e165b2dab5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5a1127117cb461b302df0745",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "dbcdc1a74d39ba0c409b256f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d19f573a3a5179c93454af6d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "0d95d83ff3482ad026836aa1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2852e1e84250f336441dc4a1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "92ca7493529a82d9a5eb7fdf",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "226ca898b4b8e3f298fcde12",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ee625ee3c01c98c877becd7e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "511ec1e9f7b80b2ddbe48a7f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6fb5f0a60b06c8d6db7a2a4f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "00ec104bb652db926bd815fa",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "1c981559ea825953e44c84af",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "501147d7fcc53acaa08abdf4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4b5031ec9160c340bbc6e9c6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ef083654b4614adfdaef33a6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "bec9bf11b6b5f6bc412be0eb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ff1b01d20c5ef5d2b9b670bb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d5b4ab8102d8b6f24d359ff3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "45f5458ddcee7fbf6b575333",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c94a0b4143dfe3c1a2e5f3b2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "66768bf6633f5610d2118ca2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "10fe187907ef1a0bcc807368",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e98b8966b59fcba8144ae95b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b355ce437ebe0e3e716453ca",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7eb1127732938f0aa780db41",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "469b4904d2b4dfb9f63f3d0a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "de6a2d1348e1cd648cf0e6c4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "48fa1c7c63f7bd2606455049",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/nfcorpus_dense_47.jsonl",
+      "strict_trace": "strict_probe_traces/nfcorpus_dense_47.jsonl",
+      "strict_report": "strict_probe_diagnostics/nfcorpus_dense_47.json",
+      "strict_sha256": "e2d72f918f6576766e39a15f29d41607a0ff26f970134ddd52cf95593d0dd9dc",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "0c98bf6441e0baff71296ab960e9023605981ddc5c7c51830b7924264590607d",
+      "excluded": [
+        {
+          "probe_id": "827714f6efdfc3c3ce0fe438",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "be4d4104f3ead6c47093ccfe",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e4d7f6ca349524a0ac323bc2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "46a30d962ae0c4696815daf1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "99998228a8d701df0d1026dd",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "676a8c62b7286dbc6e183a27",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "eee09a7674aa686f43e9f8c4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2a48ec39fc94a01d2f319aa9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a51a0a6036b9a884c531b38f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6fc914c1a4c32450cda62d62",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b1b6d33fd4bc8e08a48118f5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "81e8c40d25171eb92099f1e0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4eea8877e40253cddab2236c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e1cd292f1922282b37613dcc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf8cf3eaed77f66bd1bc9891",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "51e35bd993d6c78592fb45a2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "87a8705c9e31b0957c997dd3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c68bd27080e8e88d6fa6f71f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e06245475bedc843e8f2fb0b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b2c461d7dd2eda958151e787",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7e2b01877796481708627272",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3ad5f3ad5e352fcc7bc09630",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "16ddd748c0bb2facea0a2495",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fce3a99b684d44c940adaec2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c7bbabfc21344ab46ffd1e9e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a4a2dd0edd5f7395c73d1af6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d0359109d13ae66353250190",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c468dfc4913e81096b438f65",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8c7c91d23407c6483804b11e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7e41edb2cfabdac6e0cd5761",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "dd022a991abe63d800e771e0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ca1a9938e2f1a9087637dca6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/scifact_bm25_11.jsonl",
+      "strict_trace": "strict_probe_traces/scifact_bm25_11.jsonl",
+      "strict_report": "strict_probe_diagnostics/scifact_bm25_11.json",
+      "strict_sha256": "8620c5291c1cd06da82bc412d3d30ffed81cdb627e79e82b5ac1a4327f487c10",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "d10e7c0a8b8cee1f5e37ab915bd250d05483038196a8eaea8bad119d6633300f",
+      "excluded": [
+        {
+          "probe_id": "939e88e05992efe6a360e3ee",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f1618d4e5488793a43a0007e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8b46e998cc1543ea72478e2d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf2786d510454f41626571f2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "504f76dd02ec16b58b26ea4a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4bd42d1f76b837b3b603302f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "04ac9f39f0510759525023fb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a84e373a60ddb563af58ba5e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fd4009525df35199d507836e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7caac598b94389ba8aa0d0e7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4c7e17b2f4000bae89dac0a9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e86b33f5994748c6412c45d4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5add8cac4cd8ac34aced16e9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a23834ac0abba572ea23777a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "62293757f9af1ad23ca0cd92",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "17ff3560a37764b63f803de9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4594eafe47ea55fd4a95e58",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "31123f1ada168f673dbaec18",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6ac8dbd8692bc1ba6b4b14ec",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5d219f4ed5a54e03a2179586",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "70bdc15fa9d6985b92afec12",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c056ed45f0bfc04f4e8047c9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "04e24a9fd94e41ad73acfcbd",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "02c11c7018902b1d303db932",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fbf173be74437da0982edce2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9cca4b83acb072f76101ee48",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8e5babb272aaa4ca28fd6e20",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f1af88cdab3cb05dec217b4f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e7f972c824f9b92f18d77f65",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "40ea42ecc87b1852fc18f6e9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ebbd6cf743fbcb36eb32819b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8d765dfc8e9c17126f846efb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/scifact_bm25_23.jsonl",
+      "strict_trace": "strict_probe_traces/scifact_bm25_23.jsonl",
+      "strict_report": "strict_probe_diagnostics/scifact_bm25_23.json",
+      "strict_sha256": "baf175a5a6c9afadb68e39ebab4aec70352cc46b7d475b9d7251f6d90a7fb293",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "764f8fd49304483bdf5305ea934c1a01588e000b21e3a7ee11338c2ea9bf623c",
+      "excluded": [
+        {
+          "probe_id": "768683af74387b00e1a04440",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "67ad0c85e51b43a1cb807891",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f82bf46ca3d69f3ff16bc6ed",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "91256df43b66761d65423f8a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "34714b7c0b34d6bb81591874",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "463cd7715e21f96813d0d6f1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "30b9602c8b234a93d08a4854",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "497e514c8ae0ce5c50239eb3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fc6362f64cf4aae6e7389460",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e96b419cd8353534f0f95dee",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "dda8d9c744922215f55b5e7a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "baeb78ad81014ad2f9b724e6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4c55fcc6400fd16748078022",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3817a5055a80f31629103c12",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9e9ccea5aa8b17b6afbab1d0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ceec6e9bb9133501131fdd79",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4b8027e951a6e8a21681d13b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4edf78a203ffc69da4622699",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b34cec434130ac328bb7add1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8e75c9720a2796ddafc1d4d9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "09758b8b51f1feb7afc22ba1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7df872c5cf7696cd26820df2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8097e54b2ed33549b9d66e49",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "98a71398ac7738d3109a0c4e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5d7e1367227c191430679b91",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "49a88777cf9b863da57eb9d7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "012b415e5f382a127adcafec",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "73952ffb312e4e4fdbce1014",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9fa448469aa4377816b01d6e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "89b35902aa983c2ec096a03c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b7f3973fd926192d251adefa",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2cab90081129dd2a74714c20",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/scifact_bm25_47.jsonl",
+      "strict_trace": "strict_probe_traces/scifact_bm25_47.jsonl",
+      "strict_report": "strict_probe_diagnostics/scifact_bm25_47.json",
+      "strict_sha256": "2764b7e2e59a7b04ed7e5a0614b067b15b6db0cea05fb6065b786b7aac2e67bd",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "ea983ff08abe3dce4f98afbe939c72a2c0d27adc17cbe62326db37a59d4acecc",
+      "excluded": [
+        {
+          "probe_id": "827714f6efdfc3c3ce0fe438",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "be4d4104f3ead6c47093ccfe",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e4d7f6ca349524a0ac323bc2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "46a30d962ae0c4696815daf1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "99998228a8d701df0d1026dd",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "676a8c62b7286dbc6e183a27",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "eee09a7674aa686f43e9f8c4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2a48ec39fc94a01d2f319aa9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a51a0a6036b9a884c531b38f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6fc914c1a4c32450cda62d62",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b1b6d33fd4bc8e08a48118f5",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "81e8c40d25171eb92099f1e0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4eea8877e40253cddab2236c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e1cd292f1922282b37613dcc",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf8cf3eaed77f66bd1bc9891",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "51e35bd993d6c78592fb45a2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "87a8705c9e31b0957c997dd3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c68bd27080e8e88d6fa6f71f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e06245475bedc843e8f2fb0b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b2c461d7dd2eda958151e787",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7e2b01877796481708627272",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3ad5f3ad5e352fcc7bc09630",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "16ddd748c0bb2facea0a2495",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fce3a99b684d44c940adaec2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c7bbabfc21344ab46ffd1e9e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a4a2dd0edd5f7395c73d1af6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "d0359109d13ae66353250190",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c468dfc4913e81096b438f65",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8c7c91d23407c6483804b11e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7e41edb2cfabdac6e0cd5761",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "dd022a991abe63d800e771e0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ca1a9938e2f1a9087637dca6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/scifact_dense_11.jsonl",
+      "strict_trace": "strict_probe_traces/scifact_dense_11.jsonl",
+      "strict_report": "strict_probe_diagnostics/scifact_dense_11.json",
+      "strict_sha256": "547cd15059bbafe7c0f64b6c87664cb7591ff362c3fa998d86efa028dc633038",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "7cc3e2417630a11d04899eea97769a05d1d096863603db9273d5431171fb2a83",
+      "excluded": [
+        {
+          "probe_id": "939e88e05992efe6a360e3ee",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f1618d4e5488793a43a0007e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8b46e998cc1543ea72478e2d",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "cf2786d510454f41626571f2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "504f76dd02ec16b58b26ea4a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4bd42d1f76b837b3b603302f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "04ac9f39f0510759525023fb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a84e373a60ddb563af58ba5e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fd4009525df35199d507836e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7caac598b94389ba8aa0d0e7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4c7e17b2f4000bae89dac0a9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e86b33f5994748c6412c45d4",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5add8cac4cd8ac34aced16e9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "a23834ac0abba572ea23777a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "62293757f9af1ad23ca0cd92",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "17ff3560a37764b63f803de9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f4594eafe47ea55fd4a95e58",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "31123f1ada168f673dbaec18",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "6ac8dbd8692bc1ba6b4b14ec",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5d219f4ed5a54e03a2179586",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "70bdc15fa9d6985b92afec12",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "c056ed45f0bfc04f4e8047c9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "04e24a9fd94e41ad73acfcbd",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "02c11c7018902b1d303db932",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fbf173be74437da0982edce2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9cca4b83acb072f76101ee48",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8e5babb272aaa4ca28fd6e20",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f1af88cdab3cb05dec217b4f",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e7f972c824f9b92f18d77f65",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "40ea42ecc87b1852fc18f6e9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ebbd6cf743fbcb36eb32819b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8d765dfc8e9c17126f846efb",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/scifact_dense_23.jsonl",
+      "strict_trace": "strict_probe_traces/scifact_dense_23.jsonl",
+      "strict_report": "strict_probe_diagnostics/scifact_dense_23.json",
+      "strict_sha256": "c33e00faba922bdb731446c7ef75ec0d83dfc885fbfbaf8c2d213565d534a928",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    },
+    {
+      "raw_records": 128,
+      "retained_records": 96,
+      "excluded_records": 32,
+      "raw_sha256": "7ce55cf1f49ff0db0da404aee9f316357ce48b52972a14f7e8974c1e0430b111",
+      "excluded": [
+        {
+          "probe_id": "768683af74387b00e1a04440",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "67ad0c85e51b43a1cb807891",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "f82bf46ca3d69f3ff16bc6ed",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "91256df43b66761d65423f8a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "34714b7c0b34d6bb81591874",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "463cd7715e21f96813d0d6f1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "30b9602c8b234a93d08a4854",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "497e514c8ae0ce5c50239eb3",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "fc6362f64cf4aae6e7389460",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "e96b419cd8353534f0f95dee",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "dda8d9c744922215f55b5e7a",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "baeb78ad81014ad2f9b724e6",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4c55fcc6400fd16748078022",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "3817a5055a80f31629103c12",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9e9ccea5aa8b17b6afbab1d0",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "ceec6e9bb9133501131fdd79",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4b8027e951a6e8a21681d13b",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "4edf78a203ffc69da4622699",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b34cec434130ac328bb7add1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8e75c9720a2796ddafc1d4d9",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "09758b8b51f1feb7afc22ba1",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "7df872c5cf7696cd26820df2",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "8097e54b2ed33549b9d66e49",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "98a71398ac7738d3109a0c4e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "5d7e1367227c191430679b91",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "49a88777cf9b863da57eb9d7",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "012b415e5f382a127adcafec",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "73952ffb312e4e4fdbce1014",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "9fa448469aa4377816b01d6e",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "89b35902aa983c2ec096a03c",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "b7f3973fd926192d251adefa",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        },
+        {
+          "probe_id": "2cab90081129dd2a74714c20",
+          "action": "decomposed",
+          "reason": "decomposed_action_may_fuse_multiple_requests",
+          "nominal_pair_cost": 3
+        }
+      ],
+      "raw_nominal_pair_cost_total": 288,
+      "retained_nominal_pair_cost_total": 192,
+      "excluded_nominal_pair_cost_total": 96,
+      "raw_trace": "probe_traces/scifact_dense_47.jsonl",
+      "strict_trace": "strict_probe_traces/scifact_dense_47.jsonl",
+      "strict_report": "strict_probe_diagnostics/scifact_dense_47.json",
+      "strict_sha256": "22990d2b63061908cc3f7ea5e595b0e5efc80efc550552c4aa075ef39c6a8ba9",
+      "strict_audit_status": "warning",
+      "strict_audit_exit_code": 0
+    }
+  ]
+}

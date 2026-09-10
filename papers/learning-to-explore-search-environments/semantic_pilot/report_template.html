@@ -225,12 +225,17 @@
 </style>
 <style>
 .table-wrap { overflow-x:auto; } table { max-width:none; } th { color:var(--gray-700); }
+.page > main { min-width:0; }
 figure { margin:28px 0; } figure svg { width:100%; height:auto; background:white; }
 figcaption { font-size:12px; margin-top:8px; } nav a { display:block; margin:8px 0; }
 section { scroll-margin-top:20px; } .demo { border:1px solid var(--gray-300); padding:22px; background:var(--white); }
 .demo label { display:block; } .demo input { width:min(100%,360px); margin:15px 0; }
 .readout { font-family:var(--mono); font-size:16px; color:var(--slate); margin:18px 0; }
 button { font:inherit; color:var(--slate); background:var(--gray-150); border:1px solid var(--gray-300); border-radius:4px; padding:6px 12px; cursor:pointer; }
+dialog { width:min(96vw,1500px); max-width:96vw; max-height:92vh; margin:auto; padding:18px; border:1px solid var(--gray-300); background:var(--ivory); color:var(--slate); }
+dialog::backdrop { background:rgba(0,0,0,.7); }
+.figure-view { overflow:auto; max-height:75vh; margin-top:14px; background:white; }
+.figure-view svg { display:block; width:100%; min-width:1000px; max-width:none; height:auto; }
 @media(max-width:960px) { aside { position:static; order:2; } body { padding:28px 15px 70px; } }
 @media print { aside { display:none; } .page { display:block; } details .body { display:block; } }
 </style>
@@ -239,7 +244,7 @@ button { font:inherit; color:var(--slate); background:var(--gray-150); border:1p
 <header><div class="eyebrow">Research notebook · 10 September 2026 · exploratory evidence</div>
 <h1>From document rediscovery to useful search decisions</h1>
 <p class="lead">Can a search system learn which query strategies work in a new corpus before seeing its future questions? We built a stronger semantic experiment, proved finite-model counterexamples, and packaged the resulting diagnostics as <code>searchprobe</code>.</p>
-<div class="tldr"><p>@@MEASURED_SUMMARY@@</p><p><strong>The conceptual result:</strong> pairwise agreement can conceal a conflict among three plausible environments. Measuring the remaining decision risk exposes it. The tool makes that certificate executable, while keeping its source-model assumptions explicit.</p></div>
+<div class="tldr"><p><strong>A promising result:</strong> @@INTERVENTION_SUMMARY@@</p><p>@@MEASURED_SUMMARY@@</p><p><strong>The conceptual result:</strong> pairwise agreement can conceal a conflict among three plausible environments. Measuring the remaining decision risk exposes it. The tool makes that certificate executable, while keeping its source-model assumptions explicit.</p></div>
 </header>
 <section id="experiment"><h2>A stronger action menu on three corpora</h2>
 <p>The first lexical pilot produced no profile-induced routing changes. This continuation preserves those results and evaluates original queries, keywords, semantic rewrites, hypothetical passages and two-query decomposition. A pinned local Qwen3 4B model generates the semantic variants; BM25 and a pinned MiniLM encoder search the full released corpora.</p>
@@ -251,6 +256,7 @@ button { font:inherit; color:var(--slate); background:var(--gray-150); border:1p
 <section id="adaptation"><h2>Do selected probes improve real retrieval?</h2>
 <p>Random, fixed coverage, Gaussian information gain and learned one-step value each select up to 32 paired probes from the same pool. The learned selector's gain labels come only from separate source utility queries. Budget zero reduces exactly to the source router.</p>
 @@ADAPTATION@@
+<p><strong>The diagnosed bottleneck:</strong> source calibration chooses a fixed-score router in every fold. Under the supplied score bounds, its fitted profile correction cannot overcome the score margins on any evaluation query within 32 probes; the sensitivity certificate below verifies this without target utility labels. All 20,880 one-step source training rewards are zero. This run therefore cannot establish which acquisition strategy would be best with a responsive router.</p>
 <p>Values average the three onboarding seeds. Intervals resample paired queries and shared seeds and are descriptive, conditional on these selected tasks and families. Three seeds do not support a broad transfer claim; comparisons are not corrected for multiplicity.</p>
 <details><summary>Secondary metric: Recall@10</summary><div class="body">@@RECALL@@<p>Recall measures the fraction of positively judged support documents retrieved in the top ten. It uses the same retained task cohort and method decisions.</p></div></details>
 @@FIGURE_ADAPTATION@@
@@ -260,14 +266,16 @@ button { font:inherit; color:var(--slate); background:var(--gray-150); border:1p
 <p>A zero estimated one-step value need not imply that a diverse batch has zero value: complementary probes can be individually unhelpful. The exact XOR example in the theory note demonstrates this stopping trap.</p>
 </div></details>
 <details><summary>Could this router respond to any allowed probe history?</summary><div class="body">
-<p>For budget B, every shrunk profile feature lies between −B/(B+4) and B/(B+4). Multiplying that range by each correction head's coefficient L1 norm bounds how far its score can move; the original action's correction is exactly zero. If a query's winning margin exceeds the combined winner/challenger bounds, its action cannot change under this frozen router. This conservative audit uses query features and source-trained coefficients, without target utility labels.</p>
+<p>For budget B, every shrunk profile feature lies between −B/(B+4) and B/(B+4). Multiplying that range by each correction head's coefficient L1 norm bounds how far its score can move; the original action's correction is exactly zero. If a query's winning margin exceeds the combined winner/challenger bounds, its action cannot change in this score/bound model of the frozen router. This conservative audit uses query features and source-trained coefficients, without target utility labels.</p>
 @@SENSITIVITY@@
 <p>The bound may substantially overestimate possible movement because feature extremes need not occur together. Numerical comparisons include rounding slack; this is not formally verified interval arithmetic. Uncertified queries are only potentially changeable, not guaranteed to benefit.</p>
 </div></details>
 </section>
+@@FOLLOWUP@@
 <section id="alignment"><h2>Does the proxy measure the right thing?</h2>
 <p>A generated question has a known source document, making rediscovery cheap to score. Real users can have different information needs, and other retrieved documents can also answer the generated question. Known-document reciprocal rank is therefore a proxy endpoint, not complete relevance supervision.</p>
 <p>The fixed audit also found scope differences between some direct and indirect questions. Comparing these families measures the constructed probes; it does not isolate a causal effect of paraphrasing or difficulty alone.</p>
+<p>A post-result support check found that all probes contain more than eight tokens, while 35/150 SciFact, 51/150 FiQA and 61/65 NFCorpus test queries fall in the short-query buckets. Default audits check the observed bucket union; explicitly declaring all four expected buckets reveals this missing coverage. Among strict single-query pairs, 78.7% have equal known-target ranks and 69.2% rank the target first on both sides. The <a href="semantic_pilot/results/independent_trace_review.json">technical audit</a> records the denominators and limitations.</p>
 @@FIGURE_ALIGNMENT@@
 @@GENERATION@@
 <p>“Valid” above means format-valid, not semantically verified. The fixed manual audit is linked below. Failed generations remain in the task cohort; their generated actions return no results. Prompts and settings were frozen before this semantic run's retrieval scores; all three families remain exploratory.</p>
@@ -303,8 +311,11 @@ button { font:inherit; color:var(--slate); background:var(--gray-150); border:1p
 <p><code>searchprobe</code> is an installable Python package with no runtime dependencies. It accepts logs from any search API. A preflight audit catches identical query strings, token-bag collisions and missing coverage; observed logs add ties, rank-one saturation, floor effects and cost consistency checks.</p>
 <pre><code>python -m pip install ./packages/searchprobe
 searchprobe audit probes.jsonl --output report.json
-searchprobe decision-audit source-model.json --output decision.json</code></pre>
+searchprobe decision-audit source-model.json --output decision.json
+searchprobe response-audit score-bounds.json --output response.json</code></pre>
 <p>The second command requires an explicit utility matrix, source provenance, task weighting and assumptions. It returns the exact decision radius, an attaining policy mixture, and a sparse dual witness. Every report says <code>target_regret_guarantee: false</code>. A clean probe audit and a small source-model radius cannot establish transfer to a new corpus.</p>
+<p>The <a href="semantic_pilot/results/source_decisions.csv">six measured source-model audits</a> use only router-training queries from each fold's two source corpora. Their oracle picks one fixed query action per source world. Each <a href="semantic_pilot/results/source_decision_models/nfcorpus_bm25_model.json">saved model</a> is a reusable input to the same command; exact arithmetic certifies optimization of those supplied means, without eliminating sampling uncertainty.</p>
+<p>The third command checks a different prerequisite: can bounded score corrections change any router decision? It uses exact rational arithmetic, honors tie rules, and lists possible alternative winners. Six <a href="semantic_pilot/results/response_audits.csv">measured router audits</a> reproduce the original pipeline's 100% unchanged result at budget 32, with no target relevance labels. The <a href="semantic_pilot/results/response_models/scifact_dense.model.json">exported score model</a> runs through the same public command as the synthetic example. The certificate is conditional on the supplied bounds; it does not verify the numerical implementation or prove that changing an action would help.</p>
 <p>The package is available from this branch; it has not been published to a package registry. Its finite exact solver is intentionally bounded to small models. The source code, examples and tests make it useful without a paid API or proprietary backend.</p>
 </section>
 <section id="reproduce"><h2>Evidence and reproducibility</h2>
@@ -313,12 +324,36 @@ searchprobe decision-audit source-model.json --output decision.json</code></pre>
 <li><a href="semantic_pilot/results/headroom.csv">Action headroom</a> · <a href="semantic_pilot/results/adaptation.csv">all adaptation runs</a> · <a href="semantic_pilot/results/cost_curves.csv">cost curves</a></li>
 <li><a href="semantic_pilot/GENERATION_AUDIT.md">Fixed manual generation audit</a> · <a href="semantic_pilot/results/generation_records.jsonl">realized generations</a> · <a href="semantic_pilot/protocol.json">frozen protocol</a></li>
 <li><a href="theory/theory.md">Theory, proofs and assumptions</a> · <a href="theory/verified_results.json">exact examples</a> · <a href="theory/RELATED_WORK.md">prior-work comparison</a></li>
-<li><a href="../../packages/searchprobe/README.md">SearchProbe package</a> · <a href="../../packages/searchprobe/DECISION_AUDIT.md">decision-model contract</a></li>
+<li><a href="../../packages/searchprobe/README.md">SearchProbe package</a> · <a href="../../packages/searchprobe/DECISION_AUDIT.md">decision-model contract</a> · <a href="../../packages/searchprobe/RESPONSE_AUDIT.md">responsiveness contract</a></li>
 <li><a href="pilot/RESULTS.md">Preserved first lexical pilot</a> · <a href="search-environment-exploration-proposal.html">original proposal</a></li></ul>
 </section>
-</main><aside><div class="label">Read the evidence</div><nav aria-label="Contents"><a href="#experiment">Action headroom</a><a href="#adaptation">Probe selection</a><a href="#alignment">Proxy alignment</a><a href="#theory">Interactive counterexample</a><a href="#cost">Complete cost</a><a href="#tool">Use the tool</a><a href="#reproduce">Reproduce</a></nav><hr><p style="font-size:12px;margin-top:16px">Three corpora · two backends · five actions · three onboarding seeds. All results are exploratory.</p></aside></div>
+</main><aside><div class="label">Read the evidence</div><nav aria-label="Contents"><a href="#experiment">Action headroom</a><a href="#adaptation">Probe selection</a><a href="#followup">Responsive intervention</a><a href="#alignment">Proxy alignment</a><a href="#theory">Interactive counterexample</a><a href="#cost">Complete cost</a><a href="#tool">Use the tool</a><a href="#reproduce">Reproduce</a></nav><hr><p style="font-size:12px;margin-top:16px">Three corpora · two backends · five actions · three onboarding seeds. All results are exploratory.</p></aside></div>
 <script>
 const epsilon=document.getElementById('epsilon');
 function render(){const e=Number(epsilon.value);document.getElementById('epsilon-value').value=e.toFixed(2);const rows=[[0,1,1-e],[1-e,0,1],[1,1-e,0]];document.getElementById('utility-matrix').innerHTML=rows.map((r,i)=>'<tr><th scope="row">World '+(i+1)+'</th>'+r.map(v=>'<td>'+v.toFixed(2)+'</td>').join('')+'</tr>').join('');document.getElementById('pairwise').textContent=e.toFixed(4);document.getElementById('radius').textContent=((1+e)/3).toFixed(4);}
 epsilon.addEventListener('input',render);document.getElementById('reset-epsilon').addEventListener('click',()=>{epsilon.value='0.01';render();});render();
+const figureDialog=document.createElement('dialog');
+figureDialog.setAttribute('aria-label','Full-size research figure');
+const closeFigure=document.createElement('button');
+closeFigure.type='button';closeFigure.textContent='Close figure';
+closeFigure.addEventListener('click',()=>figureDialog.close());
+const figureView=document.createElement('div');figureView.className='figure-view';
+figureDialog.append(closeFigure,figureView);document.body.appendChild(figureDialog);
+document.querySelectorAll('figure').forEach(figure=>{
+  const button=document.createElement('button');
+  button.type='button';button.textContent='Open full-size figure';
+  button.addEventListener('click',()=>{
+    const svg=figure.querySelector('svg').cloneNode(true);
+    // Keep cloned SVG references local without duplicating document IDs.
+    svg.querySelectorAll('[id]').forEach(node=>{
+      const oldId=node.id,newId='expanded_'+oldId;node.id=newId;
+      svg.querySelectorAll('*').forEach(target=>Array.from(target.attributes).forEach(attr=>{
+        if(attr.value==='#'+oldId)target.setAttributeNS(attr.namespaceURI,attr.name,'#'+newId);
+        else if(attr.value.includes('url(#'+oldId+')'))target.setAttributeNS(attr.namespaceURI,attr.name,attr.value.replaceAll('url(#'+oldId+')','url(#'+newId+')'));
+      }));
+    });
+    figureView.replaceChildren(svg);figureDialog.showModal();
+  });
+  figure.appendChild(button);
+});
 </script></body></html>
