@@ -6,6 +6,8 @@ The tool grew out of a retrieval pilot in which many nominally different query a
 
 An optional, separate [`decision-audit`](DECISION_AUDIT.md) command accepts a declared **source utility matrix** and computes its exact conditional minimax regret, action mixture, and worst-case witness. It requires source provenance and modeling assumptions. It does not infer target utilities from a query log or produce a target-regret guarantee.
 
+[`response-audit`](RESPONSE_AUDIT.md) checks whether declared score-correction bounds can change a router's choices. It reports exact conditional stability and an upper bound on absolute mean utility change for utilities in `[0,1]`. The caller must justify the bounds; the command reads no labels and provides no target-regret or generalization guarantee.
+
 ## Run an audit
 
 From the repository root, install into your own virtual environment:
@@ -20,6 +22,13 @@ No package has been published to PyPI. To run directly from a checkout without i
 ```sh
 PYTHONPATH=packages/searchprobe/src python3 -m searchprobe audit \
   packages/searchprobe/examples/synthetic.jsonl --output /tmp/searchprobe-report.json
+```
+
+For an installation pinned to the initial implementation commit, without a
+manual checkout (requires Git and access to this repository):
+
+```sh
+python -m pip install "searchprobe @ git+https://github.com/yzzhu-ron/outer_loop.git@c08f62d8a82cadfa6682f5a8804ae33cd16a1ca6#subdirectory=packages/searchprobe"
 ```
 
 `searchprobe` is also a member of this repository's uv workspace. With uv, use `uv run --package searchprobe searchprobe audit probes.jsonl --output report.json` from the repository root.
@@ -125,7 +134,7 @@ Run the dependency-free tests from the repository root:
 PYTHONPATH=packages/searchprobe/src python3 -m unittest discover -s packages/searchprobe/tests -v
 ```
 
-The package's GitHub Actions workflow runs the standard-library tests on Python 3.10, 3.12, and 3.14, and builds and installs a wheel for both CLI smoke tests on Python 3.12. It has no publication step.
+The package's GitHub Actions workflow runs the standard-library tests on Python 3.10, 3.12, and 3.14, and builds and installs a wheel for CLI smoke tests on Python 3.12. It has no publication step.
 
 ## Audit the semantic experiment's exported traces
 

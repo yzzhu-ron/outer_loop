@@ -1,2 +1,3 @@
 include DECISION_AUDIT.md
+include RESPONSE_AUDIT.md
 recursive-include examples *.py *.json *.jsonl

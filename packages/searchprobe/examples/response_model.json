@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "score_box_model",
+  "model_id": "synthetic-router-responsiveness",
+  "actions": ["original", "rewrite"],
+  "row_ids": ["wide-margin", "reachable-tie", "narrow-margin"],
+  "base_scores": [["0.8", "0.3"], ["0.4", "0.5"], ["0.49", "0.5"]],
+  "correction_bounds": ["0.05", "0.05"],
+  "provenance": {
+    "score_source": "Handwritten synthetic scores, not fitted to data",
+    "bound_source": "Assumed symmetric correction bounds for demonstration",
+    "row_population": "Three synthetic rows, not evaluation tasks",
+    "synthetic": true
+  },
+  "assumptions": [
+    "Every action score changes by at most 0.05 in absolute value on every row.",
+    "The deterministic router chooses the highest score, with the first action winning exact ties."
+  ]
+}

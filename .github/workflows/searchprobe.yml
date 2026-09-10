@@ -39,11 +39,12 @@ jobs:
           python -m pip install --disable-pip-version-check build
           python -m build --wheel packages/searchprobe
           python -m pip install --no-deps packages/searchprobe/dist/*.whl
-      - name: Smoke-test both installed commands
+      - name: Smoke-test all three installed commands
         if: matrix.python == '3.12'
         run: |
           searchprobe audit packages/searchprobe/examples/synthetic.jsonl --output "$RUNNER_TEMP/searchprobe-probes.json"
           searchprobe decision-audit packages/searchprobe/examples/source_model_synthetic.json --output "$RUNNER_TEMP/searchprobe-decisions.json"
+          searchprobe response-audit packages/searchprobe/examples/response_model.json --output "$RUNNER_TEMP/searchprobe-response.json"
           python - <<'PY'
           import json
           import os
@@ -51,9 +52,13 @@ jobs:
           root = Path(os.environ["RUNNER_TEMP"])
           probes = json.loads((root / "searchprobe-probes.json").read_text())
           decisions = json.loads((root / "searchprobe-decisions.json").read_text())
+          response = json.loads((root / "searchprobe-response.json").read_text())
           assert probes["counts"]["valid_records"] == 5
           assert probes["counts"]["exact_identical_query_pairs"] == 1
           assert decisions["decision_radius"]["exact"] == "1/3"
           assert decisions["certificate"]["duality_gap"]["exact"] == "0"
           assert decisions["target_regret_guarantee"] is False
+          assert response["unchanged_fraction"]["exact"] == "1/3"
+          assert response["mean_utility_change_bound"]["absolute_upper_bound"]["exact"] == "2/3"
+          assert response["bound_validity_verified"] is False
           PY
