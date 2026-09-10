@@ -1,0 +1,2 @@
+results/*.csv text eol=lf
+results/figures/*.svg -whitespace

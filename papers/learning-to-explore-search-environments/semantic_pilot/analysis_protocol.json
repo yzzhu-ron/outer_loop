@@ -1,0 +1,11 @@
+{
+  "frozen_before_semantic_retrieval": true,
+  "created_on": "2026-09-09",
+  "purpose": "Descriptive diagnostics and a stronger inference-time comparator; this supplements protocol.json without changing generation or selection.",
+  "bootstrap": "2000 draws, seed 20260910. Resample query IDs jointly across methods and resample the three shared onboarding seeds; conditional on these selected tasks/families. Percentile 95% intervals, no multiple-comparison correction or population claim.",
+  "headroom": "Per-query oracle minus source router and target-best-fixed, with query bootstrap. Fixed oracle chosen on the displayed target sample is descriptive, not an unbiased held-out oracle estimate.",
+  "alignment": "For each corpus/backend, family and action, compare mean known-document RR alternative-original contrast with real-task nDCG alternative-original contrast. Display individual action means and bucket means; observations are correlated through shared queries/documents and are not independent causal effects.",
+  "fusion_baseline": "Choose the non-original alternative with greatest mean utility on the two source training partitions, equally weighting source environments; fuse original and that alternative's saved top-10 output using RRF k=60. Decomposed action output is already a two-query fusion. No target label selection; target labels only score the resulting ranking.",
+  "fusion_cost": "Sum original and selected alternative serving search counts and full response generation tokens/calls. For decomposition this totals 3 searches. No onboarding setup.",
+  "reporting": "Display every family/backend and every selector; no cherry-picked corpus or seed. New post-result diagnostics must be explicitly marked post hoc."
+}

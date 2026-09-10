@@ -1,2 +1,2 @@
 [tool.uv.workspace]
-members = ["packages/outer_loop", "applications/shopgym"]
+members = ["packages/outer_loop", "packages/searchprobe", "applications/shopgym"]

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "source_utility_model",
+  "model_id": "synthetic-three-way-conflict",
+  "actions": ["policy-a", "policy-b", "policy-c"],
+  "world_ids": ["synthetic-world-1", "synthetic-world-2", "synthetic-world-3"],
+  "utilities": [[0, 1, 1], [1, 0, 1], [1, 1, 0]],
+  "provenance": {
+    "utility_source": "Entirely synthetic finite-game construction; no retrieval measurements or human labels",
+    "source_split": "No training/evaluation split; mathematical example only",
+    "task_distribution": "One abstract decision per world; utilities are declared values",
+    "synthetic": true
+  },
+  "assumptions": [
+    "The three worlds are the complete model for this example; no claim is made that they represent any real target environment.",
+    "All three actions are available in every world and supplied utilities are exact."
+  ]
+}
