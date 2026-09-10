@@ -1,0 +1,169 @@
+{
+  "bridge_model": {
+    "centered_fit": "For each(c,r,p), demean X over the seven lambdas. D is demeaned over lambda within c,p. Fit one scalar slope per policy using equal corpus/lambda/panel weights.",
+    "deployment": "D_hat[p]=mu_D[p]+eta*beta[p]*(X_target[p]-mu_X[p]); original is exactly zero. Choose the highest predicted policy using registered ties. Store unbounded predictions; do not clip because utility comparison and response-error diagnostics must retain extrapolation failures.",
+    "fixed_regularization": "Let V=mean(X_centered squared), C=mean(X_centered*D_centered). If V<=1e-6 set beta=0 and mark the policy degenerate; otherwise beta=C/(1.1*V). This is fixed ridge0.1 on a unit-variance scalar feature with unit-total observation weights; no fitted hyperparameter grid.",
+    "forbidden_policy_information": [
+      "target relevance labels or utility vectors",
+      "target across-lambda mean or reference backend",
+      "hidden lambda",
+      "both endpoint caches",
+      "target corpus ID as a model feature",
+      "unselected probe observations"
+    ],
+    "intercept_assumption": "Equivalent b[p]=mu_D[p]-eta*beta[p]*mu_X[p] is an equal-source residual intercept. Transport of this action-specific intercept is a modeling hypothesis, not identified by source centering or known-document rediscovery. Relative-action contrasts remove action-common difficulty only.",
+    "pooled_fit": "Identical model except demean X and D globally over source corpus/lambda/panel instead of within corpus/panel.",
+    "source_calibration": "Select eta from[0,0.5,1] separately for centered and pooled models by highest equal-source/equal-lambda/equal-calibration-panel mean calibration nDCG@10. Ties within1e-12 favor smaller eta. Do not refit beta or source means afterward.",
+    "source_reference": "mu_D[p] and mu_X[p] are uniform means over source corpus,lambda,panel. Query means are computed within corpus before corpus averaging.",
+    "utility_D": "For each source corpus c, lambda j, and non-original policy p: mean over the128 training queries of nDCG@10(p)-nDCG@10(original). The same D[c,j,p] is paired with each of three source fit panels r."
+  },
+  "evaluation": {
+    "advancement_gate": {
+      "attribution": "Must outperform pooled and shuffled controls and predict centered target response better than zero-effects before attributing improvement to transported intervention response.",
+      "macro_gain_vs_source_fixed_at_least": 0.005,
+      "maximum_loss_in_any_family": 0.005,
+      "positive_families_at_least": 2,
+      "required_against_both_fixed_baselines": [
+        "128-query source-fixed train prior",
+        "160-query source-fixed train+calibration prior"
+      ]
+    },
+    "alias_audit": "Evaluator-only after sealing: within each targetpanel, group lambda states whose mean-profile coordinates agree after rounding to12decimal places. Report optimal cap2 policy sets, their common intersection, adaptation headroom, and distinct per-document RR/full action-ranklist response states. No labels or alias groups feed back into policy.",
+    "artifact_stages": [
+      "Freeze code/protocol/source provenance",
+      "Export source train/calibration utilities plus probe responses and label-free test metadata",
+      "Fit/select source models and lock all target predictions and decisions",
+      "Export test utilities only after the decision file exists and its input/freeze hashes match",
+      "Evaluate locked decisions with the separate test-utility file"
+    ],
+    "conclusions": [
+      "Response accuracy and deployed utility both improve: evidence for this bridge within the registered development setting.",
+      "Response accuracy improves but deployed utility does not: backend-sensitive effects transport, but level anchoring or policy decision margins fail.",
+      "Only deployed utility improves: useful choices without established backend-response transport.",
+      "Neither improves: reject this bridge before adding acquisition complexity.",
+      "Known-lambda failure despite target oracle adaptation headroom indicates source utility ordering is a problem even with perfect backend identification; lack of oracle headroom means these interventions provide little adaptation opportunity."
+    ],
+    "intercept_diagnostic": "Report evaluator-only mean prediction residual per target corpus/policy separately from centered response error.",
+    "lock": "Before computing/exposing new target test utilities, save source fits/selections and independently produced target predictions, chosen policies, selected document IDs, full permitted observations, and costs for everylambda/seed. Separate test export requires those decisions and matching input/freeze hashes. The provider parses a monolithic archive physically containing targetqrels; no claim is made that the entire process has never read those archive bytes.",
+    "portable_replay": "Decide/evaluate verify frozen implementation and evidence-stage hashes, without requiring ignored raw caches. Export phases additionally verify all source hashes against the actual selected cache directory. Frozen implementation includes imported pilot/engine.py.",
+    "primary": "Equal-family/equal-lambda/equal-target-panel mean nDCG@10 differences: primary centered bridge minus each of the128-query and160-query source-fixed cap2 baselines.",
+    "response_transport": "After predictions are locked, evaluator demeaning over lambda within target corpus/panel/policy is allowed only for a diagnostic. Compare mean squared error of centered predicted relative utilities versus centered true test relative utilities, excluding original, against the zero-response model and shuffled controls. Report actual target response variance so a nearly flat operator cannot look predictive by scale alone. Never feed these target means back into any model.",
+    "secondary": [
+      "Per-family,lambda,panel nDCG and recall",
+      "Interior-only lambda view",
+      "Policy choices and change rate versus source-fixed",
+      "Wrapper/component/generation/token/sample costs and onboarding amortization",
+      "Known-lambda source-utility performance",
+      "Oracle target best fixed policy versus oracle best policy per lambda, both evaluator-only"
+    ],
+    "timestamps": "Input export, prediction lock, and new target test metric computation each record explicit UTC timestamps; test export occurs only after matching prediction lock exists.",
+    "uncertainty": "2000 paired-query bootstrap replicates with seed20260910. Within each target corpus, resample query IDs once per replicate and reuse the same sample across every lambda,panel,policy,method. Keep the three families fixed and aggregate equally; do not bootstrap lambda rows as independent environments. Report three panel results separately; these intervals are conditional on fitted source models and finite panels.",
+    "writers": "Freeze,exports,decisions,results refuse existing files. Reanalysis uses new explicit outputpaths and retains hash links."
+  },
+  "families": [
+    "fiqa",
+    "nfcorpus",
+    "scifact"
+  ],
+  "lambda_grid": [
+    0,
+    0.125,
+    0.25,
+    0.5,
+    0.75,
+    0.875,
+    1
+  ],
+  "lambda_prior": "Uniform over all seven registered points for fitting, calibration, primary reporting, and evaluator centering; interior-only results are a predeclared secondary view.",
+  "operator": "Use frozen adapter.py and operator.v1.json unchanged.",
+  "outer_split": {
+    "source_tasks_fit": "128 existing train queries per source family; same query units across every lambda.",
+    "source_tasks_select": "32 existing calibration queries per source family; never refit on these.",
+    "source_tasks_unused": "Existing utility partition is unused in this first test.",
+    "target_tasks": "Existing test partition only:150 FiQA,65 NFCorpus,150 SciFact. The source archive/provider physically contains all qrels. The input export emits no target test utilities; decision code receives only source train/cal utilities and permitted target observations. New target test utilities are computed and exported separately after all decision artifacts are sealed.",
+    "unit": "Hold out one entire corpus family, including every lambda, query partition, and probe document from all fitting/selection."
+  },
+  "policy_menu": {
+    "fusion": "Unweighted RRF60 of selected action result lists, document-ID ties, top10; each decomposed action already uses the adapter's correct per-subquery hybrid composition.",
+    "ordered_policies": [
+      [
+        "original"
+      ],
+      [
+        "keywords"
+      ],
+      [
+        "semantic"
+      ],
+      [
+        "hyde"
+      ],
+      [
+        "decomposed"
+      ],
+      [
+        "original",
+        "keywords"
+      ],
+      [
+        "original",
+        "semantic"
+      ],
+      [
+        "original",
+        "hyde"
+      ],
+      [
+        "keywords",
+        "semantic"
+      ],
+      [
+        "keywords",
+        "hyde"
+      ],
+      [
+        "semantic",
+        "hyde"
+      ]
+    ],
+    "primary_serving_cap_wrapper_calls": 2,
+    "quality_reference": "RRF of all five actions, six wrapper and twelve component searches plus one shared generation bundle per task.",
+    "tie_order": "Highest exact finite prediction; fewer nominal wrapper calls; no generation; lexicographic tuple of action names in the fixed action order."
+  },
+  "probe_split": {
+    "available_unique_documents_checked_without_outcomes": {
+      "fiqa": 48,
+      "nfcorpus": 46,
+      "scifact": 48
+    },
+    "feature_x": "For each policy p, average over the eight selected documents: reciprocal_rank(known_document, policy_result)-reciprocal_rank(known_document, original_result). Fuse actual returned lists before computing RR. Original feature is zero.",
+    "invalid_generation": "Keep the sampled document and charge attempted generation; unavailable action groups follow frozen empty-result behavior. No replacement using outcome-dependent eligibility.",
+    "no_probe_case": "A source-selected correction strength of zero requires no target onboarding for that method. Diagnostic methods that inspect the panel incur its full cost separately.",
+    "onboarding_cost": "Eight samples and eight joint-question generation attempts; indirect rewrite attempts only for valid indirect questions (eight in current pre-outcome validity audit). Sum actual recorded token costs. Each valid five-action bundle costs6 wrapper/12 component calls; full valid panel48/96. Invalid actions use actual group lengths, no replacement. Charge no direct rewrite or unused document generation.",
+    "question_family": "indirect_question only, generated by the original frozen joint question generator.",
+    "retrieval": "For each selected document, retrieve all five action request groups once through one hidden hybrid backend. Share the original response and other returned action lists locally when computing policy probes; no uncharged duplicate retrieval.",
+    "source_calibration_panels": "Next16 ordered documents form two disjoint panels of eight; remaining source documents unused.",
+    "source_document_order": "Sort unique document IDs in the union of existing source pools by SHA256 of UTF-8 'intervention-probe-split-v1:'+corpus+':'+document_id, then ID as tie-breaker. Do not filter using outcomes or generation validity.",
+    "source_fit_panels": "First24 ordered documents form three disjoint panels of eight.",
+    "stored_observation": "Keep each selected document ID, all five paid action ranklists, policyRR vector, and exactcosts; bridge uses only meanpolicyRR contrast.",
+    "target_panels": "First eight documents in each existing seed11,23,47 pool; all lambda/seed runs reset independently. These three prefixes have no pairwise document overlap in any current family."
+  },
+  "question": "Do within-corpus probe-response slopes transport action utility to a held-out corpus family well enough to improve a fixed policy under a two-wrapper-search serving cap?",
+  "registered_methods": {
+    "baselines": [
+      "Source-fixed best policy in the same11-policy menu using mu_D; no onboarding",
+      "Source-fixed train+calibration160-query baseline: within each source corpus/lambda average128train+32cal utilities using query-count weights, then equal-source/equal-lambda average; select the same11-policy menu and incur zero onboarding. Does not replace the exact eta0/train-prior fallback.",
+      "Pooled bridge with separately source-calibrated eta",
+      "Original",
+      "HyDE",
+      "RRF-all higher-cost quality reference"
+    ],
+    "known_lambda_source_utility": "Privileged diagnostic chooses argmax_p equal-source mean D[c,target_lambda,p]; no probes and no target labels. It is not a target-quality upper bound.",
+    "mechanism_diagnostic": "Centered bridge with eta fixed at1, without target-based model selection; measures the fitted response direction even if source calibration rejects it.",
+    "primary": "Centered bridge with source-calibrated eta.",
+    "shuffled_source_control": "Twenty seeds20260910..20260929; independently permute seven lambda slices within each source corpus, jointly across all policies/query IDs/panels in BOTH train and calibration utility tables, leaving probe X and target utilities untouched. Preserve source static priors, refit centered beta and recalibrate eta. Matched full-pipeline diagnostic; no randomized-study p-value."
+  },
+  "scope": "Three repeatedly explored development families and engineered top10 hybrid perturbations; no confirmation or population-generalization claim.",
+  "status": "Implementation ready for freeze; no real interior outcomes computed.",
+  "version": "1.0.0"
+}

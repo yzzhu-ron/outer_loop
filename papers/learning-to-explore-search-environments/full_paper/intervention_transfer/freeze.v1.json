@@ -1,0 +1,72 @@
+{
+  "created_at_utc": "2026-09-10T14:22:54.869596+00:00",
+  "files": {
+    "full_paper/intervention_transfer/experiment.py": "350f6e1fe8bfe5577e60a2e11c13621cc99b55572363477ae02c0f476189f3ad",
+    "full_paper/intervention_transfer/export_evidence.py": "a05f04fae8f2e2e0a95fdf2dde606182cdc3319b2fe1d0add43311df93a884b9",
+    "full_paper/intervention_transfer/protocol.v1.json": "5e49916341d479c7a163366b195b0dd95d20fac67d28f8290560e759093bdbab",
+    "full_paper/intervention_transfer/test_experiment.py": "3883dee4211c29d92a628fcec2b5c6fea08a374761c8d29ff74b42eebb152687",
+    "full_paper/interventions/adapter.py": "560e2d8ef0453d01ead5e0cbbe9db5f073cc075e00b48dd9d874128073f6e4c8",
+    "full_paper/interventions/freeze.v1.json": "78d558c784972a4e557f4c93b018977173253a4251d2794835f98d6b8adf175a",
+    "full_paper/interventions/operator.v1.json": "a236a593e14dd9024dddc14741002dc5f8d1c99f8130825b613964050f00bfe1",
+    "pilot/engine.py": "a1f7d46e86c862b8b1e4f50602c72b0280be59d5a6e88bd51460d8ee8e8534de"
+  },
+  "runtime": {
+    "numpy": "2.5.3",
+    "python": "3.14.0 (main, Nov 19 2025, 23:04:28) [Clang 21.1.4 ]"
+  },
+  "source_inputs": {
+    "semantic_pilot/cache/fiqa_bm25_outcomes.json": {
+      "bytes": 5251949,
+      "sha256": "5b585b292b6e301fcd8ee5a2e091233ab0d79b2ae7c03c07d8f9c3b5087f3168"
+    },
+    "semantic_pilot/cache/fiqa_bm25_ranks.json": {
+      "bytes": 775578,
+      "sha256": "9c45ca64adb9578df6f9f1304f1125b87b4d2ce82f166fbb8f258cbe188c5cb0"
+    },
+    "semantic_pilot/cache/fiqa_dense_outcomes.json": {
+      "bytes": 5255989,
+      "sha256": "3df55aecfb95ecdbc702ecc0cdda0b2c278d357639d8dfefe6ad2de3e54789c3"
+    },
+    "semantic_pilot/cache/fiqa_dense_ranks.json": {
+      "bytes": 775647,
+      "sha256": "06b8f08bf585b4c108cff3167ebda292d708c169328302f517eae92c8d1ecca6"
+    },
+    "semantic_pilot/cache/nfcorpus_bm25_outcomes.json": {
+      "bytes": 3987850,
+      "sha256": "1aa56629c010c9e57ea1894c9732ff1317177cd3eb39aa1507f79e7239008cfa"
+    },
+    "semantic_pilot/cache/nfcorpus_bm25_ranks.json": {
+      "bytes": 598786,
+      "sha256": "e194275ad2c119ef525056df9250623d757c5379678d6163b558e30327c8810d"
+    },
+    "semantic_pilot/cache/nfcorpus_dense_outcomes.json": {
+      "bytes": 4029472,
+      "sha256": "c82a19801f565a4b3857030e4da53dd7951e35e75f1779162e39362cce102fa7"
+    },
+    "semantic_pilot/cache/nfcorpus_dense_ranks.json": {
+      "bytes": 613630,
+      "sha256": "adbd853cd2b1dc9cfbe98ee1b0a1d4c5c827541d417a4c6054ae45b6d3c35449"
+    },
+    "semantic_pilot/cache/prepared.json": {
+      "bytes": 5481867,
+      "sha256": "99a3615452345de77f9d09744dcf672480c1df8d822a015148ef7811608d1a25"
+    },
+    "semantic_pilot/cache/scifact_bm25_outcomes.json": {
+      "bytes": 5283883,
+      "sha256": "0f145ca33be07474ba0c9eb2dfa630ad3e9119b57bb8f7d396f708976d19fca7"
+    },
+    "semantic_pilot/cache/scifact_bm25_ranks.json": {
+      "bytes": 868285,
+      "sha256": "1a2efc63fdee5d5456d34b67d12a6f325b1ac681a73bc45915944efc3897a5c5"
+    },
+    "semantic_pilot/cache/scifact_dense_outcomes.json": {
+      "bytes": 5284967,
+      "sha256": "b5223aff21860833f00691f18440e4b41c351e854efff85f25a677e2a69446f8"
+    },
+    "semantic_pilot/cache/scifact_dense_ranks.json": {
+      "bytes": 868136,
+      "sha256": "6794423d3b161cdf7a19efdda4e5df6e020e31e3e85cf3eb2a6146749bc1f8e8"
+    }
+  },
+  "stage": "before_interior_outcomes"
+}
