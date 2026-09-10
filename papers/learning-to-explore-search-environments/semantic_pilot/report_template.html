@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SearchProbe: from rediscovery to useful search decisions</title>
+<style>
+  :root {
+    /* Warm paper palette — see design-system.md */
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --sky:      #6A8CAF;
+    --white:    #FFFFFF;
+    --gray-150: #F0EEE6;
+    --gray-300: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-700: #3D3D3A;
+    --danger:   #B04A3F;
+
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ivory:    #1A1A18;
+      --slate:    #F0EFE9;
+      --clay:     #E68A6A;
+      --oat:      #3A3530;
+      --olive:    #9CB077;
+      --sky:      #87A2C2;
+      --white:    #232220;
+      --gray-150: #2A2926;
+      --gray-300: #3A3935;
+      --gray-500: #8A8881;
+      --gray-700: #C8C6BF;
+      --danger:   #D97766;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ivory);
+    color: var(--gray-700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+
+  /* Two-column layout: prose + sticky aside.
+     Drop the aside and switch to a single column for short docs. */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 48px;
+  }
+  @media (max-width: 960px) {
+    .page { grid-template-columns: 1fr; }
+    aside { order: 2; position: static; }
+  }
+
+  /* Header */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--slate);
+    margin: 40px 0 14px;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--slate);
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  .lead { max-width: 640px; font-size: 16px; }
+  .muted { color: var(--gray-500); }
+  em { font-style: italic; }
+  a { color: var(--clay); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--clay); }
+
+  code { font-family: var(--mono); font-size: 13px; background: var(--gray-150); padding: 0.125em 0.35em; border-radius: 4px; }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--slate); background: var(--white); border: 1.5px solid var(--gray-300); border-radius: 10px; padding: 16px 18px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* TL;DR card */
+  .tldr {
+    border: 1.5px solid var(--gray-300);
+    border-left: 3px solid var(--clay);
+    border-radius: 10px;
+    background: var(--white);
+    padding: 16px 18px;
+    margin: 8px 0 20px;
+  }
+  .tldr b { color: var(--slate); }
+
+  /* Demo / figure panel */
+  .panel {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 14px;
+    background: var(--white);
+    padding: 24px;
+    margin: 12px 0;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--oat);
+    background: rgba(227, 218, 204, 0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--clay); font-weight: 600; }
+
+  /* Dotted-underline term linked to glossary */
+  .term {
+    border-bottom: 1.5px dotted var(--clay);
+    cursor: help;
+    color: var(--slate);
+  }
+
+  /* Sticky aside (glossary or on-this-page) */
+  aside {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 12px;
+    background: var(--white);
+    padding: 18px 18px 8px;
+  }
+  aside .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  aside dl dt {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 0;
+  }
+  aside dl dd {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    margin: 2px 0 14px;
+  }
+  aside dl dt.hl, aside dl dt.hl + dd {
+    background: rgba(217, 119, 87, 0.10);
+    margin-left: -8px; margin-right: -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 4px;
+  }
+
+  /* Collapsible details */
+  details {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--slate);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸";
+    color: var(--clay);
+    font-family: var(--sans);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .body { padding: 0 16px 16px; }
+
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; max-width: 680px; font-size: 13.5px; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--gray-300); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); font-weight: 500; }
+  td.good { color: var(--olive); }
+  td.bad  { color: var(--danger); }
+</style>
+<style>
+.table-wrap { overflow-x:auto; } table { max-width:none; } th { color:var(--gray-700); }
+figure { margin:28px 0; } figure svg { width:100%; height:auto; background:white; }
+figcaption { font-size:12px; margin-top:8px; } nav a { display:block; margin:8px 0; }
+section { scroll-margin-top:20px; } .demo { border:1px solid var(--gray-300); padding:22px; background:var(--white); }
+.demo label { display:block; } .demo input { width:min(100%,360px); margin:15px 0; }
+.readout { font-family:var(--mono); font-size:16px; color:var(--slate); margin:18px 0; }
+button { font:inherit; color:var(--slate); background:var(--gray-150); border:1px solid var(--gray-300); border-radius:4px; padding:6px 12px; cursor:pointer; }
+@media(max-width:960px) { aside { position:static; order:2; } body { padding:28px 15px 70px; } }
+@media print { aside { display:none; } .page { display:block; } details .body { display:block; } }
+</style>
+</head>
+<body><div class="page"><main>
+<header><div class="eyebrow">Research notebook · 10 September 2026 · exploratory evidence</div>
+<h1>From document rediscovery to useful search decisions</h1>
+<p class="lead">Can a search system learn which query strategies work in a new corpus before seeing its future questions? We built a stronger semantic experiment, proved finite-model counterexamples, and packaged the resulting diagnostics as <code>searchprobe</code>.</p>
+<div class="tldr"><p>@@MEASURED_SUMMARY@@</p><p><strong>The conceptual result:</strong> pairwise agreement can conceal a conflict among three plausible environments. Measuring the remaining decision risk exposes it. The tool makes that certificate executable, while keeping its source-model assumptions explicit.</p></div>
+</header>
+<section id="experiment"><h2>A stronger action menu on three corpora</h2>
+<p>The first lexical pilot produced no profile-induced routing changes. This continuation preserves those results and evaluates original queries, keywords, semantic rewrites, hypothetical passages and two-query decomposition. A pinned local Qwen3 4B model generates the semantic variants; BM25 and a pinned MiniLM encoder search the full released corpora.</p>
+<p>Each target corpus is held out from source fitting. The other two supply 128 router-training, 32 calibration and 32 selector-utility queries each. Onboarding sees sampled documents and selected probe outcomes, but no real target queries or labels. The same numerical profile and frozen router are shared by all four selectors.</p>
+@@HEADROOM@@
+@@FIGURE_HEADROOM@@
+<p>The per-query oracle chooses with target relevance labels and is unavailable at deployment. A large oracle gap establishes an opportunity for routing; it does not establish that corpus probes contain the information needed to realize it.</p>
+</section>
+<section id="adaptation"><h2>Do selected probes improve real retrieval?</h2>
+<p>Random, fixed coverage, Gaussian information gain and learned one-step value each select up to 32 paired probes from the same pool. The learned selector's gain labels come only from separate source utility queries. Budget zero reduces exactly to the source router.</p>
+@@ADAPTATION@@
+<p>Values average the three onboarding seeds. Intervals resample paired queries and shared seeds and are descriptive, conditional on these selected tasks and families. Three seeds do not support a broad transfer claim; comparisons are not corrected for multiplicity.</p>
+<details><summary>Secondary metric: Recall@10</summary><div class="body">@@RECALL@@<p>Recall measures the fraction of positively judged support documents retrieved in the top ten. It uses the same retained task cohort and method decisions.</p></div></details>
+@@FIGURE_ADAPTATION@@
+<details><summary>How much learning signal does the selector receive?</summary><div class="body">
+<p>Thousands of training rows can reuse only 64 unique source utility queries. These are not thousands of independent tasks. A one-step label is nonzero only when one extra probe changes a router decision and that change affects measured source utility.</p>
+@@SELECTOR_SIGNAL@@
+<p>A zero estimated one-step value need not imply that a diverse batch has zero value: complementary probes can be individually unhelpful. The exact XOR example in the theory note demonstrates this stopping trap.</p>
+</div></details>
+<details><summary>Could this router respond to any allowed probe history?</summary><div class="body">
+<p>For budget B, every shrunk profile feature lies between −B/(B+4) and B/(B+4). Multiplying that range by each correction head's coefficient L1 norm bounds how far its score can move; the original action's correction is exactly zero. If a query's winning margin exceeds the combined winner/challenger bounds, its action cannot change under this frozen router. This conservative audit uses query features and source-trained coefficients, without target utility labels.</p>
+@@SENSITIVITY@@
+<p>The bound may substantially overestimate possible movement because feature extremes need not occur together. Numerical comparisons include rounding slack; this is not formally verified interval arithmetic. Uncertified queries are only potentially changeable, not guaranteed to benefit.</p>
+</div></details>
+</section>
+<section id="alignment"><h2>Does the proxy measure the right thing?</h2>
+<p>A generated question has a known source document, making rediscovery cheap to score. Real users can have different information needs, and other retrieved documents can also answer the generated question. Known-document reciprocal rank is therefore a proxy endpoint, not complete relevance supervision.</p>
+<p>The fixed audit also found scope differences between some direct and indirect questions. Comparing these families measures the constructed probes; it does not isolate a causal effect of paraphrasing or difficulty alone.</p>
+@@FIGURE_ALIGNMENT@@
+@@GENERATION@@
+<p>“Valid” above means format-valid, not semantically verified. The fixed manual audit is linked below. Failed generations remain in the task cohort; their generated actions return no results. Prompts and settings were frozen before this semantic run's retrieval scores; all three families remain exploratory.</p>
+<p>NFCorpus retains only 65 of 323 test queries under the all-positive-support holdout rule. This substantially changes its evaluated distribution. The dense encoder truncates at 256 input tokens; long-document retrieval is a limitation of this pilot.</p>
+</section>
+<section id="theory"><h2>Every pair can agree while the group conflicts</h2>
+<p>Suppose three worlds remain possible after exploration. In each row below, a value is the utility of one available search policy. At ε = 0 every pair of worlds shares an optimal policy. Across all three, no policy is optimal everywhere.</p>
+<div class="demo">
+<label for="epsilon">Make each world's winner unique: ε = <output id="epsilon-value">0.01</output></label>
+<input id="epsilon" type="range" min="0" max="1" step="0.01" value="0.01">
+<div class="table-wrap"><table><thead><tr><th scope="col">Possible world</th><th scope="col">Policy A</th><th scope="col">Policy B</th><th scope="col">Policy C</th></tr></thead><tbody id="utility-matrix"></tbody></table></div>
+<div class="readout" aria-live="polite">Pairwise incompatibility: <span id="pairwise"></span><br>Worst-case decision radius: <span id="radius"></span></div>
+<p>The uniform policy mixture has worst-case regret (1 + ε) / 3. A uniform prior over the three worlds certifies the same lower bound. The pairwise statistic is only ε, so it can approach zero while unresolved decision risk stays near one third.</p>
+<button id="reset-epsilon" type="button">Reset example</button>
+</div>
+<p>More generally, the minimax regret radius is zero exactly when all compatible environments share an optimal policy. A worst-case certificate needs at most as many worlds as there are policies. These are consequences of standard finite minimax duality; we are not claiming the underlying mathematics as new.</p>
+<details><summary>What additional assumptions connect observations to decisions?</summary><div class="body">
+<p>In the linear model z = Vθ and action contrasts g = Wθ + b, recovering contrasts from noiseless probes requires ker(V) ⊆ ker(W) on an admissible parameter domain with interior. With g approximately Cz + b, a regret upper bound separates alignment error, reconstruction instability and sampling noise. Repetition reduces only its sampling term; this is not an exact regret decomposition or a positive lower bound.</p>
+<p>The bound includes the zero-contrast reference action and requires a frozen design before the noise samples used in concentration. It is not a confidence guarantee for our adaptive empirical selector. Noisy target observations cannot certify source-to-target alignment without additional assumptions.</p>
+<p>The exact examples also show a nuisance probe with more environment information but no decision value, and two complementary probes whose individual one-step values are zero. These constructions explain failure modes; they are not retrieval measurements.</p>
+</div></details>
+</section>
+<section id="cost"><h2>Charge the experiment before claiming savings</h2>
+<p>Every positive-budget selector pays for inspecting 16 documents and generating its entire candidate pool. A paired probe costs two searches, or three for decomposition. A generated serving action pays the full shared rewrite response. Cached experiment outcomes never make deployment interactions free.</p>
+@@COSTS@@
+<p>The table averages seeds at budget 32. The saved cost curves also cover workloads of 1, 10, 50 and 200 tasks, and retain input tokens. Equal probe counts do not guarantee equal total cost. Generation time is measured for batches; unmeasured serving latency is not represented as zero.</p>
+<p>Query-encoder computation for routing is measured as a shared preparation stage; no per-task price is assigned to it. These are operation and token ledgers, not complete dollar or latency estimates.</p>
+<p>The RRF comparator spends on the current query: it combines original results with the best non-original action chosen from source training labels. It has no onboarding cost and ordinarily uses two or three searches. A failed generated alternative contributes no results, leaving one original search while generation is still charged. Its quality appears beside learned selection above; a benefit over the source router alone is not a cost-dominance result.</p>
+@@FIGURE_COST_SEARCH_CALLS@@
+@@FIGURE_COST_OUTPUT_TOKENS@@
+</section>
+<section id="tool"><h2>A small tool people can use now</h2>
+<p><code>searchprobe</code> is an installable Python package with no runtime dependencies. It accepts logs from any search API. A preflight audit catches identical query strings, token-bag collisions and missing coverage; observed logs add ties, rank-one saturation, floor effects and cost consistency checks.</p>
+<pre><code>python -m pip install ./packages/searchprobe
+searchprobe audit probes.jsonl --output report.json
+searchprobe decision-audit source-model.json --output decision.json</code></pre>
+<p>The second command requires an explicit utility matrix, source provenance, task weighting and assumptions. It returns the exact decision radius, an attaining policy mixture, and a sparse dual witness. Every report says <code>target_regret_guarantee: false</code>. A clean probe audit and a small source-model radius cannot establish transfer to a new corpus.</p>
+<p>The package is available from this branch; it has not been published to a package registry. Its finite exact solver is intentionally bounded to small models. The source code, examples and tests make it useful without a paid API or proprietary backend.</p>
+</section>
+<section id="reproduce"><h2>Evidence and reproducibility</h2>
+<p>The protocol, prompts, model revisions, data checksums, per-query scores, probe traces, profiles, uncertainty calculations and cost ledger are saved. All three corpora are exploratory families after these results. The useful outcome is a sharper testable model of probe value and a working diagnostic tool; a general adaptation gain or novel theorem requires further evidence.</p>
+<ul><li><a href="semantic_pilot/README.md">Experiment setup and reproduction commands</a></li>
+<li><a href="semantic_pilot/results/headroom.csv">Action headroom</a> · <a href="semantic_pilot/results/adaptation.csv">all adaptation runs</a> · <a href="semantic_pilot/results/cost_curves.csv">cost curves</a></li>
+<li><a href="semantic_pilot/GENERATION_AUDIT.md">Fixed manual generation audit</a> · <a href="semantic_pilot/results/generation_records.jsonl">realized generations</a> · <a href="semantic_pilot/protocol.json">frozen protocol</a></li>
+<li><a href="theory/theory.md">Theory, proofs and assumptions</a> · <a href="theory/verified_results.json">exact examples</a> · <a href="theory/RELATED_WORK.md">prior-work comparison</a></li>
+<li><a href="../../packages/searchprobe/README.md">SearchProbe package</a> · <a href="../../packages/searchprobe/DECISION_AUDIT.md">decision-model contract</a></li>
+<li><a href="pilot/RESULTS.md">Preserved first lexical pilot</a> · <a href="search-environment-exploration-proposal.html">original proposal</a></li></ul>
+</section>
+</main><aside><div class="label">Read the evidence</div><nav aria-label="Contents"><a href="#experiment">Action headroom</a><a href="#adaptation">Probe selection</a><a href="#alignment">Proxy alignment</a><a href="#theory">Interactive counterexample</a><a href="#cost">Complete cost</a><a href="#tool">Use the tool</a><a href="#reproduce">Reproduce</a></nav><hr><p style="font-size:12px;margin-top:16px">Three corpora · two backends · five actions · three onboarding seeds. All results are exploratory.</p></aside></div>
+<script>
+const epsilon=document.getElementById('epsilon');
+function render(){const e=Number(epsilon.value);document.getElementById('epsilon-value').value=e.toFixed(2);const rows=[[0,1,1-e],[1-e,0,1],[1,1-e,0]];document.getElementById('utility-matrix').innerHTML=rows.map((r,i)=>'<tr><th scope="row">World '+(i+1)+'</th>'+r.map(v=>'<td>'+v.toFixed(2)+'</td>').join('')+'</tr>').join('');document.getElementById('pairwise').textContent=e.toFixed(4);document.getElementById('radius').textContent=((1+e)/3).toFixed(4);}
+epsilon.addEventListener('input',render);document.getElementById('reset-epsilon').addEventListener('click',()=>{epsilon.value='0.01';render();});render();
+</script></body></html>
